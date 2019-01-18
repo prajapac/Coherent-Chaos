@@ -1,0 +1,32 @@
+@import '../../theme.scss';
+
+.hex {
+    stroke-width: 4px;
+    height: 50px;
+    width: auto;
+
+    &.primary {
+        fill: $primary-mid;
+        stroke: $primary-dark;
+    }
+
+    &.secondary {
+        fill: $secondary-mid;
+        stroke: $secondary-dark;
+    }
+
+    &.tertiary {
+        fill: $tertiary-mid;
+        stroke: $tertiary-dark;
+    }
+
+    &.light {
+        fill: $bg-light;
+        stroke: $bg-mid;
+    }
+
+    &.dark {
+        fill: $bg-mid;
+        stroke: $bg-dark;
+    }
+}
