@@ -1,0 +1,16 @@
+{
+  "name": "comp4350-project-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CAZ-H/comp4350-project.git"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "nodemon": "^1.18.9"
+  },
+  "scripts": {
+    "start": "nodemon index.js"
+  }
+}
