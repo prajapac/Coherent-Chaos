@@ -1,0 +1,69 @@
+@import '../../theme.scss';
+
+.btn {
+    outline: none;
+    color: $font-mid;
+    font-size: $font-size3;
+    cursor: pointer;
+
+    &.bold {
+        font-weight: $bold;
+    }
+
+    &.full {
+        width: 100%;
+        height: 100%;
+    }
+
+    &.fixed {
+        width: $space6;
+        height: $space5;
+    }
+
+    &.rounded {
+        border-radius: $space2;
+    }
+
+    &.light {
+        background: $bg-light;
+        border: $space1 solid $bg-dark;
+
+        &:active, &:hover {
+            background: $bg-mid;
+        }
+    }
+
+    &.primary {
+        background: $primary-light;
+        border: $space1 solid $primary-dark;
+        color: $primary-dark;
+
+        &:active, &:hover {
+            background: $primary-mid;
+        }
+    }
+
+    &.secondary {
+        background: $secondary-light;
+        border: $space1 solid $secondary-dark;
+        color: $secondary-dark;
+
+        &:active, &:hover {
+            background: $secondary-mid;
+        }
+    }
+
+    &.tertiary {
+        background: $tertiary-light;
+        border: $space1 solid $tertiary-dark;
+        color: $tertiary-dark;
+
+        &:active, &:hover {
+            background: $tertiary-mid;
+        }
+    }
+
+    &:active, &:hover {
+        transition: background 0.3s;
+    }
+}

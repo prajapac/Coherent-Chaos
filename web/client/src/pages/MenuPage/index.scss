@@ -1,0 +1,16 @@
+@import '../../theme.scss';
+
+.menu {
+    .tray {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .tray-btn {
+            width: $space7;
+            height: $space6;
+            margin: $space5 0;
+        }
+    }
+}
