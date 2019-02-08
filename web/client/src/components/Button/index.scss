@@ -2,12 +2,17 @@
 
 .btn {
     outline: none;
-    color: $font-mid;
+    border: none;
     font-variant: all-small-caps;
     cursor: pointer;
+    color: $bg-mid;
 
     &.bold {
         font-weight: $bold;
+    }
+
+    &.rounded {
+        border-radius: $space2;
     }
 
     &.full {
@@ -20,51 +25,32 @@
         height: $space5;
     }
 
-    &.rounded {
-        border-radius: $space2;
-    }
-
-    &.light {
-        background: $bg-light;
-        border: $space1 solid $bg-dark;
-
-        &:active, &:hover {
-            background: $bg-mid;
-            color: $font-dark;
-        }
+    &.basic {
+        background: none;
     }
 
     &.primary {
-        background: $primary-light;
-        border: $space1 solid $primary-dark;
-        color: $primary-mid;
+        background: $primary-mid;
 
         &:active, &:hover {
-            background: $primary-mid;
-            color: $primary-dark;
+            background: $primary-dark;
 
         }
     }
 
     &.secondary {
-        background: $secondary-light;
-        border: $space1 solid $secondary-dark;
-        color: $secondary-mid;
+        background: $secondary-mid;
 
         &:active, &:hover {
-            background: $secondary-mid;
-            color: $secondary-dark;
+            background: $secondary-dark;
         }
     }
 
     &.tertiary {
-        background: $tertiary-light;
-        border: $space1 solid $tertiary-dark;
-        color: $tertiary-mid;
+        background: $tertiary-mid;
 
         &:active, &:hover {
-            background: $tertiary-mid;
-            color: $tertiary-dark;
+            background: $tertiary-dark;
         }
     }
 

@@ -21,7 +21,7 @@ Button.propTypes = {
     className: PropTypes.string,
     onClick: PropTypes.func,
     size: PropTypes.oneOf(['full', 'fixed']),
-    type: PropTypes.oneOf(['primary', 'secondary', 'tertiary', 'light']),
+    type: PropTypes.oneOf(['primary', 'secondary', 'tertiary', 'basic']),
     rounded: PropTypes.bool,
     bold: PropTypes.bool,
     text: PropTypes.string
@@ -29,7 +29,7 @@ Button.propTypes = {
 
 Button.defaultProps = {
     size: 'fixed',
-    type: 'light',
+    type: 'basic',
     rounded: false,
     bold: false
 };

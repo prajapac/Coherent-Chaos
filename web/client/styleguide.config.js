@@ -4,11 +4,11 @@ module.exports = {
     sections: [
         {
             name: 'Components',
-            components: 'src/components/**/*.js',
+            components: './src/components/**/*.js',
         },
         {
             name: 'Pages',
-            components: 'src/pages/**/*.js',
+            components: './src/pages/**/*.js',
         }
     ]
 };

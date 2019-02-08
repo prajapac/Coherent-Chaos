@@ -17,9 +17,9 @@ const MenuPage = ({onCreateGame, onJoinGame}) => {
                 mid={<div>COHERENT CHAOS</div>}
             />
             <div className='tray'>
-                <Button className='tray-btn' bold rounded text='Create Game' type='primary' onClick={onCreateGame}/>
-                <Button className='tray-btn' bold rounded text='Join Game' type='secondary' onClick={onJoinGame}/>
-                <Button className='tray-btn' bold rounded text='Test Btn' type='tertiary' onClick={onJoinGame}/>
+                <Button className='tray-btn' bold text='Create Game' type='primary' onClick={onCreateGame}/>
+                <Button className='tray-btn' bold text='Join Game' type='secondary' onClick={onJoinGame}/>
+                <Button className='tray-btn' bold text='Test Btn' type='tertiary' onClick={onJoinGame}/>
             </div>
         </Page>
     );
