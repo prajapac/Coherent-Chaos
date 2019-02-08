@@ -3,7 +3,7 @@
 .btn {
     outline: none;
     color: $font-mid;
-    font-size: $font-size3;
+    font-variant: all-small-caps;
     cursor: pointer;
 
     &.bold {
@@ -30,40 +30,45 @@
 
         &:active, &:hover {
             background: $bg-mid;
+            color: $font-dark;
         }
     }
 
     &.primary {
         background: $primary-light;
         border: $space1 solid $primary-dark;
-        color: $primary-dark;
+        color: $primary-mid;
 
         &:active, &:hover {
             background: $primary-mid;
+            color: $primary-dark;
+
         }
     }
 
     &.secondary {
         background: $secondary-light;
         border: $space1 solid $secondary-dark;
-        color: $secondary-dark;
+        color: $secondary-mid;
 
         &:active, &:hover {
             background: $secondary-mid;
+            color: $secondary-dark;
         }
     }
 
     &.tertiary {
         background: $tertiary-light;
         border: $space1 solid $tertiary-dark;
-        color: $tertiary-dark;
+        color: $tertiary-mid;
 
         &:active, &:hover {
             background: $tertiary-mid;
+            color: $tertiary-dark;
         }
     }
 
     &:active, &:hover {
-        transition: background 0.3s;
+        transition: background 0.3s, color 0.3s;
     }
 }

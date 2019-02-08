@@ -1,1 +1,11 @@
 @import '../../theme.scss';
+
+.game {
+    .game-header {
+        font-size: $font-size4;
+
+        .header-btn {
+            font-size: $font-size4;
+        }
+    }
+}
