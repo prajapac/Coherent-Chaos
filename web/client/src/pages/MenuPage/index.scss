@@ -1,0 +1,21 @@
+@import '../../theme.scss';
+
+.menu {
+    .menu-header {
+        font-size: $font-size4;
+    }
+
+    .tray {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .tray-btn {
+            font-size: $font-size6;
+            width: $space7;
+            height: $space6;
+            margin: $space5 0;
+        }
+    }
+}

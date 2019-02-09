@@ -1,11 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux'
 
-import Hexagon from 'components/Hexagon';
+import store from './store';
+
+import MainContainer from 'containers/MainContainer';
 
 ReactDOM.render(
-    <div className='app'>
-        <Hexagon/>
-    </div>,
+    <Provider store={store}>
+        <div className='app'>
+            <MainContainer/>
+        </div>
+    </Provider>,
     document.getElementById('root')
 );

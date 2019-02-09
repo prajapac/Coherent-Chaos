@@ -1,0 +1,20 @@
+@import '../../theme.scss';
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: $space5;
+    background: $bg-dark;
+
+    .mid {
+        flex-grow: 1;
+    }
+
+    .right, .left {
+        flex-grow: 0.5;
+    }
+}

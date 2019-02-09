@@ -50,7 +50,10 @@ module.exports = {
     resolve: {
         alias: {
             'components': path.resolve(__dirname, 'src/components'),
-            'views': path.resolve(__dirname, 'src/views'),
+            'pages': path.resolve(__dirname, 'src/pages'),
+            'containers': path.resolve(__dirname, 'src/containers'),
+            'reducers': path.resolve(__dirname, 'src/reducers'),
+            'actions': path.resolve(__dirname, 'src/actions'),
             'constants': path.resolve(__dirname, 'src/constants')
         }
     }
