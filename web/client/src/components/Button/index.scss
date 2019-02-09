@@ -1,0 +1,60 @@
+@import '../../theme.scss';
+
+.btn {
+    outline: none;
+    border: none;
+    font-variant: all-small-caps;
+    cursor: pointer;
+    color: $bg-mid;
+
+    &.bold {
+        font-weight: $bold;
+    }
+
+    &.rounded {
+        border-radius: $space2;
+    }
+
+    &.full {
+        width: 100%;
+        height: 100%;
+    }
+
+    &.fixed {
+        width: $space6;
+        height: $space5;
+    }
+
+    &.basic {
+        background: none;
+    }
+
+    &.primary {
+        background: $primary-mid;
+
+        &:active, &:hover {
+            background: $primary-dark;
+
+        }
+    }
+
+    &.secondary {
+        background: $secondary-mid;
+
+        &:active, &:hover {
+            background: $secondary-dark;
+        }
+    }
+
+    &.tertiary {
+        background: $tertiary-mid;
+
+        &:active, &:hover {
+            background: $tertiary-dark;
+        }
+    }
+
+    &:active, &:hover {
+        transition: background 0.3s, color 0.3s;
+    }
+}

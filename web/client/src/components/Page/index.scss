@@ -1,0 +1,25 @@
+@import '../../theme.scss';
+
+.page {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+
+    .header-btn {
+        border-top: none;
+        border-bottom: none;
+        font-size: $font-size3;
+
+        &.left {
+            border-left: none;
+        }
+
+        &.right {
+            border-right: none;
+        }
+    }
+
+    .header-gid {
+        width: $space6;
+    }
+}

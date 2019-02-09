@@ -1,20 +1,47 @@
+$bg-light: #484848;
+$bg-mid: #333333;
+$bg-dark: #282828;
 
-$text-light: #AAA;
-$text-mid: #333;
-$text-dark: #111;
+$primary-light: #18a0ff;
+$primary-mid: #0080ff;
+$primary-dark: #0056df;
 
-$bg-light: #FFF;
-$bg-mid: #EEE;
-$bg-dark: #CCC;
+$secondary-light: #92e01a;
+$secondary-mid: #66cc00;
+$secondary-dark: #2bae00;
 
-$primary-light: #FFF099;
-$primary-mid: #FFE656;
-$primary-dark: #E6C300;
+$tertiary-light: #ff5a48;
+$tertiary-mid: #f54141;
+$tertiary-dark: #d12e40;
 
-$secondary-light: #FFB3F1;
-$secondary-mid: #FF56E0;
-$secondary-dark: #E600BB;
+$space1: 4px;
+$space2: 8px;
+$space3: 16px;
+$space4: 32px;
+$space4-5: 48px;
+$space5: 64px;
+$space5-6: 84px;
+$space6: 128px;
+$space7: 256px;
+$space8: 512px;
 
-$tertiary-light: #C1B3FF;
-$tertiary-mid: #7556FF;
-$tertiary-dark: #441AFF;
+$font-light: #AAA;
+$font-mid: #777;
+$font-dark: #555;
+
+$font-size1: 12px;
+$font-size2: 14px;
+$font-size3: 16px;
+$font-size4: 18px;
+$font-size5: 20px;
+$font-size6: 24px;
+
+$bold: 600;
+
+body {
+    margin: 0;
+    background: $bg-mid;
+    font-family: 'Montserrat', sans-serif;
+    font-size: $font-size3;
+    color: $font-mid;
+}
