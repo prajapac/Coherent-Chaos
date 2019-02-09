@@ -4,7 +4,7 @@
 http://18.191.224.215:5000/
 
 ## Production Server
-TODO
+http://52.14.173.109:5000/
 
 # Setup
 
