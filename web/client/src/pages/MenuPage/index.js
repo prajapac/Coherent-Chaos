@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { PAGE_MENU } from "constants/constants";
+import { PAGE_MENU } from 'constants/constants';
 
 import Header from 'components/Header';
 import Button from 'components/Button';

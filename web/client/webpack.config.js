@@ -1,5 +1,5 @@
 const path = require('path');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
@@ -33,7 +33,7 @@ module.exports = {
                     ],
                     plugins: [
                         '@babel/plugin-transform-react-jsx',
-                        "@babel/plugin-proposal-class-properties"
+                        '@babel/plugin-proposal-class-properties'
                     ]
                 },
             },
