@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types'
 import classNames from 'classnames';
 
-import { PAGE_GAME, PAGE_MENU } from "constants/constants";
+import { PAGE_GAME, PAGE_MENU } from 'constants/constants';
 
 import './index.scss';
 
-const Page = ({className, mode, gameId, onExitGame, children, ...props}) => {
+const Page = ({className, children, ...props}) => {
     const classes = classNames(className, 'page');
 
     return (
