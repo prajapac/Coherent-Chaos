@@ -4,11 +4,22 @@ import classNames from 'classnames';
 
 import './index.scss';
 
-const Cell = ({className, state, color}) => {
-    const classes = classNames(className, state, color, 'cell');
+const Cell = ({className, state}) => {
+    const classes = classNames(className, state, 'cell');
 
     return (
-        <Hexagon className={classes}/>
+        if (state === states.player1) {
+            <Hexagon className={classes} color=colors.primary />
+        }
+        else if (state === states.player2) {
+            <Hexagon className={classes} color=colors.secondary />
+        }
+        else if (state === states.out) {
+            <Hexagon className={classes} color=colors.dark />
+        }
+        else if (state === states.empty) {
+            <Hexagon className={classes} color=colors.light />
+        }
     );
 };
 
