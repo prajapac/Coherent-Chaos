@@ -8,16 +8,24 @@ const Cell = ({className, state, ...props}) => {
     const classes = classNames(className, state, 'cell');
 
     return (
+        <Hexagon className={'boardCell'} color={'light'}/>
     );
 };
 
+const states = {
+    PLAYER_1_PAWN: 'Player1Pawn',
+    PLAYER_2_PAWN: 'Player2Pawn',
+    OUT_OF_PLAY: 'OutOfPlay',
+    EMPTY: 'Empty',
+}
+
 Cell.propTypes = {
     className: PropTypes.string,
-    state: PropTypes.oneOf(['player 1 pawn', 'player 2 pawn', 'out of play', 'empty'])
+    state: PropTypes.oneOf(Object.keys(states))
 };
 
 Cell.defaultProps = {
-    state: 'empty'
+    state: 'Empty'
 };
 
 export default Cell;
