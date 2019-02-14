@@ -4,28 +4,41 @@ import classNames from 'classnames';
 
 import './index.scss';
 
-const Cell = ({className, state, ...props}) => {
-    const classes = classNames(className, state, 'cell');
+const Cell = ({className, state, color}) => {
+    const classes = classNames(className, state, color, 'cell');
 
     return (
-        <Hexagon className={'boardCell'} color={'light'}/>
+        <Hexagon className={classes}/>
     );
 };
 
 const states = {
-    PLAYER_1: 'Player1Pawn',
-    PLAYER_2: 'Player2Pawn',
-    OUT: 'OutOfPlay',
-    EMPTY: 'Empty',
+    player1: 'player1Pawn',
+    player2: 'player2Pawn',
+    out: 'outOfPlay',
+    empty: 'empty',
+}
+
+const colors = {
+    primary: 'primary',
+    secondary: 'secondary',
+    tertiary: 'tertiary',
+    light: 'light',
+    dark: 'dark',
 }
 
 Cell.propTypes = {
     className: PropTypes.string,
-    state: PropTypes.oneOf(Object.keys(states))
+    state: PropTypes.oneOf(Object.keys(states)),
+    color: PropTypes.oneOf(Object.keys(colors)),
 };
 
 Cell.defaultProps = {
-    state: 'Empty'
+    state: 'empty',
+    color: 'light',
 };
+
+Cell.states = states
+Cell.colors = colors
 
 export default Cell;
