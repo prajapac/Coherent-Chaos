@@ -13,9 +13,9 @@ const Cell = ({className, state, ...props}) => {
 };
 
 const states = {
-    PLAYER_1_PAWN: 'Player1Pawn',
-    PLAYER_2_PAWN: 'Player2Pawn',
-    OUT_OF_PLAY: 'OutOfPlay',
+    PLAYER_1: 'Player1Pawn',
+    PLAYER_2: 'Player2Pawn',
+    OUT: 'OutOfPlay',
     EMPTY: 'Empty',
 }
 
