@@ -9,18 +9,19 @@ const Cell = ({className, state}) => {
     const classes = classNames(className, state, 'cell');
 
     return (
+        let cellColor = 'light';
+
         if (state === Constants.CELL_PLAYER_1) {
-            <Hexagon className={classes} color='primary' />
+            cellColor='primary';
         }
         else if (state === Constants.CELL_PLAYER_2) {
-            <Hexagon className={classes} color='secondary' />
+            cellColor='secondary';
         }
         else if (state === Constants.CELL_OUT_OF_PLAY) {
-            <Hexagon className={classes} color='dark' />
+            cellColor='dark';
         }
-        else if (state === Constants.CELL_EMPTY) {
-            <Hexagon className={classes} color='light' />
-        }
+
+        <Hexagon className={classes} color={cellColor} />
     );
 };
 
