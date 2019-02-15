@@ -9,47 +9,36 @@ const Cell = ({className, state}) => {
 
     return (
         if (state === states.player1) {
-            <Hexagon className={classes} color=colors.primary />
+            <Hexagon className={classes} color='primary' />
         }
         else if (state === states.player2) {
-            <Hexagon className={classes} color=colors.secondary />
+            <Hexagon className={classes} color='secondary' />
         }
         else if (state === states.out) {
-            <Hexagon className={classes} color=colors.dark />
+            <Hexagon className={classes} color='dark' />
         }
         else if (state === states.empty) {
-            <Hexagon className={classes} color=colors.light />
+            <Hexagon className={classes} color='light' />
         }
     );
 };
 
-const states = {
-    player1: 'player1Pawn',
-    player2: 'player2Pawn',
-    out: 'outOfPlay',
-    empty: 'empty',
-}
-
-const colors = {
-    primary: 'primary',
-    secondary: 'secondary',
-    tertiary: 'tertiary',
-    light: 'light',
-    dark: 'dark',
+enum states = {
+    Player1Pawn,
+    Player2Pawn,
+    OutOfPlay,
+    Empty,
 }
 
 Cell.propTypes = {
     className: PropTypes.string,
     state: PropTypes.oneOf(Object.keys(states)),
-    color: PropTypes.oneOf(Object.keys(colors)),
 };
 
 Cell.defaultProps = {
     state: 'empty',
-    color: 'light',
 };
 
 Cell.states = states
-Cell.colors = colors
 
 export default Cell;
