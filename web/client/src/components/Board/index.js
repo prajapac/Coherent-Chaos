@@ -4,27 +4,30 @@ import classNames from 'classnames';
 
 import Cell from 'components/Cell';
 
+import { CELL_PLAYER_1 as C1, CELL_PLAYER_2 as C2, CELL_EMPTY as CE } from 'constants/constants.js';
+
 import './index.scss';
 
 const Board = ({className, boardState}) => {
     const classes = classNames(className, 'board');
 
-    const board = boardState.map((row, rowIndex) => {
-        return (
-            <div key={'row' + rowIndex} className={'row flex-container'}>{
-                row.slice(1, row[0] + 1).map((col, colIndex) => {
-                    return (
-                        <div key={'col' + colIndex + '-' + rowIndex} className={'col'}><Cell
-                            className={'boardCell' + rowIndex + '-' +colIndex} state={col}/>
-                        </div>
-                    )
-                })
-            }</div>
-        )
-    });
-
-    return (<div className={classes} >{board}</div>)
-
+    return (
+        <div className={classes}>
+            {
+                boardState.map((row, rIndex) => (
+                    <div key={rIndex} className='row'>
+                        {
+                            row.map((cell, cIndex) => (
+                                <div key={cIndex} className='cell-container'>
+                                    <Cell state={cell} className='cell-bg'/>
+                                </div>
+                            ))
+                        }
+                    </div>
+                ))
+            }
+        </div>
+    )
 };
 
 Board.propTypes = {
@@ -33,17 +36,19 @@ Board.propTypes = {
 };
 
 Board.defaultProps = {
-    boardState: [[6,1,1,1,1,1,1,0,0,0,0,0,0],
-        [7,0,1,1,1,1,1,0,0,0,0,0,0],
-        [8,0,0,0,0,0,0,0,0,0,0,0,0],
-        [9,0,0,0,0,0,0,0,0,0,0,0,0],
-        [10,0,0,0,0,0,0,0,0,0,0,0,0],
-        [11,0,0,0,0,0,0,0,0,0,0,0,0],
-        [10,0,0,0,0,0,0,0,0,0,0,0,0],
-        [9,0,0,0,0,0,0,0,0,0,0,0,0],
-        [8,0,0,0,0,0,0,0,0,0,0,0,0],
-        [7,0,2,2,2,2,2,0,0,0,0,0,0],
-        [6,2,2,2,2,2,2,0,0,0,0,0,0]]
+    boardState: [
+        [C1,C1,C1,C1,C1,C1],
+        [CE,C1,C1,C1,C1,C1,CE],
+        [CE,CE,CE,CE,CE,CE,CE,CE],
+        [CE,CE,CE,CE,CE,CE,CE,CE,CE],
+        [CE,CE,CE,CE,CE,CE,CE,CE,CE,CE],
+        [CE,CE,CE,CE,CE,CE,CE,CE,CE,CE,CE],
+        [CE,CE,CE,CE,CE,CE,CE,CE,CE,CE],
+        [CE,CE,CE,CE,CE,CE,CE,CE,CE],
+        [CE,CE,CE,CE,CE,CE,CE,CE],
+        [CE,C2,C2,C2,C2,C2,CE],
+        [C2,C2,C2,C2,C2,C2]
+    ]
 };
 
 export default Board;

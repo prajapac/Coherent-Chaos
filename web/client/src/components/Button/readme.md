@@ -1,12 +1,4 @@
-Plain buttons.
-
-```jsx 
-<Button text='BUTTON'/>{" "}
-<Button rounded text='ROUND'/>{" "}
-<Button bold text='BOLD'/>
-```
-
-Bold, colored buttons.
+Bold buttons.
 
 ```jsx
 <Button bold text='PRIMARY' type='primary'/>{" "}
@@ -14,7 +6,7 @@ Bold, colored buttons.
 <Button bold text='TERTIARY' type='tertiary'/>
 ```
 
-Round, colored buttons.
+Round buttons.
 
 ```jsx
 <Button rounded text='PRIMARY' type='primary'/>{" "}
