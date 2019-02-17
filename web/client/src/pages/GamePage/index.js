@@ -19,7 +19,7 @@ const GamePage = ({gameId, onExitGame}) => {
                 mid={<div>COHERENT CHAOS</div>}
                 right={<div className='header-gid'>#{gameId}</div>}
             />
-            <div className='tray'>
+            <div className='body'>
                 <Board className='gameBoard'/>
             </div>
 
