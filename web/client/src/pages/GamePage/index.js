@@ -6,6 +6,7 @@ import { PAGE_GAME } from 'constants/constants';
 import Header from 'components/Header';
 import Button from 'components/Button';
 import Page from 'components/Page';
+import Board from 'components/Board';
 
 import './index.scss';
 
@@ -18,6 +19,9 @@ const GamePage = ({gameId, onExitGame}) => {
                 mid={<div>COHERENT CHAOS</div>}
                 right={<div className='header-gid'>#{gameId}</div>}
             />
+            <div className='tray'>
+                <Board className='gameBoard'/>
+            </div>
 
         </Page>
     );
