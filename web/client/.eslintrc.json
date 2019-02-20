@@ -25,7 +25,12 @@
         "quotes": [
             "error",
             "single"
-        ]
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "eol-last": 2
     },
     "settings": {
         "react": {
