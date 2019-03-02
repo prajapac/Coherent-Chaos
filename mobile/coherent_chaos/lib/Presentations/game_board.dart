@@ -35,10 +35,13 @@ class _Gameboard extends State<Gameboard> {
       List<Widget> list = new List();
       for (int i = 0; i<gameCells.length; i++) {
         list.add(
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: gameCells[i],
-          )
+          Positioned(
+            top: 160.0 + 29.5 * i,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: gameCells[i],
+            ),
+          ),
         );
       }
       return list;
@@ -47,23 +50,20 @@ class _Gameboard extends State<Gameboard> {
     return Scaffold(
       backgroundColor: colors.bodyColor,
       body: Center(
-        child: 
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: boardRows(),
-          ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: boardRows(),
+        ),
       ),
     );
   }
 
   Widget _gameCell(Color cellColor, Color borderColor) {
     return Container(
-      padding: EdgeInsets.only(left: 1, right: 1),
       width: 34,
       child: ClipPolygon(
         sides: 6,
-        boxShadows: [  
+        boxShadows: [
           PolygonBoxShadow(color: borderColor, elevation: 2.0)
         ],
         child: Container(
