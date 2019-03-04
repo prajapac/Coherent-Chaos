@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import { COLOR_OPTION_DARK, COLOR_OPTION_LIGHT, COLOR_OPTION_PRIMARY, COLOR_OPTION_SECONDARY, COLOR_OPTION_TERTIARY } from 'constants/constants';
+
 import './index.scss';
 
 const Hexagon = ({className, color, ...props}) => {
@@ -22,11 +24,11 @@ const Hexagon = ({className, color, ...props}) => {
 
 Hexagon.propTypes = {
     className: PropTypes.string,
-    color: PropTypes.oneOf(['primary', 'secondary', 'tertiary', 'light', 'dark'])
+    color: PropTypes.oneOf([COLOR_OPTION_DARK, COLOR_OPTION_LIGHT, COLOR_OPTION_PRIMARY, COLOR_OPTION_SECONDARY, COLOR_OPTION_TERTIARY])
 };
 
 Hexagon.defaultProps = {
-    color: 'light'
+    color: COLOR_OPTION_LIGHT
 };
 
 export default Hexagon;

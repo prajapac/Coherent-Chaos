@@ -1,4 +1,13 @@
-export const APP_NAV = 'APP_NAV';
-export const GAME_JOIN = 'GAME_JOIN';
+export const GAME_JOIN_BEGIN = 'GAME_JOIN_BEGIN';
+export const GAME_JOIN_STARTED = 'GAME_JOIN_STARTED';
+export const GAME_JOIN_COMPLETE = 'GAME_JOIN_COMPLETE';
+
+export const GAME_CREATE_BEGIN = 'GAME_CREATE_BEGIN';
+export const GAME_CREATE_STARTED = 'GAME_CREATE_STARTED';
+export const GAME_CREATE_COMPLETE = 'GAME_CREATE_COMPLETE';
+
+export const GAME_PING_START = 'GAME_PING_START';
+export const GAME_PING_STOP = 'GAME_PING_STOP';
+
 export const GAME_EXIT = 'GAME_EXIT';
-export const GAME_CREATE = 'GAME_CREATE';
+
