@@ -34,7 +34,7 @@ class _Gameboard extends State<Gameboard> {
       [c2,c2,c2,c2,c2,c2]
     ];
 
-    List<Widget> boardRows() {
+    List<Widget> getBoardRows() {
       List<Widget> list = new List();
       double rowDist = 29.5;
       
@@ -57,7 +57,7 @@ class _Gameboard extends State<Gameboard> {
       body: Center(
         child: Stack(
           alignment: Alignment.center,
-          children: boardRows(),
+          children: getBoardRows(),
         ),
       ),
     );
