@@ -1,5 +1,4 @@
 import { delay } from 'redux-saga/effects';
-//import {  } from 'actions';
 
 export function* testSaga() { // TODO: Remove
     while (true) {

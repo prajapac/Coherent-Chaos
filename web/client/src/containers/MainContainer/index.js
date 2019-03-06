@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { GAME_CREATE_BEGIN, GAME_JOIN_BEGIN, GAME_EXIT } from 'actions';
-import { PAGE_GAME } from 'constants/constants';
+import { PAGE_GAME } from 'constants';
 
 import MenuPage from 'pages/MenuPage';
 import GamePage from 'pages/GamePage';

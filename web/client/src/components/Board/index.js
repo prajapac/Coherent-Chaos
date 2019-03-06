@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import Cell from 'components/Cell';
 
-import { CELL_PLAYER_1 as C1, CELL_PLAYER_2 as C2, CELL_EMPTY as CE } from 'constants/constants.js';
+import { CELL_PLAYER_1 as C1, CELL_PLAYER_2 as C2, CELL_EMPTY as CE } from 'constants';
 
 import './index.scss';
 

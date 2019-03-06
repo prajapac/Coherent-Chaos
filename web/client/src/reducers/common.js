@@ -6,7 +6,7 @@ import {
     GAME_EXIT
 } from 'actions';
 
-import { PAGE_MENU, PAGE_GAME } from 'constants/constants';
+import { PAGE_MENU, PAGE_GAME } from 'constants';
 
 const defaultState = {
     page: PAGE_MENU,

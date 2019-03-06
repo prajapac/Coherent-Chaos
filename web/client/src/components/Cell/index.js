@@ -4,8 +4,10 @@ import classNames from 'classnames';
 
 import Hexagon from 'components/Hexagon';
 
-import { COLOR_OPTION_DARK, COLOR_OPTION_LIGHT, COLOR_OPTION_PRIMARY, COLOR_OPTION_SECONDARY } from 'constants/constants';
-import { CELL_PLAYER_1, CELL_PLAYER_2, CELL_OUT_OF_PLAY, CELL_EMPTY } from 'constants/constants.js';
+import {
+    COLOR_OPTION_DARK, COLOR_OPTION_LIGHT, COLOR_OPTION_PRIMARY, COLOR_OPTION_SECONDARY,
+    CELL_PLAYER_1, CELL_PLAYER_2, CELL_OUT_OF_PLAY, CELL_EMPTY
+} from 'constants';
 
 import './index.scss';
 
