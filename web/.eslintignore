@@ -1,0 +1,3 @@
+# ignore files in the client folder,
+# node_modules folder ignored by default
+client/*

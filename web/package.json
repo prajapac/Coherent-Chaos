@@ -14,8 +14,8 @@
   },
   "scripts": {
     "start": "nodemon index.js",
-    "lint": "npx eslint ./routes ./schemas ./utilities index.js",
-    "lint-fix": "npx eslint --fix ./routes ./schemas ./utilities index.js"
+    "lint": "npx eslint ./*",
+    "lint-fix": "npx eslint --fix ./*"
   },
   "devDependencies": {
     "eslint": "^5.14.1"
