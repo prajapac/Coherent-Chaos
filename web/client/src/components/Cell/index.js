@@ -4,27 +4,29 @@ import classNames from 'classnames';
 
 import Hexagon from 'components/Hexagon';
 
-import { CELL_PLAYER_1, CELL_PLAYER_2, CELL_OUT_OF_PLAY, CELL_EMPTY } from 'constants/constants.js';
+import {
+    COLOR_OPTION_DARK, COLOR_OPTION_LIGHT, COLOR_OPTION_PRIMARY, COLOR_OPTION_SECONDARY,
+    CELL_PLAYER_1, CELL_PLAYER_2, CELL_OUT_OF_PLAY, CELL_EMPTY
+} from 'constants';
 
 import './index.scss';
 
+export const getCellColor = (state) => {
+    switch(state) {
+        case CELL_PLAYER_1:
+            return COLOR_OPTION_PRIMARY;
+        case CELL_PLAYER_2:
+            return COLOR_OPTION_SECONDARY;
+        case CELL_OUT_OF_PLAY:
+            return COLOR_OPTION_DARK;
+        default:
+            return COLOR_OPTION_LIGHT;
+    }
+};
+
 const Cell = ({className, state}) => {
     const classes = classNames(className, state, 'cell');
-    let cellColor;
-
-    switch(state) {
-    case CELL_PLAYER_1:
-        cellColor = 'primary';
-        break;
-    case CELL_PLAYER_2:
-        cellColor = 'secondary';
-        break;
-    case CELL_OUT_OF_PLAY:
-        cellColor = 'dark';
-        break;
-    default:
-        cellColor = 'light';
-    }
+    let cellColor = getCellColor(state);
 
     return (
         <Hexagon className={classes} color={cellColor} />

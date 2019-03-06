@@ -5,7 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 
 module.exports = {
-    entry: path.resolve(__dirname, 'src/index.js'),
+    entry: ['@babel/polyfill', path.resolve(__dirname, 'src/index.js')],
     plugins: [
         new MiniCssExtractPlugin(),
         new HtmlWebpackPlugin({
@@ -27,15 +27,6 @@ module.exports = {
                 test: /\.js$/,
                 include: path.resolve(__dirname, 'src'),
                 loader: 'babel-loader',
-                options: {
-                    presets: [
-                        '@babel/preset-env'
-                    ],
-                    plugins: [
-                        '@babel/plugin-transform-react-jsx',
-                        '@babel/plugin-proposal-class-properties'
-                    ]
-                },
             },
             {
                 test: /\.scss$/,
@@ -46,15 +37,5 @@ module.exports = {
                 ]
             }
         ]
-    },
-    resolve: {
-        alias: {
-            'components': path.resolve(__dirname, 'src/components'),
-            'pages': path.resolve(__dirname, 'src/pages'),
-            'containers': path.resolve(__dirname, 'src/containers'),
-            'reducers': path.resolve(__dirname, 'src/reducers'),
-            'actions': path.resolve(__dirname, 'src/actions'),
-            'constants': path.resolve(__dirname, 'src/constants')
-        }
     }
 };
