@@ -1,3 +1,6 @@
+
+import {CELL_PLAYER_1, CELL_PLAYER_2, CELL_OUT_OF_PLAY, CELL_EMPTY} from 'constants';
+
 const joi = require('joi');
 const idGenerator = require('../utilities/id-generator');
 
@@ -6,17 +9,17 @@ const schema = joi.object().keys({
     player1_token: joi.string().alphanum().length(idGenerator.PLAYER_TOKEN_LENGTH).required(),
     player2_token: joi.string().alphanum().length(idGenerator.PLAYER_TOKEN_LENGTH).required(),
     board_state: joi.array().items(
-        joi.array().items(joi.number().valid(-1, 0, 1, 2)).length(6).required(),
-        joi.array().items(joi.number().valid(-1, 0, 1, 2)).length(7).required(),
-        joi.array().items(joi.number().valid(-1, 0, 1, 2)).length(8).required(),
-        joi.array().items(joi.number().valid(-1, 0, 1, 2)).length(9).required(),
-        joi.array().items(joi.number().valid(-1, 0, 1, 2)).length(10).required(),
-        joi.array().items(joi.number().valid(-1, 0, 1, 2)).length(11).required(),
-        joi.array().items(joi.number().valid(-1, 0, 1, 2)).length(10).required(),
-        joi.array().items(joi.number().valid(-1, 0, 1, 2)).length(9).required(),
-        joi.array().items(joi.number().valid(-1, 0, 1, 2)).length(8).required(),
-        joi.array().items(joi.number().valid(-1, 0, 1, 2)).length(7).required(),
-        joi.array().items(joi.number().valid(-1, 0, 1, 2)).length(6).required()
+        joi.array().items(joi.number().valid(CELL_OUT_OF_PLAY, CELL_EMPTY, CELL_PLAYER_1, CELL_PLAYER_2)).length(6).required(),
+        joi.array().items(joi.number().valid(CELL_OUT_OF_PLAY, CELL_EMPTY, CELL_PLAYER_1, CELL_PLAYER_2)).length(7).required(),
+        joi.array().items(joi.number().valid(CELL_OUT_OF_PLAY, CELL_EMPTY, CELL_PLAYER_1, CELL_PLAYER_2)).length(8).required(),
+        joi.array().items(joi.number().valid(CELL_OUT_OF_PLAY, CELL_EMPTY, CELL_PLAYER_1, CELL_PLAYER_2)).length(9).required(),
+        joi.array().items(joi.number().valid(CELL_OUT_OF_PLAY, CELL_EMPTY, CELL_PLAYER_1, CELL_PLAYER_2)).length(10).required(),
+        joi.array().items(joi.number().valid(CELL_OUT_OF_PLAY, CELL_EMPTY, CELL_PLAYER_1, CELL_PLAYER_2)).length(11).required(),
+        joi.array().items(joi.number().valid(CELL_OUT_OF_PLAY, CELL_EMPTY, CELL_PLAYER_1, CELL_PLAYER_2)).length(10).required(),
+        joi.array().items(joi.number().valid(CELL_OUT_OF_PLAY, CELL_EMPTY, CELL_PLAYER_1, CELL_PLAYER_2)).length(9).required(),
+        joi.array().items(joi.number().valid(CELL_OUT_OF_PLAY, CELL_EMPTY, CELL_PLAYER_1, CELL_PLAYER_2)).length(8).required(),
+        joi.array().items(joi.number().valid(CELL_OUT_OF_PLAY, CELL_EMPTY, CELL_PLAYER_1, CELL_PLAYER_2)).length(7).required(),
+        joi.array().items(joi.number().valid(CELL_OUT_OF_PLAY, CELL_EMPTY, CELL_PLAYER_1, CELL_PLAYER_2)).length(6).required()
     ).required(),
     player1_last_message: joi.string(),
     player2_last_message: joi.string(),
