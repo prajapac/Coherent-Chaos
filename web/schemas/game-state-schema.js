@@ -1,5 +1,5 @@
 const joi = require('joi');
-const idGenerator = require('../utilities/idgenerator');
+const idGenerator = require('../utilities/id-generator');
 
 const schema = joi.object().keys({
     game_id: joi.string().alphanum().length(idGenerator.ID_LENGTH).required(),

@@ -20,6 +20,7 @@ Schemas of documents
 
 Game state schema:
 {
+
     game_id: Alphanumeric String of length 4,
     player1Token: Alphanumeric String of length 8,
     player2Token: Alphanumeric String of length 8,
@@ -45,6 +46,7 @@ Game state schema:
 
     // Note: For board state, actual values stored would be int values: -1, 0, 1, 2
     // Above is just a template for easy visualization
+
 }
 
 Note: All MongoDB documents have an '_id' field generated
@@ -69,7 +71,7 @@ a) POST: Send a chat message, requires game ID, player token of sender of messag
 # Code Styling
 
 ## Naming Convention
-In general, use functionNamesLikeThis, variableNamesLikeThis, ClassNamesLikeThis, EnumNamesLikeThis, methodNamesLikeThis, CONSTANT_VALUES_LIKE_THIS, foo.namespaceNamesLikeThis.bar, and filenameslikethis.js.
+In general, use functionNamesLikeThis, variableNamesLikeThis, ClassNamesLikeThis, EnumNamesLikeThis, methodNamesLikeThis, CONSTANT_VALUES_LIKE_THIS, foo.namespaceNamesLikeThis.bar, and ~~filenameslikethis.js~~ file-names-like-this.js.
 
 # Linting
 To run linter:

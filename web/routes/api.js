@@ -2,9 +2,9 @@ const joi = require('joi');
 const express = require('express');
 const router = express.Router();
 const MongoClient = require('mongodb').MongoClient;
-const idGenerator = require('../utilities/idgenerator');
-const gameStateSchema = require('../schemas/gamestateschema');
-const generateInitBoard = require('../utilities/gameboardgenerator');
+const idGenerator = require('../utilities/id-generator');
+const gameStateSchema = require('../schemas/game-state-schema');
+const generateInitBoard = require('../utilities/game-board-generator');
 
 const MAX_ATTEMPTS = 50;
 
