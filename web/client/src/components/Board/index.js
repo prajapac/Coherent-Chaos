@@ -146,6 +146,12 @@ Board.defaultProps = {
         [CE,C2,C2,C2,C2,C2,CE],
         [C2,C2,C2,C2,C2,C2]
     ],
+    // Callback for when a move is attempted.
+    // Cell: {
+    //  rowIndex,
+    //  columnIndex,
+    //  state
+    // }
     moveCell: (selectedCell, targetCell) => {
         console.log('Move', selectedCell, targetCell); //eslint-disable-line
     }
