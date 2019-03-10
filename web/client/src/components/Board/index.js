@@ -135,7 +135,7 @@ class Board extends React.Component {
     }
 
     cellOnClick(cell) {
-        if (this.state.selectedCell === cell) { // If clicking on selected, deselect current cell
+        if (this.state.selectedCell && this.state.selectedCell.rowIndex === cell.rowIndex && this.state.selectedCell.columnIndex === cell.columnIndex) { // If clicking on selected, deselect current cell
             this.setState({
                 selectedCell: null
             });
