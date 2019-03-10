@@ -8,6 +8,47 @@ import { CELL_PLAYER_1 as C1, CELL_PLAYER_2 as C2, CELL_EMPTY as CE } from 'cons
 
 import './index.scss';
 
+// Return the coordinates of the cell flipped over the pivotCell from sourceCell
+// Returns null if arguments are invalid
+// Cell: {
+//  rowIndex,
+//  columnIndex,
+//  state
+// }
+export const getOppositeCell = (boardState, sourceCell, pivotCell) => {
+    if (!boardState || !sourceCell || !pivotCell) { return null; }
+
+    let targetCell = {};
+    let columnDistance = pivotCell.columnIndex - sourceCell.columnIndex;
+    let rowDistance = pivotCell.rowIndex - sourceCell.rowIndex;
+
+    if (pivotCell.rowIndex === sourceCell.rowIndex) { // Same row
+        targetCell.rowIndex = pivotCell.rowIndex;
+        targetCell.columnIndex = pivotCell.columnIndex + columnDistance;
+
+    } else {
+        targetCell.rowIndex = pivotCell.rowIndex + rowDistance;
+
+        if ((typeof boardState[pivotCell.rowIndex + 1] !== 'undefined' && boardState[pivotCell.rowIndex].length > boardState[pivotCell.rowIndex + 1].length) &&
+            (typeof boardState[pivotCell.rowIndex - 1] !== 'undefined' && boardState[pivotCell.rowIndex].length > boardState[pivotCell.rowIndex - 1].length)) { // Special case, crossing center row of hexagon
+            targetCell.columnIndex = columnDistance !== 0
+                ? pivotCell.columnIndex
+                : pivotCell.columnIndex - Math.abs(rowDistance);
+
+        } else {
+            targetCell.columnIndex = pivotCell.columnIndex + columnDistance;
+        }
+    }
+
+    if (typeof boardState[targetCell.rowIndex] !== 'undefined' && typeof boardState[targetCell.rowIndex][targetCell.columnIndex] !== 'undefined') {
+        targetCell.state = boardState[targetCell.rowIndex][targetCell.columnIndex];
+
+        return targetCell;
+    } else {
+        return null;
+    }
+};
+
 // Return if testCell is beside sourceCell
 // Cell: {
 //  rowIndex,
@@ -15,7 +56,7 @@ import './index.scss';
 //  state
 // }
 export const isCellAdjacent = (boardState, sourceCell, testCell) => {
-    if (!sourceCell || !testCell) { return false; }
+    if (!boardState || !sourceCell || !testCell) { return false; }
 
     const columnIndexOffset = testCell.columnIndex - sourceCell.columnIndex;
     const rowIndexOffset = testCell.rowIndex - sourceCell.rowIndex;
@@ -38,9 +79,50 @@ export const isCellAdjacent = (boardState, sourceCell, testCell) => {
 //  state
 // }
 export const isCellVisitable = (boardState, sourceCell, destCell) => {
-    if (!sourceCell || !destCell) { return false; }
+    if (!boardState || !sourceCell || !destCell) { return false; }
 
     return destCell.state === CE && isCellAdjacent(boardState, sourceCell, destCell);
+};
+
+// Convert simple board state array to object array for easier manipulation
+export const expandBoardStateToCellObjects = (boardState, selectedCell) => {
+    let hoppables = [];
+    let board = boardState.map((row, rowIndex) => {
+        return row.map((cellState, columnIndex) => {
+            let currentCell = {
+                rowIndex: rowIndex,
+                columnIndex: columnIndex,
+                state: cellState
+            };
+
+            if ((cellState === C2 || cellState === C1) && isCellAdjacent(boardState, currentCell, selectedCell)) { // TODO: cellState === oppositePlayer instead
+                hoppables.push(currentCell);
+            }
+
+            return {
+                rowIndex: rowIndex,
+                columnIndex: columnIndex,
+                state: cellState,
+                visitable: isCellVisitable(
+                    boardState,
+                    selectedCell,
+                    currentCell
+                ),
+                selectable: cellState === C1 || cellState === C2,
+                selected: selectedCell && selectedCell.rowIndex === rowIndex && selectedCell.columnIndex === columnIndex,
+            }
+        });
+    });
+
+    hoppables.forEach((cell) => {
+        let hopToCell = getOppositeCell(boardState, selectedCell, cell);
+
+        if (hopToCell) {
+            board[hopToCell.rowIndex][hopToCell.columnIndex].visitable = hopToCell.state === CE;
+        }
+    });
+
+    return board;
 };
 
 class Board extends React.Component {
@@ -52,67 +134,49 @@ class Board extends React.Component {
         }
     }
 
-    cellOnClick(rowIndex, columnIndex) {
-        const clickedCellState = this.props.boardState[rowIndex][columnIndex];
-
-        if (this.state.selectedCell && this.state.selectedCell.rowIndex === rowIndex && this.state.selectedCell.columnIndex === columnIndex) { // If clicking on selected, deselect current cell
+    cellOnClick(cell) {
+        if (this.state.selectedCell === cell) { // If clicking on selected, deselect current cell
             this.setState({
                 selectedCell: null
             });
 
-        } else if (this.state.selectedCell && clickedCellState === CE) { // If a cell is already selected, we're planning to move it
+        } else if (this.state.selectedCell && cell.state === CE) { // If a cell is already selected, we're planning to move it
             this.props.moveCell(
                 this.state.selectedCell,
-                { // Target cell
-                    rowIndex: rowIndex,
-                    columnIndex: columnIndex,
-                    state: clickedCellState
-                }
+                cell
             );
 
-        } else if (clickedCellState === C1 || clickedCellState === C2) { // Otherwise, we need to select a cell
+        } else if (cell.state === C1 || cell.state === C2) { // Otherwise, we need to select a cell
             this.setState({
-                selectedCell: {
-                    rowIndex: rowIndex,
-                    columnIndex: columnIndex,
-                    state: clickedCellState
-                }
+                selectedCell: cell
             });
         }
     }
 
     render() {
-        const { className, boardState } = this.props;
-        const classes = classNames(className, 'board');
+        let board = expandBoardStateToCellObjects(this.props.boardState, this.state.selectedCell);
+        const classes = classNames(this.props.className, 'board');
 
         return (
             <div className={classes}>
                 {
-                    boardState.map((row, rowIndex) => (
+                    board.map((row, rowIndex) => (
                         <div key={rowIndex} className='row'>
                             {
-                                row.map((cellState, columnIndex) => {
+                                row.map((cell, columnIndex) => {
                                     const cellClasses = classNames({
                                         'cell-bg': true,
-                                        'visitable': isCellVisitable(
-                                            boardState,
-                                            this.state.selectedCell,
-                                            { // Current cell
-                                                rowIndex: rowIndex,
-                                                columnIndex: columnIndex,
-                                                state: cellState
-                                            }
-                                        ),
-                                        'selectable': cellState === C1 || cellState === C2,
-                                        'selected': this.state.selectedCell && this.state.selectedCell.rowIndex === rowIndex && this.state.selectedCell.columnIndex === columnIndex
+                                        'visitable': cell.visitable,
+                                        'selectable': cell.selectable,
+                                        'selected': cell.selected
                                     });
 
                                     return (
                                         <div key={columnIndex} className='cell-container'>
                                             <Cell
-                                                state={cellState}
+                                                state={cell.state}
                                                 className={cellClasses}
-                                                onClick={() => this.cellOnClick(rowIndex, columnIndex)}
+                                                onClick={() => this.cellOnClick(cell)}
                                             />
                                         </div>
                                     );
@@ -136,6 +200,18 @@ Board.defaultProps = {
     boardState: [
         [C1,C1,C1,C1,C1,C1],
         [CE,C1,C1,C1,C1,C1,CE],
+        [CE,CE,C1,C1,CE,CE,CE,CE],
+        [C1,C1,CE,C1,CE,CE,C1,C1,CE],
+        [CE,CE,C1,CE,CE,CE,CE,C1,CE,CE],
+        [C1,CE,CE,C1,CE,C1,CE,CE,CE,C1,C1],
+        [C1,CE,CE,CE,CE,C1,C1,CE,CE,CE],
+        [CE,C1,CE,C1,CE,CE,C1,C1,CE],
+        [CE,CE,C1,C1,C1,CE,CE,CE],
+        [CE,C2,C2,C2,C2,C2,CE],
+        [C2,C2,C2,C2,C2,C2]
+        /*
+        [C1,C1,C1,C1,C1,C1],
+        [CE,C1,C1,C1,C1,C1,CE],
         [CE,CE,CE,CE,CE,CE,CE,CE],
         [CE,CE,CE,CE,CE,CE,CE,CE,CE],
         [CE,CE,CE,CE,CE,CE,CE,CE,CE,CE],
@@ -145,6 +221,7 @@ Board.defaultProps = {
         [CE,CE,CE,CE,CE,CE,CE,CE],
         [CE,C2,C2,C2,C2,C2,CE],
         [C2,C2,C2,C2,C2,C2]
+         */
     ],
     // Callback for when a move is attempted.
     // Cell: {
