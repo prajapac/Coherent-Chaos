@@ -8,11 +8,13 @@
 The local server will serve the app, which is automatically rebuilt as you make changes.
 
 ## Styleguide
+
 - Run `npm run styleguide` to start the styleguide, and visit `http://localhost:6060/` in your browser.  
 
 Styleguidist should hot-reload your components as you work on them, but if this does not happen you should restart the styleguidist process.
 
-# Building the App
+## Building the App
+
 - Run `npm run build` to build the app into the `build` directory, in **development** mode.  
 - Run `npm run build-prod` to build the app into the `build` directory, in **production** mode.
 

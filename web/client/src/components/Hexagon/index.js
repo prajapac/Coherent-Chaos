@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import { COLOR_OPTION_DARK, COLOR_OPTION_LIGHT, COLOR_OPTION_PRIMARY, COLOR_OPTION_SECONDARY, COLOR_OPTION_TERTIARY } from 'constants';
+
 import './index.scss';
 
 const Hexagon = ({className, color, ...props}) => {
@@ -15,18 +17,18 @@ const Hexagon = ({className, color, ...props}) => {
             preserveAspectRatio='xMidYMid meet'
             {...props}
         >
-            <path d="M0 43.30127018922193L25 0L75 0L100 43.30127018922193L75 86.60254037844386L25 86.60254037844386Z" />
+            <path d='M0 43.30127018922193L25 0L75 0L100 43.30127018922193L75 86.60254037844386L25 86.60254037844386Z' />
         </svg>
     );
 };
 
 Hexagon.propTypes = {
     className: PropTypes.string,
-    color: PropTypes.oneOf(['primary', 'secondary', 'tertiary', 'light', 'dark'])
+    color: PropTypes.oneOf([COLOR_OPTION_DARK, COLOR_OPTION_LIGHT, COLOR_OPTION_PRIMARY, COLOR_OPTION_SECONDARY, COLOR_OPTION_TERTIARY])
 };
 
 Hexagon.defaultProps = {
-    color: 'light'
+    color: COLOR_OPTION_LIGHT
 };
 
 export default Hexagon;
