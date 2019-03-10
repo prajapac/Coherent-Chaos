@@ -9,7 +9,7 @@ import { CELL_PLAYER_1 as C1, CELL_PLAYER_2 as C2, CELL_EMPTY as CE } from 'cons
 import './index.scss';
 
 // Return the coordinates of the cell flipped over the pivotCell from sourceCell
-// Returns null if arguments are invalid
+// Returns null if arguments are invalid or cell is outside board
 // Cell: {
 //  rowIndex,
 //  columnIndex,
@@ -200,18 +200,6 @@ Board.defaultProps = {
     boardState: [
         [C1,C1,C1,C1,C1,C1],
         [CE,C1,C1,C1,C1,C1,CE],
-        [CE,CE,C1,C1,CE,CE,CE,CE],
-        [C1,C1,CE,C1,CE,CE,C1,C1,CE],
-        [CE,CE,C1,CE,CE,CE,CE,C1,CE,CE],
-        [C1,CE,CE,C1,CE,C1,CE,CE,CE,C1,C1],
-        [C1,CE,CE,CE,CE,C1,C1,CE,CE,CE],
-        [CE,C1,CE,C1,CE,CE,C1,C1,CE],
-        [CE,CE,C1,C1,C1,CE,CE,CE],
-        [CE,C2,C2,C2,C2,C2,CE],
-        [C2,C2,C2,C2,C2,C2]
-        /*
-        [C1,C1,C1,C1,C1,C1],
-        [CE,C1,C1,C1,C1,C1,CE],
         [CE,CE,CE,CE,CE,CE,CE,CE],
         [CE,CE,CE,CE,CE,CE,CE,CE,CE],
         [CE,CE,CE,CE,CE,CE,CE,CE,CE,CE],
@@ -221,7 +209,6 @@ Board.defaultProps = {
         [CE,CE,CE,CE,CE,CE,CE,CE],
         [CE,C2,C2,C2,C2,C2,CE],
         [C2,C2,C2,C2,C2,C2]
-         */
     ],
     // Callback for when a move is attempted.
     // Cell: {
