@@ -15,5 +15,4 @@ export const COLOR_OPTION_TERTIARY = 'tertiary';
 export const COLOR_OPTION_LIGHT = 'light';
 export const COLOR_OPTION_DARK = 'dark';
 
-export const GAME_ID_MIN_LEN = 1;
-export const GAME_ID_MAX_LEN = 2;
+export const GAME_ID_LEN = 4;
