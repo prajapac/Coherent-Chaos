@@ -1,0 +1,22 @@
+@import '../../theme.scss';
+
+.playerPicker {
+    background-color: $bg-light;
+	height: 440px;
+	width: 300px;
+    padding: 25px;
+	margin-top: 5%;
+
+    .btn {
+        font-size: $font-size6;
+        width: $space7;
+        height: $space6;
+        margin: $space4 0 0 22px;
+    }
+
+	p {
+	    margin-top: 45px;
+	    font-size: $font-size5;
+		text-align: center;
+	}
+}
