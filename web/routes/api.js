@@ -5,8 +5,11 @@ const MongoClient = require('mongodb').MongoClient;
 const idGenerator = require('../utilities/id-generator');
 const gameStateSchema = require('../schemas/game-state-schema');
 const generateInitBoard = require('../utilities/game-board-generator');
+const log = require('../utilities/logger');
 
 const MAX_ATTEMPTS = 50;
+
+const FILE_NAME = 'routes/api.js';
 
 // Database connection URL (27017 is default MongoDB port)
 const url = 'mongodb://localhost:27017';
@@ -22,21 +25,14 @@ router.get('/', (req, res) => {
     res.json({success: true});
 });
 
-// TODO: Join a game
-router.get('/game/:gameid', (req, res) => {
-    res.json({success: true});
-});
-
-// Create a game
+// Create game
 router.post('/game', (req, res) => {
     // Connect to MongoDB Server
     client.connect(async (err, client) => {
         if (err) {
-            console.log('Unable to connect to database', err);
+            log(FILE_NAME, ('Unable to connect to database', err));
             res.send({ 'failure': true, 'message': 'Unable to connect to database', 'error': err });
         } else {
-            console.log('Connection to Database Established');
-
             const db = client.db(dbName);
 
             const collection = db.collection('games');
@@ -50,7 +46,7 @@ router.post('/game', (req, res) => {
 
             do {
                 if (attempts > MAX_ATTEMPTS) {
-                    console.log('Reached max attempts at generating random gameID');
+                    log(FILE_NAME, 'Reached max attempts at generating random gameID');
                     res.send({ 'failure': true, 'message': 'Reached max attempts at generating random gameID'});
                     return;
                 }
@@ -62,11 +58,12 @@ router.post('/game', (req, res) => {
                 let err, result = await collection.findOne({game_id: gameID});
                 
                 if (err) {
+                    log(FILE_NAME, ('Error querying by gameID generated:', err));
                     res.send({ 'failure': true, 'message': 'Error querying by gameID generated', 'error': err });
                     return;
                 }
                 else if (result) {
-                    console.log('gameID generated already exists', result);
+                    log(FILE_NAME, ('gameID generated already exists', result));
                 }
                 else {
                     alreadyExists = false;
@@ -75,35 +72,29 @@ router.post('/game', (req, res) => {
                 attempts++;
 
             } while (alreadyExists);
-
-            // Generate player tokens
-            const player1Token = idGenerator.generatePlayerToken();
-            const player2Token = idGenerator.generatePlayerToken();
-
+            
             // Generate inital game state/board
             let initGameBoard = generateInitBoard();
 
             // Assemble game state document for storage in database
             const gameState = { 
                 game_id: gameID, 
-                player1_token: player1Token, 
-                player2_token: player2Token, 
                 board_state: initGameBoard 
             };
 
             // Validate gamestate using Joi
             joi.validate(gameState, gameStateSchema, (err, value)=> {
                 if (err) {
-                    console.log('Game state validation failure:', err);
+                    log(FILE_NAME, ('Game state validation failure:', err));
                     res.send({ 'failure': true, 'message': 'Game state validation failure', 'error': err });
                 } else {
                     // insert game state to the database
                     collection.insertOne(gameState, (err, result) => {
                         if (err) {
-                            console.log('Database insert failure:', err);
+                            log(FILE_NAME, ('Database insert failure:', err));
                             res.send({ 'failure': true, 'message': 'Database insert failure', 'error': err });
                         } else {
-                            console.log(`Successfully inserted item with _id: ${result.insertedId}`);
+                            log(FILE_NAME, (`Successfully inserted item with _id: ${result.insertedId}`));
                             res.send(value);
                         }
                     });
@@ -113,23 +104,28 @@ router.post('/game', (req, res) => {
     });
 });
 
-// TODO: Connect a player
-router.post('/game/', (req, res) => {
+// TODO: Get game state
+router.get('/game/:id/', (req, res) => {
     res.json({success: true});
 });
 
-// TODO: Make a move on the game board
-router.put('/game', (req, res) => {
+// TODO: Connect player
+router.post('/game/:id/', (req, res) => {
     res.json({success: true});
 });
 
 // TODO: Ping backend to keep connection alive
-router.post('/ping/', (req, res) => {
+router.patch('game/:id/', (req, res) => {
     res.json({success: true});
 });
 
-// TODO: Send a chat message
-router.post('/chat', (req, res) => {
+// TODO: Make a move on game board
+router.post('/game/:id/board/', (req, res) => {
+    res.json({success: true});
+});
+
+// TODO: Send chat message
+router.post('/game/:id/chat/', (req, res) => {
     res.json({success: true});
 });
 

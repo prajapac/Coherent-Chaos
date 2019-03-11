@@ -1,4 +1,4 @@
-import {CELL_PLAYER_1, CELL_PLAYER_2, CELL_OUT_OF_PLAY, CELL_EMPTY} from 'constants'; // eslint-disable-line no-unused-vars
+const { CELL_EMPTY, CELL_PLAYER_1, CELL_PLAYER_2, CELL_OUT_OF_PLAY } = require('../constants'); // eslint-disable-line no-unused-vars
 
 const generateInitBoard = function() {
     return [
