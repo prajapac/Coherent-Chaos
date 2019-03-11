@@ -13,9 +13,9 @@ const PlayerPicker = ({className, onClick, onChoose}) => {
 
     return (
         <div className={classes}>
-            <Button className='btn' bold text='Player 1' type='primary' onClick={onChoose(CELL_PLAYER_1)}/>
+            <Button className='btn' bold text='Player 1' type='primary' onClick={()=>{onChoose(CELL_PLAYER_1)}}/>
             <p>Choose Your Side</p>
-            <Button className='btn' bold text='Player 2' type='secondary' onClick={onChoose(CELL_PLAYER_2)}/>
+            <Button className='btn' bold text='Player 2' type='secondary' onClick={()=>{onChoose(CELL_PLAYER_2)}}/>
         </div>
     )
 };
