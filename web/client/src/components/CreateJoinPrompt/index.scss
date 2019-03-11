@@ -1,0 +1,36 @@
+@import '../../theme.scss';
+
+.createJoinDivWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: 5% 20% 0 25%;
+
+    div {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.gameId-txt {
+    height: 25px;
+    width: 100%;
+    border: 1px solid #fff;
+    border-radius: 3px;
+}
+
+button.join-btn.fixed, button.create-btn.fixed {
+    width: 100%;
+}
+
+.createJoinDiv {
+    max-width: 200px;
+    min-width: 200px;
+    border-radius: 3px;
+    border-color: azure;
+    background: lightgray;
+    padding: 25px;
+    margin-left: 60px;
+}

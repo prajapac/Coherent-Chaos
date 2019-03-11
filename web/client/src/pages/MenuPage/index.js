@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Header from 'components/Header';
-import Button from 'components/Button';
 import Page from 'components/Page';
+import CreateJoinPrompt from 'components/CreateJoinPrompt';
 
 import './index.scss';
 
@@ -20,8 +20,10 @@ const MenuPage = ({onCreateGame, onJoinGame, loading}) => {
                         LOADING...
                     </div>
                     : <div className='tray'>
-                        <Button className='tray-btn' bold text='Create Game' type='primary' onClick={onCreateGame}/>
-                        <Button className='tray-btn' bold text='Join Game' type='secondary' onClick={onJoinGame}/>
+                        <CreateJoinPrompt
+                            className='menu-create-join-prompt'
+                            join={onJoinGame}
+                            create={onCreateGame}/>
                     </div>
             }
 
