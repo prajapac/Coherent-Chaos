@@ -78,7 +78,7 @@ class CreateJoinPrompt extends React.Component {
 };
 
 CreateJoinPrompt.propTypes = {
-    gameId: PropTypes.number,
+    gameId: PropTypes.string,
     create: PropTypes.func,
     join: PropTypes.func,
 };
