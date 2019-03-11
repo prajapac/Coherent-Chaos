@@ -16,7 +16,12 @@ class CreateJoinPrompt extends React.Component {
     }
 
     handleGameIdChange = (event) => {
-        this.setState({gameId: event.target.value});
+        let reg = /[^A-Za-z0-9]+/;
+        let gameIdVal = event.target.value;
+
+        if(!reg.test(gameIdVal)) {
+            this.setState({gameId: gameIdVal});
+        }
     }
 
     handleSubmit = (event) => {
@@ -38,11 +43,11 @@ class CreateJoinPrompt extends React.Component {
                 </div>
                 <div className='createJoinDiv'>
                     <h2>Enter your game code</h2>
-                    <p>To join a game in progress, enter your 8 character Game ID below and click the join game button
+                    <p>To join a game in progress, enter your 2 character Game ID below and click the join game button
                         below.</p>
                     <form className='createJoinForm' onSubmit={this.handleSubmit}>
-                        <input className='gameId-txt' placeholder='12345678' value={this.state.gameId}
-                               onChange={this.handleGameIdChange} maxLength='8' minLength='8'/>
+                        <input type='text' className='gameId-txt' placeholder='A4' value={this.state.gameId}
+                               onChange={this.handleGameIdChange} maxLength='2' minLength='2'/>
                         <br/>
                         <br/>
                         <Button type="submit primary" className='join-btn' bold text='Join Game'/>
