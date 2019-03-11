@@ -21,12 +21,12 @@
 #gameId-txt {
     height: 25px;
     width: 100%;
-    border: 1px solid #fff;
+    border: 1px solid $txt-box-border;
     border-radius: 3px;
 }
 
 #gameId-txt.error {
-    border: 1px solid red;
+    border: 1px solid $txt-box-border-error;
 }
 
 button.join-btn.fixed, button.create-btn.fixed {
@@ -38,8 +38,8 @@ button.join-btn.fixed, button.create-btn.fixed {
     max-width: 250px;
     min-width: 250px;
     border-radius: 3px;
-    border-color: azure;
-    background: lightgray;
+    border-color: $bg-contrast-mid;
+    background: $bg-contrast-light;
     padding: 25px;
     margin-left: 60px;
 }
