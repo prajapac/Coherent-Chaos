@@ -1,5 +1,5 @@
-Example of a board component.
+Example of a create/join prompt component.
 
 ```jsx 
-<Board className='gameBoard'/>
+<CreateJoinPrompt join={onJoinGame} create={onCreateGame}/>
 ```

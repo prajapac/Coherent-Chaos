@@ -21,7 +21,6 @@ const MenuPage = ({onCreateGame, onJoinGame, loading}) => {
                     </div>
                     : <div className='tray'>
                         <CreateJoinPrompt
-                            className='menu-create-join-prompt'
                             join={onJoinGame}
                             create={onCreateGame}/>
                     </div>

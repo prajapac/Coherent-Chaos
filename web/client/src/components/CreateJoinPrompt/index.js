@@ -24,19 +24,36 @@ class CreateJoinPrompt extends React.Component {
         }
     }
 
-    handleSubmit = (event) => {
+    handleJoin = (event) => {
         event.preventDefault();
         const gameId = this.state.gameId
 
-        //TO DO: Add logic to send data to server for validation when Chirag's database is up
-        this.state.join()
+        if (gameId.length > 0 && gameId.length <= 2) {
+            document.getElementById('gameId-txt').removeAttribute('error');
+
+            //TO DO: Add logic to send gameId to server for validation when Chirag's database is up,
+            // and then transition page to player picker -- see tickets: 45 + 47
+
+            this.state.join()
+        } else {
+            document.getElementById('gameId-txt').setAttribute('class', 'error');
+        }
     }
+
+    handleCreate = (event) => {
+        event.preventDefault();
+
+        //TO DO: Add logic to send creation to server to generate a new game board and id -- see ticket: 46
+
+        this.state.create()
+    }
+
 
     render() {
         return (
             <div className='createJoinDivWrapper'>
                 <div className='gameStartInfo'>
-                    <h2>Coherent chaos</h2>
+                    <h2>Coherent Chaos</h2>
                     <p>Create or join a game with the prompt to the right to enter into a battle royal styled
                         checkers where only one will make it out alive. Will you defeat your opponent or will the
                         circle decay be the end of you?</p>
@@ -45,15 +62,15 @@ class CreateJoinPrompt extends React.Component {
                     <h2>Enter your game code</h2>
                     <p>To join a game in progress, enter your 2 character Game ID below and click the join game button
                         below.</p>
-                    <form className='createJoinForm' onSubmit={this.handleSubmit}>
-                        <input type='text' className='gameId-txt' placeholder='A4' value={this.state.gameId}
-                               onChange={this.handleGameIdChange} maxLength='2' minLength='2'/>
+                    <form className='createJoinForm' onSubmit={this.handleJoin}>
+                        <input type='text' id='gameId-txt' onChange={this.handleGameIdChange}
+                               value={this.state.gameId} placeholder='A4'  maxLength='2' minLength='1'/>
                         <br/>
                         <br/>
                         <Button type="submit primary" className='join-btn' bold text='Join Game'/>
                     </form>
                     <br/>
-                    <Button className='create-btn' bold text='Create Game' type='secondary' onClick={this.state.create}/>
+                    <Button className='create-btn' bold text='Create Game' type='secondary' onClick={this.handleCreate}/>
                 </div>
             </div>
         )
