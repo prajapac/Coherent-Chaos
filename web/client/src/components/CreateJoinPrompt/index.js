@@ -4,6 +4,10 @@ import './index.scss';
 import Button from "../Button";
 import PropTypes from "prop-types";
 
+import {
+    GAME_ID_MIN_LEN, GAME_ID_MAX_LEN
+} from 'constants';
+
 class CreateJoinPrompt extends React.Component {
     constructor(props) {
         super(props);
@@ -28,7 +32,7 @@ class CreateJoinPrompt extends React.Component {
         event.preventDefault();
         const gameId = this.state.gameId
 
-        if (gameId.length > 0 && gameId.length <= 2) {
+        if (gameId.length >= GAME_ID_MIN_LEN && gameId.length <= GAME_ID_MAX_LEN) {
             document.getElementById('gameId-txt').removeAttribute('error');
 
             //TO DO: Add logic to send gameId to server for validation when Chirag's database is up,
@@ -63,8 +67,8 @@ class CreateJoinPrompt extends React.Component {
                     <p>To join a game in progress, enter your Game ID below and click the join game button
                         below.</p>
                     <form className='createJoinForm' onSubmit={this.handleJoin}>
-                        <input type='text' id='gameId-txt' onChange={this.handleGameIdChange}
-                               value={this.state.gameId} placeholder='A4'  maxLength='2' minLength='1'/>
+                        <input type='text' id='gameId-txt' onChange={this.handleGameIdChange} value={this.state.gameId}
+                               placeholder='A4'  maxLength={GAME_ID_MAX_LEN} minLength={GAME_ID_MIN_LEN}/>
                         <br/>
                         <br/>
                         <Button type="submit primary" className='join-btn' bold text='Join Game'/>
