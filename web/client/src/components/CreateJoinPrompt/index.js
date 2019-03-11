@@ -60,7 +60,7 @@ class CreateJoinPrompt extends React.Component {
                 </div>
                 <div className='createJoinDiv'>
                     <h2>Enter your game code</h2>
-                    <p>To join a game in progress, enter your 2 character Game ID below and click the join game button
+                    <p>To join a game in progress, enter your Game ID below and click the join game button
                         below.</p>
                     <form className='createJoinForm' onSubmit={this.handleJoin}>
                         <input type='text' id='gameId-txt' onChange={this.handleGameIdChange}
