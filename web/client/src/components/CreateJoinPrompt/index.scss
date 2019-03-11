@@ -11,6 +11,10 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
+
+        p {
+            font-size: $font-size5;
+        }
     }
 }
 
@@ -27,11 +31,12 @@
 
 button.join-btn.fixed, button.create-btn.fixed {
     width: 100%;
+    font-size: $font-size6;
 }
 
 .createJoinDiv {
-    max-width: 200px;
-    min-width: 200px;
+    max-width: 250px;
+    min-width: 250px;
     border-radius: 3px;
     border-color: azure;
     background: lightgray;
