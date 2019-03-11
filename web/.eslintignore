@@ -1,0 +1,6 @@
+# ignore files in the client folder,
+# node_modules folder ignored by default
+client/*
+readme.md
+package.json
+package-lock.json
