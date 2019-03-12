@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import './index.scss';
@@ -13,7 +14,11 @@ const Spinner = ({className, ...props}) => {
             <div/>
             <div/>
         </div>
-    )
+    );
+};
+
+Spinner.propTypes = {
+    className: PropTypes.string
 };
 
 export default Spinner;

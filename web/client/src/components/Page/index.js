@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import './index.scss';
@@ -20,4 +20,4 @@ Page.propTypes = {
     children: PropTypes.node
 };
 
-export default Page
+export default Page;

@@ -20,5 +20,5 @@ export function* createGame() { // TODO: Real network calls
 // Start all Sagas
 export default function* rootSaga() {
     yield takeLatest(GAME_JOIN_BEGIN, joinGame);
-    yield takeLatest(GAME_CREATE_BEGIN, createGame)
+    yield takeLatest(GAME_CREATE_BEGIN, createGame);
 }

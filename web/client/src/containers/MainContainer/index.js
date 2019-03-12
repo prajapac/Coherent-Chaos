@@ -70,6 +70,7 @@ MainContainer.propTypes = {
     onExitGame: PropTypes.func,
     onCreateGame: PropTypes.func,
     onJoinGame: PropTypes.func,
+    onPlayerChoose: PropTypes.func,
 };
 
 MainContainer.defaultProps = {
@@ -80,6 +81,7 @@ MainContainer.defaultProps = {
     onExitGame: () => {},
     onCreateGame: () => {},
     onJoinGame: () => {},
+    onPlayerChoose: () => {}
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainContainer);

@@ -16,9 +16,12 @@ class GameCreateJoinPrompt extends React.Component {
             gameId: '',
             error: props.error
         };
+
+        this.handleGameIdChange = this.handleGameIdChange.bind(this);
+        this.handleJoin = this.handleJoin.bind(this);
     }
 
-    handleGameIdChange = (event) => {
+    handleGameIdChange(event) {
         let reg = /[^A-Za-z0-9]+/;
         let gameId = event.target.value;
 
@@ -31,9 +34,9 @@ class GameCreateJoinPrompt extends React.Component {
                 error: false
             });
         }
-    };
+    }
 
-    handleJoin = () => {
+    handleJoin() {
         if (this.state.gameId.length === GAME_ID_LENGTH) {
             this.setState({
                 error: false
@@ -45,7 +48,7 @@ class GameCreateJoinPrompt extends React.Component {
                 error: true
             });
         }
-    };
+    }
 
     render() {
         return (
@@ -84,7 +87,7 @@ class GameCreateJoinPrompt extends React.Component {
                     />
                 </div>
             </div>
-        )
+        );
     }
 }
 
