@@ -11,4 +11,9 @@ http://3.17.203.100:5000/
 
 # Setup
 
-For web setup, please see `/web`.
+For web setup, please see `/web`.  
+For mobile setup, please see `/mobile`.
+
+# Development Documentation
+
+- [Feature Task Breakdown](https://docs.google.com/spreadsheets/d/1Of-uKO3uS7N0g9iKk9wQNg0DKotKLKIcH9sKwsX65v8/edit?usp=sharing)

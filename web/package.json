@@ -15,9 +15,11 @@
   "scripts": {
     "start": "nodemon index.js",
     "lint": "npx eslint ./*",
-    "lint-fix": "npx eslint --fix ./*"
+    "lint-fix": "npx eslint --fix ./*",
+    "test": "mocha"
   },
   "devDependencies": {
-    "eslint": "^5.14.1"
+    "eslint": "^5.14.1",
+    "mocha": "^6.0.2"
   }
 }
