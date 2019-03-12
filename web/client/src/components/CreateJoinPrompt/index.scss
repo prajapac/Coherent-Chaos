@@ -1,0 +1,45 @@
+@import '../../theme.scss';
+
+.create-join-div-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: 5% 20% 0 25%;
+
+    div {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+
+        p {
+            font-size: $font-size5;
+        }
+    }
+}
+
+#gameId-txt {
+    height: 25px;
+    width: 100%;
+    border: 1px solid $txt-box-border;
+    border-radius: 3px;
+}
+
+#gameId-txt.error {
+    border: 1px solid $txt-box-border-error;
+}
+
+button.join-btn.fixed, button.create-btn.fixed {
+    width: 100%;
+    font-size: $font-size6;
+}
+
+.create-join-div {
+    max-width: 250px;
+    min-width: 250px;
+    border-radius: 3px;
+    border-color: $bg-contrast-mid;
+    background: $bg-contrast-light;
+    padding: 25px;
+    margin-left: 60px;
+}
