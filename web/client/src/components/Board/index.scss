@@ -21,6 +21,22 @@
                 position: absolute;
                 top: 0;
                 left: 0;
+
+                &.selectable {
+                    cursor: pointer;
+                }
+
+                &.selected {
+                    fill: $tertiary-mid;
+                    stroke: $tertiary-dark;
+                    cursor: pointer;
+                }
+
+                &.visitable {
+                    fill: $bg-mid;
+                    stroke: $bg-dark;
+                    cursor: pointer;
+                }
             }
         }
     }
