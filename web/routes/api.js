@@ -108,9 +108,44 @@ router.post('/game', (req, res) => {
     });
 });
 
-// TODO: Get game state
+// Get game state
 router.get('/game/:id/', (req, res) => {
-    res.json({success: true});
+    // Connect to MongoDB Server
+    client.connect(async (err, client) => {
+        if (err) {
+            log(FILE_NAME, ('Unable to connect to database', err));
+            res.send({ 'failure': true, 'message': 'Unable to connect to database', 'error': err });
+        } else {
+            const db = client.db(dbName);
+
+            const collection = db.collection('games');
+            
+            let gameID = req.params.id;
+
+            // Get game state for game with gameID
+            let err, gameState = await collection.findOne({game_id: gameID});
+                
+            if (err) {
+                log(FILE_NAME, ('Error querying by gameID generated:', err));
+                res.send({ 'failure': true, 'message': 'Error querying by gameID generated', 'error': err });
+                return;
+            }
+            else if (gameState) {
+                // Remove unnecessary fields from game state to send to player
+                delete gameState.player1_token;
+                delete gameState.player2_token;
+                delete gameState.player1_last_ping;
+                delete gameState.player2_last_ping;
+
+                res.send(gameState);
+            }
+            else {
+                log(FILE_NAME, ('gameID does not exist', gameID));
+                res.send({ 'failure': true, 'message': 'gameID does not exist', 'gameID': gameID });
+                return;
+            }
+        }
+    });
 });
 
 // Connect player
@@ -261,7 +296,7 @@ router.patch('/game/:id/', (req, res) => {
                         } else {
                             log(FILE_NAME, (`Successfully updated item with _id: ${value._id}`));
                             
-                            // Remove unnecessary fields from game state to send player
+                            // Remove unnecessary fields from game state to send to player
                             delete value.player1_token;
                             delete value.player2_token;
                             delete value.player1_last_ping;
