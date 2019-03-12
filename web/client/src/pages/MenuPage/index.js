@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 import Header from 'components/Header';
 import Page from 'components/Page';
-import CreateJoinPrompt from 'components/CreateJoinPrompt';
+import Spinner from 'components/Spinner';
+import GameCreateJoinPrompt from 'components/GameCreateJoinPrompt';
+import Logo from 'components/Logo';
 
 import './index.scss';
 
@@ -12,17 +14,17 @@ const MenuPage = ({onCreateGame, onJoinGame, loading}) => {
         <Page className='menu'>
             <Header
                 className='menu-header'
-                mid={<div>COHERENT CHAOS</div>}
+                mid={<Logo/>}
             />
             {
                 loading
                     ? <div className='tray'>
-                        LOADING...
+                        <Spinner/>
                     </div>
                     : <div className='tray'>
-                        <CreateJoinPrompt
-                            join={onJoinGame}
-                            create={onCreateGame}/>
+                        <GameCreateJoinPrompt
+                            onJoinGame={onJoinGame}
+                            onCreateGame={onCreateGame}/>
                     </div>
             }
 

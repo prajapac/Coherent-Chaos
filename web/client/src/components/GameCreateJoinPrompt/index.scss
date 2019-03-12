@@ -1,0 +1,59 @@
+@import '../../theme.scss';
+
+.create-join-prompt {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: 5% 20% 0 25%;
+
+    div {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+
+        p {
+            font-size: $font-size5;
+        }
+    }
+
+    .game-id-input {
+        height: $space4;
+        padding: 1px $space1 0 $space1;
+        border: 1px solid transparent;
+        border-radius: 3px;
+        background: $bg-contrast-dark;
+        color: $font-dark;
+
+        &.error {
+            border: 1px solid $error;
+        }
+
+        &::placeholder {
+            color: $font-light;
+        }
+    }
+
+    .join-btn, .create-btn {
+        width: 100%;
+        font-size: $font-size6;
+    }
+
+    .create-join-box {
+        max-width: 250px;
+        min-width: 250px;
+        border-radius: 3px;
+        background: $bg-contrast-mid;
+        padding: 25px;
+        margin-left: 60px;
+        display: flex;
+        flex-direction: column;
+        align-content: space-between;
+
+        .item {
+            margin: $space2 0;
+        }
+    }
+}
+
+

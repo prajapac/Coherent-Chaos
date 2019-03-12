@@ -5,6 +5,7 @@ import Header from 'components/Header';
 import Page from 'components/Page';
 import Button from 'components/Button';
 import PlayerPicker from 'components/PlayerPicker';
+import Logo from 'components/Logo';
 
 import './index.scss';
 
@@ -14,7 +15,7 @@ const MenuPage = ({onPlayerChoose, onExitGame, gameId}) => {
             <Header
                 className='game-header'
                 left={<Button className='header-btn left' text='< Leave' onClick={onExitGame}/>}
-                mid={<div>COHERENT CHAOS</div>}
+                mid={<Logo/>}
                 right={<div className='header-gid'>#{gameId}</div>}
             />
             <div className='tray'>

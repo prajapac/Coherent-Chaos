@@ -1,14 +1,14 @@
 @import '../../theme.scss';
 
 .menu {
-    .menu-header {
-        font-size: $font-size4;
-    }
-
     .tray {
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    .header-btn {
+        color: $tertiary-mid;
     }
 }

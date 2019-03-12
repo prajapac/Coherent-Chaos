@@ -5,6 +5,7 @@ import Header from 'components/Header';
 import Button from 'components/Button';
 import Page from 'components/Page';
 import Board from 'components/Board';
+import Logo from 'components/Logo';
 
 import './index.scss';
 
@@ -14,7 +15,7 @@ const GamePage = ({gameId, onExitGame}) => {
             <Header
                 className='game-header'
                 left={<Button className='header-btn left' text='< Leave' onClick={onExitGame}/>}
-                mid={<div>COHERENT CHAOS</div>}
+                mid={<Logo/>}
                 right={<div className='header-gid'>#{gameId}</div>}
             />
             <div className='body'>
