@@ -5,6 +5,7 @@ const joi = require('joi');
 const idGenerator = require('../utilities/id-generator');
 
 const schema = joi.object().keys({
+    _id: joi.any(),
     game_id: joi.string().alphanum().length(idGenerator.ID_LENGTH).required(),
     player1_token: joi.string().alphanum().length(idGenerator.PLAYER_TOKEN_LENGTH),
     player2_token: joi.string().alphanum().length(idGenerator.PLAYER_TOKEN_LENGTH),

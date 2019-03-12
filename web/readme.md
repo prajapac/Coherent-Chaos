@@ -22,9 +22,9 @@ Game state schema:
 {
 
     game_id: Alphanumeric String of length 4,
-    player1Token: Alphanumeric String of length 8,
-    player2Token: Alphanumeric String of length 8,
-    boardState: An array of arrays [
+    player1_token: Alphanumeric String of length 8,
+    player2_token: Alphanumeric String of length 8,
+    board_state: An array of arrays [
         [C1,C1,C1,C1,C1,C1],
         [CE,C1,C1,C1,C1,C1,CE],
         [CE,CE,CE,CE,CE,CE,CE,CE],
@@ -40,7 +40,7 @@ Game state schema:
     player1_last_message: String,
     player2_last_message: String,,
     player1_last_ping: timestamp (milliseconds since epoch),
-    player1_last_ping: timestamp (milliseconds since epoch),
+    player2_last_ping: timestamp (milliseconds since epoch),
     whos_turn: Alphanumeric String of length 8 (Player token),
     num_turns: Integer >= 0,
 
@@ -63,14 +63,39 @@ a) POST: Create a game, returns game state (which contains game ID)
 
 2)/api/game/:id/
 a) GET: Returns the game state for game with ID provided in the URI
-a) POST: Connect a player (Join a game), requires player1/player2 choice, returns player token
-b) PATCH w/ gameID: Ping backend to keep connection alive, requires player token, returns game state
+b) POST: Connect a player (Join a game), requires player1/player2 choice, returns player token
+
+POST data sent schema example (JSON):
+{
+	"playerChoice": "player1",
+}
+
+Result schema example (JSON):
+{
+    "player1_token": "WXGN4RP8"
+}
+
+Above player1_token indicates the player was assigned as player 1, 
+player2_token as result would have meant player was assigned as player 2
+
+c) PATCH w/ gameID: Ping backend to keep connection alive, requires player token, returns game state
+
+PATCH data sent schema example (JSON):
+{
+    "player1_token": "WXGN4RP8"
+}
 
 3)/api/game/:id/board
 a) POST: Make a game move, requires game ID, player token of maker of move and move info, returns updates game state (also does validation of move in backend)
 
 4)/api/game/:id/chat
 a) POST: Send a chat message, requires player token of sender of message and the chat message, returns updated game state (containing chat message)
+
+POST data sent schema example (JSON):
+{
+    "player1_token": "WXGN4RP8",
+    "message": "Nice Move!"
+}
 
 # Code Styling
 
