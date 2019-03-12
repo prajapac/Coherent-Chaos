@@ -1,6 +1,7 @@
-const CELL_EMPTY = 0;
-const CELL_PLAYER_1 = 1;
-const CELL_PLAYER_2 = 2;
-const CELL_OUT_OF_PLAY = 3;
+module.exports = {
+    CELL_EMPTY: 0,
+    CELL_PLAYER_1: 1,
+    CELL_PLAYER_2: 2,
+    CELL_OUT_OF_PLAY: 3
+};
 
-module.exports = {CELL_EMPTY, CELL_PLAYER_1, CELL_PLAYER_2, CELL_OUT_OF_PLAY};

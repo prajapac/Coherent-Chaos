@@ -75,7 +75,16 @@ a) POST: Send a chat message, requires player token of sender of message and the
 # Code Styling
 
 ## Naming Convention
-In general, use functionNamesLikeThis, variableNamesLikeThis, ClassNamesLikeThis, EnumNamesLikeThis, methodNamesLikeThis, CONSTANT_VALUES_LIKE_THIS, foo.namespaceNamesLikeThis.bar, and ~~filenameslikethis.js~~ file-names-like-this.js.
+In general, use:
+- functionNamesLikeThis
+- variableNamesLikeThis
+- ClassNamesLikeThis 
+- EnumNamesLikeThis 
+- methodNamesLikeThis
+- CONSTANT_VALUES_LIKE_THIS
+- foo.namespaceNamesLikeThis.bar 
+- ~~filenameslikethis.js~~
+- file-names-like-this.js.
 
 # Linting
 To run linter:
