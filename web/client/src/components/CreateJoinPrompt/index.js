@@ -1,21 +1,20 @@
 import React from 'react';
 
-import './index.scss';
-import Button from "../Button";
+import Button from "components/Button";
 import PropTypes from "prop-types";
 
 import {
-    GAME_ID_LEN
+    GAME_ID_LENGTH
 } from 'constants';
+
+import './index.scss';
 
 class CreateJoinPrompt extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            gameId: '',
-            join: props.join,
-            create: props.create
+            gameId: ''
         };
     }
 
@@ -32,13 +31,13 @@ class CreateJoinPrompt extends React.Component {
         event.preventDefault();
         const gameId = this.state.gameId
 
-        if (gameId.length == GAME_ID_LEN) {
+        if (gameId.length == GAME_ID_LENGTH) {
             document.getElementById('gameId-txt').removeAttribute('error');
 
             //TO DO: Add logic to send gameId to server for validation when Chirag's database is up,
             // and then transition page to player picker -- see tickets: 45 + 47
 
-            this.state.join()
+            this.props.join()
         } else {
             document.getElementById('gameId-txt').setAttribute('class', 'error');
         }
@@ -49,26 +48,26 @@ class CreateJoinPrompt extends React.Component {
 
         //TO DO: Add logic to send creation to server to generate a new game board and id -- see ticket: 46
 
-        this.state.create()
+        this.props.create()
     }
 
 
     render() {
         return (
-            <div className='createJoinDivWrapper'>
-                <div className='gameStartInfo'>
+            <div className='create-join-div-wrapper'>
+                <div className='game-start-info'>
                     <h2>Coherent Chaos</h2>
                     <p>Create or join a game with the prompt to the right to enter into a battle royal styled
                         checkers where only one will make it out alive. Will you defeat your opponent or will the
                         circle decay be the end of you?</p>
                 </div>
-                <div className='createJoinDiv'>
+                <div className='create-join-div'>
                     <h2>Enter your game code</h2>
                     <p>To join a game in progress, enter your Game ID below and click the join game button
                         below.</p>
-                    <form className='createJoinForm' onSubmit={this.handleJoin}>
+                    <form className='create-join-form' onSubmit={this.handleJoin}>
                         <input type='text' id='gameId-txt' onChange={this.handleGameIdChange} value={this.state.gameId}
-                               placeholder='A4B6'  maxLength={GAME_ID_LEN} minLength={GAME_ID_LEN}/>
+                               placeholder='A4B6'  maxLength={GAME_ID_LENGTH} minLength={GAME_ID_LENGTH}/>
                         <br/>
                         <br/>
                         <Button type="submit primary" className='join-btn' bold text='Join Game'/>

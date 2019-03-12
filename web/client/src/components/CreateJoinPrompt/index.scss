@@ -1,6 +1,6 @@
 @import '../../theme.scss';
 
-.createJoinDivWrapper {
+.create-join-div-wrapper {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -34,7 +34,7 @@ button.join-btn.fixed, button.create-btn.fixed {
     font-size: $font-size6;
 }
 
-.createJoinDiv {
+.create-join-div {
     max-width: 250px;
     min-width: 250px;
     border-radius: 3px;
