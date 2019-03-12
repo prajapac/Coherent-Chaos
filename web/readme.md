@@ -63,8 +63,27 @@ a) POST: Create a game, returns game state (which contains game ID)
 
 2)/api/game/:id/
 a) GET: Returns the game state for game with ID provided in the URI
-a) POST: Connect a player (Join a game), requires player1/player2 choice, returns player token
-b) PATCH w/ gameID: Ping backend to keep connection alive, requires player token, returns game state
+b) POST: Connect a player (Join a game), requires player1/player2 choice, returns player token
+
+POST data sent schema example (JSON):
+{
+	"playerChoice": "player1",
+}
+
+Result schema example (JSON):
+{
+    "player1_token": "WXGN4RP8"
+}
+
+Above player1_token indicates the player was assigned as player 1, 
+player2_token as result would have meant player was assigned as player 2
+
+c) PATCH w/ gameID: Ping backend to keep connection alive, requires player token, returns game state
+
+POST data sent schema example (JSON):
+{
+    "player1_token": "WXGN4RP8"
+}
 
 3)/api/game/:id/board
 a) POST: Make a game move, requires game ID, player token of maker of move and move info, returns updates game state (also does validation of move in backend)

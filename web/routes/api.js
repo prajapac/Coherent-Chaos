@@ -165,6 +165,7 @@ router.post('/game/:id/', (req, res) => {
             }
             else {
                 log(FILE_NAME, ('gameID does not exist', gameID));
+                res.send({ 'failure': true, 'message': 'gameID does not exist', 'gameID': gameID });
                 return;
             }
 
