@@ -2,6 +2,10 @@ $bg-light: #484848;
 $bg-mid: #333333;
 $bg-dark: #282828;
 
+$bg-contrast-light: #ffffff;
+$bg-contrast-mid: #d3d3d3;
+$bg-contrast-dark: #b5b5b5;
+
 $primary-light: #18a0ff;
 $primary-mid: #0080ff;
 $primary-dark: #0056df;
@@ -14,6 +18,8 @@ $tertiary-light: #ff5a48;
 $tertiary-mid: #f54141;
 $tertiary-dark: #d12e40;
 
+$error: #ff6666;
+
 $space1: 4px;
 $space2: 8px;
 $space3: 16px;
@@ -25,8 +31,9 @@ $space6: 128px;
 $space7: 256px;
 $space8: 512px;
 
-$font-light: #AAA;
-$font-mid: #777;
+$font-white: #FFF;
+$font-light: #888;
+$font-mid: #666;
 $font-dark: #555;
 
 $font-size1: 12px;

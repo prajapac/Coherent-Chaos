@@ -8,9 +8,18 @@
   },
   "dependencies": {
     "express": "^4.16.4",
+    "joi": "^14.3.1",
+    "mongodb": "^3.1.13",
     "nodemon": "^1.18.9"
   },
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "lint": "npx eslint ./*",
+    "lint-fix": "npx eslint --fix ./*",
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "eslint": "^5.14.1",
+    "mocha": "^6.0.2"
   }
 }

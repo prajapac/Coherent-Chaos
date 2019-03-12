@@ -12,7 +12,7 @@ test('Cell renders without crashing', () => {
     const component = shallow(
         <Cell />
     );
-    expect(component.exists())
+    expect(component.exists());
 });
 
 test('Cell gets correct color', () => {

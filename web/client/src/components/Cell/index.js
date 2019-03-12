@@ -24,12 +24,12 @@ export const getCellColor = (state) => {
     }
 };
 
-const Cell = ({className, state}) => {
+const Cell = ({className, state, ...props}) => {
     const classes = classNames(className, state, 'cell');
     let cellColor = getCellColor(state);
 
     return (
-        <Hexagon className={classes} color={cellColor} />
+        <Hexagon className={classes} color={cellColor} {...props}/>
     );
 };
 

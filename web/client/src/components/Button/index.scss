@@ -5,7 +5,7 @@
     border: none;
     font-variant: all-small-caps;
     cursor: pointer;
-    color: $bg-mid;
+    color: rgba(255,255,255, 0.75);
 
     &.bold {
         font-weight: $bold;

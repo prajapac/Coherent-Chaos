@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Header from 'components/Header';
-import Button from 'components/Button';
 import Page from 'components/Page';
+import Spinner from 'components/Spinner';
+import GameCreateJoinPrompt from 'components/GameCreateJoinPrompt';
+import Logo from 'components/Logo';
 
 import './index.scss';
 
@@ -12,16 +14,17 @@ const MenuPage = ({onCreateGame, onJoinGame, loading}) => {
         <Page className='menu'>
             <Header
                 className='menu-header'
-                mid={<div>COHERENT CHAOS</div>}
+                mid={<Logo/>}
             />
             {
                 loading
                     ? <div className='tray'>
-                        LOADING...
+                        <Spinner/>
                     </div>
                     : <div className='tray'>
-                        <Button className='tray-btn' bold text='Create Game' type='primary' onClick={onCreateGame}/>
-                        <Button className='tray-btn' bold text='Join Game' type='secondary' onClick={onJoinGame}/>
+                        <GameCreateJoinPrompt
+                            onJoinGame={onJoinGame}
+                            onCreateGame={onCreateGame}/>
                     </div>
             }
 

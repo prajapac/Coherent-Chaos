@@ -1,0 +1,25 @@
+@import '../../theme.scss';
+
+.playerPicker {
+    max-width: 250px;
+    min-width: 250px;
+    border-radius: 3px;
+    background: $bg-contrast-mid;
+    padding: 25px;
+    margin: 5% 25% 5% 25%;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+
+    .picker-btn {
+        font-size: $font-size6;
+        width: $space7;
+        height: $space5;
+        margin: $space2 0;
+    }
+
+	p {
+	    font-size: $font-size5;
+		text-align: center;
+	}
+}
