@@ -1,16 +1,30 @@
 import {
     GAME_CREATE_STARTED,
     GAME_CREATE_COMPLETE,
+
     GAME_JOIN_STARTED,
     GAME_JOIN_COMPLETE,
-    GAME_EXIT
+
+    GAME_EXIT,
+
+    GAME_PLAYER_CHOSEN
 } from 'actions';
 
-import { PAGE_MENU, PAGE_GAME } from 'constants';
+import {
+    PAGE_MENU,
+    PAGE_GAME,
+    PAGE_PLAYER_PICKER,
+    PLAYER_1,
+    PLAYER_2
+} from 'constants';
 
 const defaultState = {
     page: PAGE_MENU,
-    gameId: null,
+
+    gameState: {},
+    chosenPlayer: null,
+    playerToken: null,
+
     joinLoading: false,
     createLoading: false
 };
@@ -27,6 +41,9 @@ export default (state = defaultState, action) => {
             return {
                 ...state,
                 createLoading: false,
+                gameState: action.gameState,
+                chosenPlayer: PLAYER_1,
+                playerToken: action.token,
                 page: PAGE_GAME
             };
 
@@ -40,15 +57,27 @@ export default (state = defaultState, action) => {
             return {
                 ...state,
                 joinLoading: false,
-                page: PAGE_GAME
+                page: PAGE_PLAYER_PICKER
             };
 
         // EXIT GAME
         case GAME_EXIT:
             return {
                 ...state,
-                gameId: null,
+                gameState: {},
+                chosenPlayer: null,
+                playerToken: null,
+                joinLoading: false,
+                createLoading: false,
                 page: PAGE_MENU
+            };
+
+        // CHOOSE PLAYER
+        case GAME_PLAYER_CHOSEN:
+            return {
+                ...state,
+                page: PAGE_GAME,
+                chosenPlayer: action.playerChoice
             };
 
         default:

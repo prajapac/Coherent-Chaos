@@ -2,24 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { GAME_CREATE_BEGIN, GAME_JOIN_BEGIN, GAME_EXIT } from 'actions';
-import { PAGE_GAME } from 'constants';
+import { GAME_CREATE_BEGIN, GAME_JOIN_BEGIN, GAME_EXIT, GAME_PLAYER_CHOSEN } from 'actions';
+import { PAGE_PLAYER_PICKER, PAGE_GAME, PAGE_MENU } from 'constants';
 
 import MenuPage from 'pages/MenuPage';
 import GamePage from 'pages/GamePage';
+import PlayerPickerPage from 'pages/PlayerPickerPage';
 
 const mapDispatchToProps = dispatch => ({
     onExitGame: () =>
         dispatch({ type: GAME_EXIT }),
-    onJoinGame: () =>
-        dispatch({ type: GAME_JOIN_BEGIN }),
+    onJoinGame: (gameId) =>
+        dispatch({ type: GAME_JOIN_BEGIN, gameId: gameId }),
     onCreateGame: () =>
         dispatch({ type: GAME_CREATE_BEGIN }),
+    onPlayerChoose: (player) =>
+        dispatch({ type: GAME_PLAYER_CHOSEN, playerChoice: player }),
 });
 
 const mapStateToProps = state => ({
     page: state.common.page,
-    gameId: state.common.gameId,
+    gameState: state.common.gameState,
     loading: state.common.joinLoading || state.common.createLoading
 });
 
@@ -29,15 +32,29 @@ class MainContainer extends React.Component {
     }
 
     render() {
-        // TODO: Transitions and loading screen
         switch (this.props.page) {
             case PAGE_GAME:
                 return (
-                    <GamePage onExitGame={this.props.onExitGame} gameId={this.props.gameId}/>
+                    <GamePage
+                        onExitGame={this.props.onExitGame}
+                        gameId={this.props.gameState.id}
+                    />
+                );
+            case PAGE_PLAYER_PICKER:
+                return (
+                    <PlayerPickerPage
+                        onExitGame={this.props.onExitGame}
+                        onPlayerChoose={this.props.onPlayerChoose}
+                        gameId={this.props.gameState.id}
+                    />
                 );
             default:
                 return (
-                    <MenuPage onCreateGame={this.props.onCreateGame} onJoinGame={this.props.onJoinGame} loading={this.props.loading}/>
+                    <MenuPage
+                        onCreateGame={this.props.onCreateGame}
+                        onJoinGame={this.props.onJoinGame}
+                        loading={this.props.loading}
+                    />
                 );
         }
     }
@@ -46,13 +63,23 @@ class MainContainer extends React.Component {
 MainContainer.propTypes = {
     // Application state as props
     page: PropTypes.string,
-    gameId: PropTypes.number,
+    gameState: PropTypes.object,
     loading: PropTypes.bool,
 
     // Dispatch functions
     onExitGame: PropTypes.func,
     onCreateGame: PropTypes.func,
     onJoinGame: PropTypes.func,
+};
+
+MainContainer.defaultProps = {
+    page: PAGE_MENU,
+    gameState: {},
+    loading: false,
+
+    onExitGame: () => {},
+    onCreateGame: () => {},
+    onJoinGame: () => {},
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainContainer);
