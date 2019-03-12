@@ -55,9 +55,7 @@ class GameCreateJoinPrompt extends React.Component {
             <div className='create-join-prompt'>
                 <div className='game-start-info'>
                     <h2>Coherent Chaos</h2>
-                    <p>Create or join a game with the prompt to the right to enter into a battle royal styled
-                        checkers where only one will make it out alive. Will you defeat your opponent or will the
-                        circle decay be the end of you?
+                    <p>Enter into a battle royal styled checkers game where only one will make it out alive. Will you defeat your opponent or will the circle decay be the end of you?
                     </p>
                 </div>
                 <div className='create-join-box'>
