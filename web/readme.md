@@ -80,7 +80,7 @@ player2_token as result would have meant player was assigned as player 2
 
 c) PATCH w/ gameID: Ping backend to keep connection alive, requires player token, returns game state
 
-POST data sent schema example (JSON):
+PATCH data sent schema example (JSON):
 {
     "player1_token": "WXGN4RP8"
 }
@@ -90,6 +90,12 @@ a) POST: Make a game move, requires game ID, player token of maker of move and m
 
 4)/api/game/:id/chat
 a) POST: Send a chat message, requires player token of sender of message and the chat message, returns updated game state (containing chat message)
+
+POST data sent schema example (JSON):
+{
+    "player1_token": "WXGN4RP8",
+    "message": "Nice Move!"
+}
 
 # Code Styling
 
