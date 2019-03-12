@@ -6,12 +6,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
 
-        .tray-btn {
-            font-size: $font-size6;
-            width: $space7;
-            height: $space6;
-            margin: $space5 0;
-        }
+    .header-btn {
+        color: $tertiary-mid;
     }
 }

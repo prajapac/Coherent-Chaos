@@ -11,3 +11,4 @@ export const GAME_PING_STOP = 'GAME_PING_STOP';
 
 export const GAME_EXIT = 'GAME_EXIT';
 
+export const GAME_PLAYER_CHOSEN = 'GAME_PLAYER_CHOSEN';

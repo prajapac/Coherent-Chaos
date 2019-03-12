@@ -1,5 +1,6 @@
 export const PAGE_MENU = 'PAGE_MENU';
 export const PAGE_GAME = 'PAGE_GAME';
+export const PAGE_PLAYER_PICKER = 'PAGE_PLAYER_PICKER';
 
 export const PLAYER_1 = 1;
 export const PLAYER_2 = 2;
