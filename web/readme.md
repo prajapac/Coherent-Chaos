@@ -22,9 +22,9 @@ Game state schema:
 {
 
     game_id: Alphanumeric String of length 4,
-    player1Token: Alphanumeric String of length 8,
-    player2Token: Alphanumeric String of length 8,
-    boardState: An array of arrays [
+    player1_token: Alphanumeric String of length 8,
+    player2_token: Alphanumeric String of length 8,
+    board_state: An array of arrays [
         [C1,C1,C1,C1,C1,C1],
         [CE,C1,C1,C1,C1,C1,CE],
         [CE,CE,CE,CE,CE,CE,CE,CE],
@@ -40,7 +40,7 @@ Game state schema:
     player1_last_message: String,
     player2_last_message: String,,
     player1_last_ping: timestamp (milliseconds since epoch),
-    player1_last_ping: timestamp (milliseconds since epoch),
+    player2_last_ping: timestamp (milliseconds since epoch),
     whos_turn: Alphanumeric String of length 8 (Player token),
     num_turns: Integer >= 0,
 
