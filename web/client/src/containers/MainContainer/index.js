@@ -23,7 +23,8 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
     page: state.common.page,
     gameState: state.common.gameState,
-    loading: state.common.joinLoading || state.common.createLoading
+    loading: state.common.joinLoading || state.common.createLoading,
+    chosenPlayer: state.chosenPlayer
 });
 
 class MainContainer extends React.Component {
@@ -37,7 +38,8 @@ class MainContainer extends React.Component {
                 return (
                     <GamePage
                         onExitGame={this.props.onExitGame}
-                        gameId={this.props.gameState.id}
+                        gameState={this.props.gameState}
+                        chosenPlayer={this.props.chosenPlayer}
                     />
                 );
             case PAGE_PLAYER_PICKER:
@@ -45,7 +47,7 @@ class MainContainer extends React.Component {
                     <PlayerPickerPage
                         onExitGame={this.props.onExitGame}
                         onPlayerChoose={this.props.onPlayerChoose}
-                        gameId={this.props.gameState.id}
+                        gameState={this.props.gameState}
                     />
                 );
             default:

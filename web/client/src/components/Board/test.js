@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Board, { getOppositeCell, isCellAdjacent, expandBoardStateToCellObjects, isCellVisitable } from './index';
-import { CELL_PLAYER_1 as C1, CELL_PLAYER_2 as C2, CELL_EMPTY as CE } from 'constants';
+import Board, { getOppositeCell, isCellAdjacent, expandBoardStateToCellObjects, isCellVisitable, isCellEnemy, isCellOurs } from './index';
+import { CELL_PLAYER_1 as C1, CELL_PLAYER_2 as C2, CELL_EMPTY as CE, PLAYER_1, PLAYER_2 } from 'constants';
 
 test('Board renders without crashing', () => {
     const component = shallow(
@@ -636,4 +636,22 @@ test('Board expands to objects properly', () => {
     expect(expandedBoard[3][1].state).toBe(CE);
     expect(expandedBoard[5][7].rowIndex).toBe(5);
     expect(expandedBoard[5][7].columnIndex).toBe(7);
+});
+
+test('Board identifies our cells properly', () => {
+    expect(isCellOurs(C1, PLAYER_1)).toBe(true);
+    expect(isCellOurs(C2, PLAYER_2)).toBe(true);
+    expect(isCellOurs(C2, PLAYER_1)).toBe(false);
+    expect(isCellOurs(C1, PLAYER_2)).toBe(false);
+    expect(isCellOurs(CE, PLAYER_2)).toBe(false);
+    expect(isCellOurs(CE, PLAYER_2)).toBe(false);
+});
+
+test('Board identifies enemy cells properly', () => {
+    expect(isCellEnemy(C1, PLAYER_1)).toBe(false);
+    expect(isCellEnemy(C2, PLAYER_2)).toBe(false);
+    expect(isCellEnemy(C2, PLAYER_1)).toBe(true);
+    expect(isCellEnemy(C1, PLAYER_2)).toBe(true);
+    expect(isCellOurs(CE, PLAYER_2)).toBe(false);
+    expect(isCellOurs(CE, PLAYER_2)).toBe(false);
 });
