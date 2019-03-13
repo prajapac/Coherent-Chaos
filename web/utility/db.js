@@ -10,18 +10,20 @@ const initDB = (callback) => {
         return callback(null, connection);
     }
 
-    MongoClient.connect(config.DB_URL, {useNewUrlParser: true}, connected);
+    MongoClient.connect(
+        config.DB_URL,
+        {useNewUrlParser: true},
+        (err, db) => {
+            if (err) {
+                return callback(err);
+            }
 
-    function connected(err, db) {
-        if (err) {
-            return callback(err);
+            log('DB initialized.');
+            connection = db;
+
+            return callback(null, connection);
         }
-
-        log('DB initialized.');
-        connection = db;
-
-        return callback(null, connection);
-    }
+    );
 };
 
 const getDB = () => {
