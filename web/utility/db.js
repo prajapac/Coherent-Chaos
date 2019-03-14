@@ -27,7 +27,7 @@ const initDB = (callback) => {
 };
 
 const getDB = () => {
-    if (!connection) { log('DB has not been initialized. Please called initDB first.'); }
+    if (!connection) { log('DB has not been initialized. Please call initDB first.'); }
 
     return connection;
 };

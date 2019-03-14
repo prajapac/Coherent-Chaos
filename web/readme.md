@@ -21,7 +21,7 @@ Install `Node.js` and `npm` from https://nodejs.org/en/
 
 ### Linux
 
-lol
+Todo
 
 ## Info
 There is one collection: 'games'

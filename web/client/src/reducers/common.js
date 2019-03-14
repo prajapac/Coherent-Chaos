@@ -21,9 +21,8 @@ import {
 } from 'constants';
 
 import {
-    MapAPIStateToAppState
+    mapAPIStateToAppState
 } from 'utility';
-import {mapAPIStateToAppState} from "../utility";
 
 const defaultState = {
     page: PAGE_MENU,
