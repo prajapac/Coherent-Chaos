@@ -12,4 +12,5 @@ class CustomColors{
   final c2BorderColor = const Color(0xFF2bae00);
   final ceColor = const Color(0xFF484848);
   final ceBorderColor = const Color(0xFF333333);
+  final textFieldBgColor = const Color(0xFFb5b5b5);
 }
