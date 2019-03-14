@@ -30,6 +30,8 @@ Install `Node.js` and `npm` from https://nodejs.org/en/
     4) Create `coherentchaos` database: use coherentchaos
     5) Create `games` collection: db.createCollection("games")
     6) Exit mongo shell: 'Ctrl-C shortcut'
+    7) Troubleshooting: Stop MongoDB: sudo service mongod stop, Restart MongoDB: sudo service mongod restart
+
 
 ## Info
 There is one collection: 'games'
