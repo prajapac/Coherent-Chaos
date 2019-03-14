@@ -20,8 +20,16 @@ Install `Node.js` and `npm` from https://nodejs.org/en/
 - Create a new database called `coherentchaos` with a collection called `games`
 
 ### Linux
-
-Todo
+- Install MongoDB: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/#install-mongodb-community-edition-using-deb-packages:
+    - Copy and paste the commands for steps 1-4 one by one
+- Create a new database called `coherentchaos` with a collection called `games`:
+    1) Start MongoDB: sudo service mongod start
+    2) Verify that MongoDB has started successfully: inspect log file at /var/log/mongodb/mongod.log
+        - look for [initandlisten] waiting for connections on port 27017
+    3) Start mongo shell: mongo
+    4) Create `coherentchaos` database: use coherentchaos
+    5) Create `games` collection: db.createCollection("games")
+    6) Exit mongo shell: 'Ctrl-C shortcut'
 
 ## Info
 There is one collection: 'games'
