@@ -9,17 +9,17 @@ import Logo from 'components/Logo';
 
 import './index.scss';
 
-const GamePage = ({gameId, onExitGame}) => {
+const GamePage = ({chosenPlayer, gameState, onExitGame}) => {
     return (
         <Page className='game'>
             <Header
                 className='game-header'
                 left={<Button className='header-btn left' text='< Leave' onClick={onExitGame}/>}
                 mid={<Logo/>}
-                right={<div className='header-gid'>#{gameId}</div>}
+                right={<div className='header-gid'>#{gameState.id}</div>}
             />
             <div className='body'>
-                <Board className='gameBoard'/>
+                <Board boardState={gameState.board} selectedPlayer={chosenPlayer} className='gameBoard'/>
             </div>
 
         </Page>
@@ -27,7 +27,8 @@ const GamePage = ({gameId, onExitGame}) => {
 };
 
 GamePage.propTypes = {
-    gameId: PropTypes.number,
+    chosenPlayer: PropTypes.number,
+    gameState: PropTypes.object,
     onExitGame: PropTypes.func
 };
 
