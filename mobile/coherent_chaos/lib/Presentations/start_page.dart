@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'custom_colors.dart';
 import 'game_board.dart';
 import '../Assets/dialouge.dart';
-import '../Business/validate.dart';
 
 final dialouges = new CustomDialouges();
-final _validator = new Validator();
-String _gameId = "";
-var _gameIdKey =GlobalKey<FormState>();
 
 class StartPage extends StatefulWidget {
   static String tag = 'start-page';
@@ -25,20 +21,7 @@ class _StartPage extends State<StartPage> {
         child: Text(dialouges.startGameInstruction, style: TextStyle(fontSize: 16))
       ),
     );
-    final gameIdBox =TextFormField(
-      key: _gameIdKey,
-      //obscureText: true,
-      validator: (String value)
-      {
-        if(value.isEmpty)
-        {
-          return "Enter your game code";
-        }
-      },
-      onSaved: (String value) {
-          _gameId = value;
-        },
-        
+    final gameIdBox =TextFormField(   
       decoration: InputDecoration(
         hintText: 'A4B6',
         filled: true,
@@ -54,12 +37,7 @@ class _StartPage extends State<StartPage> {
     );
     final createGame = MaterialButton(
       onPressed: () {
-        //String gameId = _validator.validateGameId(_gameId);
-        if(_gameIdKey.currentState.validate())
-        {
-          _gameIdKey.currentState.save();
           Navigator.of(context).pushNamed(Gameboard.tag);
-        }
         //Navigator.of(context).pushNamed(Gameboard.tag);
       },
       color: colors.secondaryColor,
@@ -71,6 +49,7 @@ class _StartPage extends State<StartPage> {
     );
     final joinGame = MaterialButton(
       onPressed: () {
+        
         Navigator.of(context).pushNamed(Gameboard.tag);
       },
       color: colors.primaryColor,
