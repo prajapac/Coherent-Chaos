@@ -108,6 +108,7 @@ router.get('/game/:id/', async (req, res) => {
     const collection = db.collection(config.DB_GAME_TABLE);
 
     let gameID = req.params.id;
+    let time = Date.now();
 
     // Get game state for game with gameID
     let err, gameState = await collection.findOne({game_id: gameID});
@@ -116,7 +117,10 @@ router.get('/game/:id/', async (req, res) => {
         log(('Error querying by gameID generated:', err));
         res.send({ 'failure': true, 'message': 'Error querying by gameID generated', 'error': err });
     } else if (gameState) {
-        // Remove unnecessary fields from game state to send to player
+        // Add player activity data
+        gameState.player_1_active = time - gameState.player1_last_ping < config.TOKEN_EXPIRY_MILLISECONDS;
+        gameState.player_2_active = time - gameState.player2_last_ping < config.TOKEN_EXPIRY_MILLISECONDS;
+        // Remove private fields from game state to send to player
         delete gameState.player1_token;
         delete gameState.player2_token;
         delete gameState.player1_last_ping;
@@ -135,44 +139,36 @@ router.post('/game/:id/', async (req, res) => {
     const collection = db.collection(config.DB_GAME_TABLE);
 
     let gameID = req.params.id;
-    let playerChoice = req.body.playerChoice;
+    let playerChoice = parseInt(req.body.playerChoice);
+    let newToken = null;
 
     // Get game state for game with gameID
     let err, gameState = await collection.findOne({game_id: gameID});
 
     if (err) {
         log(('Error querying by gameID generated:', err));
-        res.send({ 'failure': true, 'message': 'Error querying by gameID generated', 'error': err });
+        res.send({ 'failure': true, 'message': 'Error querying by gameID', 'error': err });
         return;
-    }
-    else if (gameState) {
-        if (playerChoice === 'player1') {
-            // Player choice already taken
-            if (gameState.player1_token) {
-                gameState.player2_token = idGenerator.generatePlayerToken();
-                gameState.player2_last_ping = Date.now();
-                playerChoice = 'player2';
-            }
-            else {
-                gameState.player1_token = idGenerator.generatePlayerToken();
-                gameState.player1_last_ping = Date.now();
-            }
+    } else if (gameState) {
+        let time = Date.now();
+
+        if (playerChoice === constants.PLAYER_1 && time - gameState.player1_last_ping >= config.TOKEN_EXPIRY_MILLISECONDS) { // Token expired
+            newToken = idGenerator.generatePlayerToken();
+            gameState.player1_token = newToken;
+            gameState.player1_last_ping = Date.now();
+        } else if (playerChoice === constants.PLAYER_2 && time - gameState.player2_last_ping >= config.TOKEN_EXPIRY_MILLISECONDS) { // Token expired
+            newToken = idGenerator.generatePlayerToken();
+            gameState.player2_token = newToken;
+            gameState.player2_last_ping = Date.now();
+        } else if (playerChoice !== constants.PLAYER_1 && playerChoice !== constants.PLAYER_2) {
+            res.send({ 'failure': true, message: 'Invalid player choice or player still connected', gameID: gameID, playerChoice: playerChoice });
+            return;
+        } else {
+            res.send({ 'failure': true, message: 'Game is full', gameID: gameID });
+            return;
         }
-        else {
-            // Player choice already taken
-            if (gameState.player2_token) {
-                gameState.player1_token = idGenerator.generatePlayerToken();
-                gameState.player1_last_ping = Date.now();
-                playerChoice = 'player1';
-            }
-            else {
-                gameState.player2_token = idGenerator.generatePlayerToken();
-                gameState.player2_last_ping = Date.now();
-            }
-        }
-    }
-    else {
-        log( ('gameID does not exist', gameID));
+    } else {
+        log( ('Game does not exist', gameID));
         res.send({ 'failure': true, 'message': 'gameID does not exist', 'gameID': gameID });
         return;
     }
@@ -190,11 +186,7 @@ router.post('/game/:id/', async (req, res) => {
                     res.send({ 'failure': true, 'message': 'Database insert failure', 'error': err });
                 } else {
                     log((`Successfully updated item with _id: ${value._id}`));
-                    if (playerChoice === 'player1') {
-                        res.send({player1_token: value.player1_token});
-                    } else {
-                        res.send({player2_token: value.player2_token});
-                    }
+                    res.send({token: newToken});
                 }
             });
         }

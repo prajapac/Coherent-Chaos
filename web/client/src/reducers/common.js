@@ -3,13 +3,15 @@ import {
     GAME_CREATE_COMPLETE,
     GAME_CREATE_FAILURE,
 
-    GAME_JOIN_STARTED,
-    GAME_JOIN_COMPLETE,
-    GAME_JOIN_FAILURE,
+    GAME_JOIN_ATTEMPT_STARTED,
+    GAME_JOIN_ATTEMPT_COMPLETE,
+    GAME_JOIN_ATTEMPT_FAILURE,
+
+    GAME_JOIN_PICK_PLAYER_STARTED,
+    GAME_JOIN_PICK_PLAYER_COMPLETE,
+    GAME_JOIN_PICK_PLAYER_FAILURE,
 
     GAME_EXIT,
-
-    GAME_PLAYER_CHOSEN
 } from 'actions';
 
 import {
@@ -59,21 +61,53 @@ export default (state = defaultState, action) => {
             return {
                 ...state,
                 createLoading: false,
-                page: PAGE_MENU,
-                errorMessage: action.message
+                errorMessage: action.message,
+                page: PAGE_MENU
             };
 
-        // JOIN GAME
-        case GAME_JOIN_STARTED:
+        // JOIN GAME - GET STATE
+        case GAME_JOIN_ATTEMPT_STARTED:
             return {
                 ...state,
-                joinLoading: true
+                joinLoading: true,
+                errorMessage: null
             };
-        case GAME_JOIN_COMPLETE:
+        case GAME_JOIN_ATTEMPT_COMPLETE:
             return {
                 ...state,
                 joinLoading: false,
+                gameState: mapAPIStateToAppState(action.gameState),
                 page: PAGE_PLAYER_PICKER
+            };
+        case GAME_JOIN_ATTEMPT_FAILURE:
+            return {
+                ...state,
+                joinLoading: false,
+                errorMessage: action.message,
+                page: PAGE_MENU
+            };
+
+        // JOIN GAME - PICK PLAYER
+        case GAME_JOIN_PICK_PLAYER_STARTED:
+            return {
+                ...state,
+                joinLoading: true,
+                errorMessage: null
+            };
+        case GAME_JOIN_PICK_PLAYER_COMPLETE:
+            return {
+                ...state,
+                joinLoading: false,
+                chosenPlayer: action.playerChoice,
+                playerToken: action.token,
+                page: PAGE_GAME
+            };
+        case GAME_JOIN_PICK_PLAYER_FAILURE:
+            return {
+                ...state,
+                joinLoading: false,
+                errorMessage: action.message,
+                page: PAGE_MENU
             };
 
         // EXIT GAME
@@ -86,14 +120,6 @@ export default (state = defaultState, action) => {
                 joinLoading: false,
                 createLoading: false,
                 page: PAGE_MENU
-            };
-
-        // CHOOSE PLAYER
-        case GAME_PLAYER_CHOSEN:
-            return {
-                ...state,
-                page: PAGE_GAME,
-                chosenPlayer: action.playerChoice
             };
 
         default:
