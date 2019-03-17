@@ -6,7 +6,7 @@ const prod = {
 // Dev specific settings
 const dev = {
     // API_ROOT_URL: 'http://localhost:5000/api'
-    API_ROOT_URL: 'http://18.191.224.215:5000'
+    API_ROOT_URL: 'http://18.191.224.215:5000/api'
 };
 
 // Settings that are shared between prod and dev
