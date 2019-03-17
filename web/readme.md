@@ -201,10 +201,6 @@ it's still unique but more manageable/readable
 }
 ``` 
 
-#### `/api/game/:id/chat`  
-##### POST: Send a chat message.  
-- Not implemented
-
 # Code Styling
 
 ## Naming Convention
