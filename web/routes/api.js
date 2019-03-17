@@ -155,11 +155,11 @@ router.post('/game/:id/', async (req, res) => {
         if (playerChoice === constants.PLAYER_1 && time - gameState.player1_last_ping >= config.TOKEN_EXPIRY_MILLISECONDS) { // Token expired
             newToken = idGenerator.generatePlayerToken();
             gameState.player1_token = newToken;
-            gameState.player1_last_ping = Date.now();
+            gameState.player1_last_ping = time;
         } else if (playerChoice === constants.PLAYER_2 && time - gameState.player2_last_ping >= config.TOKEN_EXPIRY_MILLISECONDS) { // Token expired
             newToken = idGenerator.generatePlayerToken();
             gameState.player2_token = newToken;
-            gameState.player2_last_ping = Date.now();
+            gameState.player2_last_ping = time;
         } else if (playerChoice !== constants.PLAYER_1 && playerChoice !== constants.PLAYER_2) {
             res.send({ 'failure': true, message: 'Invalid player choice or player still connected', gameID: gameID, playerChoice: playerChoice });
             return;

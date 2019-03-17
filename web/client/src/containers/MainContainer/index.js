@@ -53,7 +53,6 @@ class MainContainer extends React.Component {
                         onExitGame={this.props.onExitGame}
                         onPlayerChoose={this.props.onJoinGamePickPlayer}
                         gameState={this.props.gameState}
-
                     />
                 );
             default:
