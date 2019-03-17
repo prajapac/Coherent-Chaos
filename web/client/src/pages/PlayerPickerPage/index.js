@@ -19,7 +19,12 @@ const MenuPage = ({onPlayerChoose, onExitGame, gameState}) => {
                 right={<div className='header-gid'>#{gameState.id}</div>}
             />
             <div className='tray'>
-                <PlayerPicker onChoose={onPlayerChoose}/>
+                <PlayerPicker
+                    player1Disabled={gameState.player1Active}
+                    player2Disabled={gameState.player2Active}
+                    gameId={gameState.id}
+                    onChoose={onPlayerChoose}
+                />
             </div>
         </Page>
     );
@@ -28,7 +33,7 @@ const MenuPage = ({onPlayerChoose, onExitGame, gameState}) => {
 MenuPage.propTypes = {
     onPlayerChoose: PropTypes.func,
     onExitGame: PropTypes.func,
-    gameState: PropTypes.object,
+    gameState: PropTypes.object
 };
 
 export default MenuPage;

@@ -7,7 +7,7 @@ require('./utility/db').initDB((err) => {
     const notFoundRoutes = require('./routes/404.js');
 
 
-    const log = require('./utility/logger')('routes/api');
+    const log = require('./utility/logger')('index');
     const app = express();
 
     // Serve the React app

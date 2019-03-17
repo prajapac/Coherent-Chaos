@@ -625,7 +625,8 @@ test('Board expands to objects properly', () => {
             rowIndex: 1,
             columnIndex: 1,
             state: C1
-        }
+        },
+        PLAYER_1
     );
 
     expect(expandedBoard[1][1].selected).toBe(true);
@@ -636,6 +637,19 @@ test('Board expands to objects properly', () => {
     expect(expandedBoard[3][1].state).toBe(CE);
     expect(expandedBoard[5][7].rowIndex).toBe(5);
     expect(expandedBoard[5][7].columnIndex).toBe(7);
+
+    expandedBoard = expandBoardStateToCellObjects(
+        boardState,
+        { // Selected cell
+            rowIndex: 5,
+            columnIndex: 5,
+            state: CE
+        },
+        PLAYER_2
+    );
+
+    expect(expandedBoard[0][0].selectable).toBe(false);
+    expect(expandedBoard[10][0].selectable).toBe(true);
 });
 
 test('Board identifies our cells properly', () => {

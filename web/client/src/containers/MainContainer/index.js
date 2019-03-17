@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { GAME_CREATE_BEGIN, GAME_JOIN_BEGIN, GAME_EXIT, GAME_PLAYER_CHOSEN } from 'actions';
+import {
+    GAME_CREATE_BEGIN,
+    GAME_JOIN_ATTEMPT_BEGIN,
+    GAME_JOIN_PICK_PLAYER_BEGIN,
+    GAME_EXIT
+} from 'actions';
 import { PAGE_PLAYER_PICKER, PAGE_GAME, PAGE_MENU } from 'constants';
 
 import MenuPage from 'pages/MenuPage';
@@ -12,19 +17,19 @@ import PlayerPickerPage from 'pages/PlayerPickerPage';
 const mapDispatchToProps = dispatch => ({
     onExitGame: () =>
         dispatch({ type: GAME_EXIT }),
-    onJoinGame: (gameId) =>
-        dispatch({ type: GAME_JOIN_BEGIN, gameId: gameId }),
+    onJoinGameAttempt: (gameId) =>
+        dispatch({ type: GAME_JOIN_ATTEMPT_BEGIN, gameId: gameId }),
+    onJoinGamePickPlayer: (gameId, player) =>
+        dispatch({ type: GAME_JOIN_PICK_PLAYER_BEGIN, playerChoice: player, gameId: gameId }),
     onCreateGame: () =>
         dispatch({ type: GAME_CREATE_BEGIN }),
-    onPlayerChoose: (player) =>
-        dispatch({ type: GAME_PLAYER_CHOSEN, playerChoice: player }),
 });
 
 const mapStateToProps = state => ({
     page: state.common.page,
     gameState: state.common.gameState,
     loading: state.common.joinLoading || state.common.createLoading,
-    chosenPlayer: state.chosenPlayer
+    chosenPlayer: state.common.chosenPlayer
 });
 
 class MainContainer extends React.Component {
@@ -46,7 +51,7 @@ class MainContainer extends React.Component {
                 return (
                     <PlayerPickerPage
                         onExitGame={this.props.onExitGame}
-                        onPlayerChoose={this.props.onPlayerChoose}
+                        onPlayerChoose={this.props.onJoinGamePickPlayer}
                         gameState={this.props.gameState}
                     />
                 );
@@ -54,7 +59,7 @@ class MainContainer extends React.Component {
                 return (
                     <MenuPage
                         onCreateGame={this.props.onCreateGame}
-                        onJoinGame={this.props.onJoinGame}
+                        onJoinGame={this.props.onJoinGameAttempt}
                         loading={this.props.loading}
                     />
                 );
@@ -67,6 +72,7 @@ MainContainer.propTypes = {
     page: PropTypes.string,
     gameState: PropTypes.object,
     loading: PropTypes.bool,
+    chosenPlayer: PropTypes.number,
 
     // Dispatch functions
     onExitGame: PropTypes.func,
@@ -79,6 +85,7 @@ MainContainer.defaultProps = {
     page: PAGE_MENU,
     gameState: {},
     loading: false,
+    chosenPlayer: null,
 
     onExitGame: () => {},
     onCreateGame: () => {},

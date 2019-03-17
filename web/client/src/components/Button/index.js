@@ -4,10 +4,11 @@ import classNames from 'classnames';
 
 import './index.scss';
 
-const Button = ({className, onClick, size, type, rounded, bold, text, ...props}) => {
+const Button = ({className, onClick, size, type, rounded, bold, disabled, text, ...props}) => {
     const classes = classNames(className, size, type, {
         'rounded': rounded,
-        'bold': bold
+        'bold': bold,
+        'disabled': disabled
     }, 'btn');
 
     return (
@@ -24,6 +25,7 @@ Button.propTypes = {
     type: PropTypes.oneOf(['primary', 'secondary', 'tertiary', 'basic']),
     rounded: PropTypes.bool,
     bold: PropTypes.bool,
+    disabled: PropTypes.bool,
     text: PropTypes.string
 };
 

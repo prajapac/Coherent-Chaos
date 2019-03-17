@@ -25,32 +25,42 @@
         height: $space5;
     }
 
-    &.basic {
-        background: none;
-    }
+    &:not(.disabled) {
+        &.basic {
+            background: none;
+        }
 
-    &.primary {
-        background: $primary-mid;
+        &.primary {
+            background: $primary-mid;
 
-        &:active, &:hover {
-            background: $primary-dark;
+            &:active, &:hover {
+                background: $primary-dark;
+            }
+        }
 
+        &.secondary {
+            background: $secondary-mid;
+
+            &:active, &:hover {
+                background: $secondary-dark;
+            }
+        }
+
+        &.tertiary {
+            background: $tertiary-mid;
+
+            &:active, &:hover {
+                background: $tertiary-dark;
+            }
         }
     }
 
-    &.secondary {
-        background: $secondary-mid;
+    &.disabled {
+        background: $disabled-mid;
+        cursor: not-allowed;
 
         &:active, &:hover {
-            background: $secondary-dark;
-        }
-    }
-
-    &.tertiary {
-        background: $tertiary-mid;
-
-        &:active, &:hover {
-            background: $tertiary-dark;
+            background: $disabled-dark;
         }
     }
 
