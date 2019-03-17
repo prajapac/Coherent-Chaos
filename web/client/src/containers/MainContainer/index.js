@@ -82,7 +82,6 @@ const renderPage = (props) => {
                     onExitGame={props.onExitGame}
                     onPlayerChoose={props.onJoinGamePickPlayer}
                     gameState={props.gameState}
-
                 />
             );
         default:
