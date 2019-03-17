@@ -27,7 +27,6 @@ const MenuPage = ({onCreateGame, onJoinGame, loading}) => {
                             onCreateGame={onCreateGame}/>
                     </div>
             }
-
         </Page>
     );
 };

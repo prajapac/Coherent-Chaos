@@ -1,0 +1,52 @@
+@import '../../theme.scss';
+
+.info-box {
+    position: fixed;
+    width: $space8;
+    height: auto;
+    bottom: 16px;
+    left: 16px;
+    z-index: 5;
+    opacity: 0;
+    visibility: hidden;
+
+    &.open {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.5s, visibility 0.5s;
+    }
+
+    .info-box-inner {
+        margin: $space1;
+        padding: $space2;
+        background: $bg-contrast-mid;
+        border-radius: 3px;
+        color: $font-dark;
+
+        .info-box-header {
+            display: flex;
+            width: 100%;
+            padding-bottom: $space2;
+            border-bottom: 1px solid $bg-contrast-dark;
+
+            .label {
+                flex-grow: 1;
+            }
+
+            .close {
+                cursor: pointer;
+                color: $tertiary-mid;
+                text-align: right;
+                padding: 0 $space2;
+                background: $bg-contrast-light;
+                border-radius: $space1;
+            }
+        }
+
+        .info-box-message {
+            padding-top: $space2;
+            width: 100%;
+            color: $font-mid;
+        }
+    }
+}

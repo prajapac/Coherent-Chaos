@@ -11,7 +11,7 @@ import './index.scss';
 
 const MenuPage = ({onPlayerChoose, onExitGame, gameState}) => {
     return (
-        <Page className='menu'>
+        <Page className='picker'>
             <Header
                 className='game-header'
                 left={<Button className='header-btn left' text='< Leave' onClick={onExitGame}/>}

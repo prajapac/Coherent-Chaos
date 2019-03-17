@@ -183,7 +183,9 @@ class Board extends React.Component {
                                         'cell-bg': true,
                                         'visitable': cell.visitable,
                                         'selectable': cell.selectable,
-                                        'selected': cell.selected
+                                        'selected': cell.selected,
+                                        'unoccupied': cell.state === CE,
+                                        'player': cell.state === C1 || cell.state === C2
                                     });
 
                                     return (

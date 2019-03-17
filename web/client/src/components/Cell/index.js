@@ -25,7 +25,7 @@ export const getCellColor = (state) => {
 };
 
 const Cell = ({className, state, ...props}) => {
-    const classes = classNames(className, state, 'cell');
+    const classes = classNames(className, 'cell');
     let cellColor = getCellColor(state);
 
     return (

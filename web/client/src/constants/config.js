@@ -16,6 +16,7 @@ const config = {
     ...selectedConfig,
 
     GAME_RESOURCE_URL: `${selectedConfig.API_ROOT_URL}/game`,
+    GAME_PING_INTERVAL_MILLISECONDS: 1000 * 30
 };
 
 export default config;
