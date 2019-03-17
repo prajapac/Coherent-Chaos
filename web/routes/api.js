@@ -93,7 +93,7 @@ router.post('/game', async (req, res) => {
                         board_state: value.board_state,
                         num_turns: value.num_turns,
                         whose_turn: value.whose_turn,
-                        player1_token: value.player1_token
+                        token: value.player1_token
                     });
                 }
             });
@@ -199,19 +199,15 @@ router.patch('/game/:id/', async (req, res) => {
     const db = DBConnection.db(config.DB_NAME);
     const collection = db.collection(config.DB_GAME_TABLE);
 
-    let player1_token;
-    let player2_token;
+    let playerToken;
     let gameID = req.params.id;
+    let time = Date.now();
 
-    if (req.body.player1_token) {
-        player1_token = req.body.player1_token;
-    }
-    else if (req.body.player2_token) {
-        player2_token = req.body.player2_token;
-    }
-    else {
-        log('Missing player token/Improper POST body format');
-        res.send({ 'failure': true, 'message': 'Missing player token/Improper POST body format' });
+    if (req.body.token) {
+        playerToken = req.body.token;
+    } else {
+        log('Missing playerToken or Improper POST body format');
+        res.send({ 'failure': true, 'message': 'Missing playerToken or improper POST body format' });
         return;
     }
 
@@ -219,21 +215,22 @@ router.patch('/game/:id/', async (req, res) => {
     let err, gameState = await collection.findOne({game_id: gameID});
 
     if (err) {
-        log(('Error querying by gameID generated:', err));
+        log(('Error querying by gameID:', err));
         res.send({ 'failure': true, 'message': 'Error querying by gameID generated', 'error': err });
         return;
-    }
-    else if (gameState) {
-        if (player1_token) {
+    } else if (gameState) {
+        if (playerToken === gameState.player1_token && time - gameState.player1_last_ping < config.TOKEN_EXPIRY_MILLISECONDS) { // Token not expired
             // Update player 1 last pinged time
-            gameState.player1_last_ping = Date.now();
-        }
-        else if (player2_token) {
+            gameState.player1_last_ping = time;
+        } else if (playerToken === gameState.player2_token && time - gameState.player2_last_ping < config.TOKEN_EXPIRY_MILLISECONDS) { // Token not expired
             // Update player 2 last pinged time
-            gameState.player2_last_ping = Date.now();
+            gameState.player2_last_ping = time;
+        } else {
+            log(('playerToken is invalid', gameID));
+            res.send({ 'failure': true, 'message': 'playerToken is invalid', 'playerToken': playerToken });
+            return;
         }
-    }
-    else {
+    } else {
         log(('gameID does not exist', gameID));
         res.send({ 'failure': true, 'message': 'gameID does not exist', 'gameID': gameID });
         return;
@@ -252,13 +249,14 @@ router.patch('/game/:id/', async (req, res) => {
                     res.send({ 'failure': true, 'message': 'Database insert failure', 'error': err });
                 } else {
                     log((`Successfully updated item with _id: ${value._id}`));
-
+                    // Add player activity data
+                    gameState.player_1_active = time - gameState.player1_last_ping < config.TOKEN_EXPIRY_MILLISECONDS;
+                    gameState.player_2_active = time - gameState.player2_last_ping < config.TOKEN_EXPIRY_MILLISECONDS;
                     // Remove unnecessary fields from game state to send to player
                     delete value.player1_token;
                     delete value.player2_token;
                     delete value.player1_last_ping;
                     delete value.player2_last_ping;
-
                     res.send(value);
                 }
             });

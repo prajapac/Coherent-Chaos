@@ -24,6 +24,7 @@
 
                 &.selectable {
                     cursor: pointer;
+                    z-index: 1;
                 }
 
                 &.selected {
@@ -33,9 +34,18 @@
                 }
 
                 &.visitable {
-                    fill: $bg-mid;
-                    stroke: $bg-dark;
+                    fill: $bg-light;
+                    stroke: $bg-mid;
                     cursor: pointer;
+
+                    &:hover {
+                        fill: $bg-mid;
+                        stroke: $bg-dark;
+                    }
+                }
+
+                &.player {
+                    z-index: 2;
                 }
             }
         }

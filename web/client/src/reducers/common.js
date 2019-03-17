@@ -11,7 +11,10 @@ import {
     GAME_JOIN_PICK_PLAYER_COMPLETE,
     GAME_JOIN_PICK_PLAYER_FAILURE,
 
+    GAME_PING_FAILURE,
     GAME_EXIT,
+
+    DISMISS_ERROR
 } from 'actions';
 
 import {
@@ -54,7 +57,7 @@ export default (state = defaultState, action) => {
                 createLoading: false,
                 gameState: mapAPIStateToAppState(action.gameState),
                 chosenPlayer: PLAYER_1,
-                playerToken: action.gameState.player1_token,
+                playerToken: action.gameState.token,
                 page: PAGE_GAME
             };
         case GAME_CREATE_FAILURE:
@@ -110,6 +113,18 @@ export default (state = defaultState, action) => {
                 page: PAGE_MENU
             };
 
+        // PING FAIL
+        case GAME_PING_FAILURE:
+            return {
+                ...state,
+                gameState: {},
+                chosenPlayer: null,
+                playerToken: null,
+                joinLoading: false,
+                createLoading: false,
+                errorMessage: action.message,
+                page: PAGE_MENU
+            };
         // EXIT GAME
         case GAME_EXIT:
             return {
@@ -122,6 +137,12 @@ export default (state = defaultState, action) => {
                 page: PAGE_MENU
             };
 
+        // DISMISS ERROR
+            case DISMISS_ERROR:
+                return {
+                    ...state,
+                    errorMessage: null
+                };
         default:
             return state;
     }
