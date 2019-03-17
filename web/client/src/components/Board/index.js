@@ -126,6 +126,7 @@ export const expandBoardStateToCellObjects = (boardState, selectedCell, selected
 
         if (hopToCell) {
             board[hopToCell.rowIndex][hopToCell.columnIndex].visitable = hopToCell.state === CE;
+            board[hopToCell.rowIndex][hopToCell.columnIndex].hoppedCell = cell;
         }
     });
 
@@ -133,11 +134,11 @@ export const expandBoardStateToCellObjects = (boardState, selectedCell, selected
 };
 
 export const isCellOurs = (cellState, player) => {
-    return (cellState === C1 && player === PLAYER_1) || (cellState === C2 && player === PLAYER_2)
+    return (cellState === C1 && player === PLAYER_1) || (cellState === C2 && player === PLAYER_2);
 };
 
 export const isCellEnemy = (cellState, player) => {
-    return (cellState === C1 && player === PLAYER_2) || (cellState === C2 && player === PLAYER_1)
+    return (cellState === C1 && player === PLAYER_2) || (cellState === C2 && player === PLAYER_1);
 };
 
 class Board extends React.Component {
@@ -150,16 +151,21 @@ class Board extends React.Component {
     }
 
     cellOnClick(cell) {
+        if (!this.props.isOurTurn) { return; }
+
         if (this.state.selectedCell && this.state.selectedCell.rowIndex === cell.rowIndex && this.state.selectedCell.columnIndex === cell.columnIndex) { // If clicking on selected, deselect current cell
             this.setState({
                 selectedCell: null
             });
 
-        } else if (this.state.selectedCell && cell.state === CE) { // If a cell is already selected, we're planning to move it
+        } else if (this.state.selectedCell && cell.state === CE && cell.visitable) { // If a cell is already selected, we're planning to move it
             this.props.moveCell(
                 this.state.selectedCell,
                 cell
             );
+            this.setState({
+                selectedCell: null
+            });
 
         } else if (isCellOurs(cell.state, this.props.selectedPlayer)) { // Otherwise, we need to select a cell
             this.setState({
@@ -182,7 +188,7 @@ class Board extends React.Component {
                                     const cellClasses = classNames({
                                         'cell-bg': true,
                                         'visitable': cell.visitable,
-                                        'selectable': cell.selectable,
+                                        'selectable': cell.selectable && this.props.isOurTurn,
                                         'selected': cell.selected,
                                         'unoccupied': cell.state === CE,
                                         'player': cell.state === C1 || cell.state === C2
@@ -210,12 +216,14 @@ class Board extends React.Component {
 Board.propTypes = {
     className: PropTypes.string,
     selectedPlayer: PropTypes.number,
+    isOurTurn: PropTypes.bool,
     boardState: PropTypes.array.isRequired,
     moveCell: PropTypes.func.isRequired
 };
 
 Board.defaultProps = {
     selectedPlayer: PLAYER_1,
+    isOurTurn: true,
     boardState: [
         [CE,CE,CE,CE,CE,CE],
         [CE,CE,CE,CE,CE,CE,CE],

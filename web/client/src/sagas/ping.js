@@ -27,7 +27,7 @@ function* pingWorker() {
             },
             onFailure: function* failure(err) {
                 console.log('Ping game failed: ', err);
-                yield put({type: GAME_PING_FAILURE, message: `Failed to connect to Coherent Chaos: ${err}`});
+                yield put({type: GAME_PING_FAILURE, message: `Ping failed: ${err.message || err}`});
             }
         });
     }

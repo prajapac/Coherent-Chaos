@@ -63,7 +63,7 @@ Game state schema:
     player2_token: Alphanumeric String of length 8,
     player1_last_ping: timestamp (milliseconds since epoch),
     player2_last_ping: timestamp (milliseconds since epoch),
-    whose_turn: Alphanumeric String of length 8 (Player token),
+    whose_turn: Numeric / Enum: 1 = Player 1, 2 = Player 2,
     num_turns: Integer >= 0,
 
     // Note: For board state, actual values stored would be int values: 0, 1, 2, 3
@@ -78,54 +78,128 @@ it's still unique but more manageable/readable
 
 ### API endpoints
 #### `/api/`
-- GET: Returns JSON object `{success: true}` if backend server is running properly  
+##### GET: Return JSON object `{"success": true}`.
 
 #### `/api/game`  
-- POST: Create a game, returns game state (which contains game ID)  
+##### POST: Create a game.  
+- Example response:
+```
+{
+    "game_id": "56WJ",
+    "board_state": [...],
+    "num_turns": 0,
+    "whose_turn": 1,
+    "token": "6H6XTC9M"
+}
+```
 
 #### `/api/game/:id/`  
-- GET: Returns the game state for game with ID provided in the URI  
-- POST: Connect a player (Join a game), requires player1/player2 choice, returns player token  
-
-POST data sent schema example (JSON):
-```  
-{  
-	"playerChoice": "player1",  
-}  
+##### GET: Returns the game state for game with ID provided in the URI.
+- Example response:
+```
+{
+    "game_id": "56WJ",
+    "board_state": [...],
+    "num_turns": 0,
+    "whose_turn": 1,
+    "player_1_active": false,
+    "player_2_active": false
+}
 ```
 
-Result schema example (JSON):
-```  
-{  
-    "player1_token": "WXGN4RP8"  
-}  
+##### POST: Connect a player (Join a game).
+- Example POST body:
+```
+{
+    "playerChoice": 1
+}
+```
+- Example responses:
+```
+{
+    "token": "3SK7R5DW"
+}
+```
+```
+{
+    "failure": true,
+    "message": "Game is full",
+    "gameID": "56WJ"
+}
+```
+```
+{
+    "failure": true,
+    "message": "Invalid player choice or player still connected",
+    "gameID": "56WJ",
+    "playerChoice": null
+}
 ```
 
-Above player1_token indicates the player was assigned as player 1,  
-player2_token as result would have meant player was assigned as player 2  
-
-- PATCH w/ gameID: Ping backend to keep connection alive, requires player token, returns game state  
-
-PATCH data sent schema example (JSON):
-```  
-{  
-    "player1_token": "WXGN4RP8"  
-}  
+##### PATCH: Ping backend to keep connection alive.
+- Example POST body:
 ```
+{
+    "token": "WXGN4RP8"
+}
+```
+- Example responses:
+```
+{
+    "game_id": "56WJ",
+    "board_state": [...],
+    "num_turns": 0,
+    "whose_turn": 1,
+    "player_1_active": false,
+    "player_2_active": false
+}
+```
+```
+{
+    "failure": true,
+    "message": "Missing playerToken or improper POST body format"
+}
+``` 
 
 #### `/api/game/:id/board`  
-- POST: Make a game move, requires game ID, player token of maker of move and move info, returns updates game state (also does validation of move in backend)  
-
-#### `/api/game/:id/chat`  
-- POST: Send a chat message, requires player token of sender of message and the chat message, returns updated game state (containing chat message)  
-
-POST data sent schema example (JSON):  
+##### POST: Make a game move.  
+- Example POST body:
 ```
-{  
-    "player1_token": "WXGN4RP8",  
-    "message": "Nice Move!"  
-}  
+{
+    "token": "WXGN4RP8",
+    "move": {
+        selectedCell: {
+            rowIndex: 1,
+            columnIndex: 1
+        },
+        targetCell: {
+            rowIndex: 1,
+            columnIndex: 3
+        },
+        hoppedCell: {
+            rowIndex: 1
+            columnIndex: 2
+        }
+    }
+}
 ```
+- Example responses:
+```
+{
+    "game_id": "56WJ",
+    "board_state": [...],
+    "num_turns": 0,
+    "whose_turn": 1,
+    "player_1_active": false,
+    "player_2_active": false
+}
+```
+```
+{
+    "failure": true,
+    "message": "Missing playerToken or improper POST body format"
+}
+``` 
 
 # Code Styling
 
@@ -142,5 +216,5 @@ In general, use:
 - file-names-like-this.js.
 
 # Linting
-To run linter:
-   * run `npm run lint-fix`
+- To run linter: `npm run lint`  
+- To automatically fix linting issues: `npm run lint-fix`

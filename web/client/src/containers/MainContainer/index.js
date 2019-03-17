@@ -6,6 +6,7 @@ import {
     GAME_CREATE_BEGIN,
     GAME_JOIN_ATTEMPT_BEGIN,
     GAME_JOIN_PICK_PLAYER_BEGIN,
+    GAME_MOVE_BEGIN,
     GAME_EXIT,
     DISMISS_ERROR
 } from 'actions';
@@ -19,14 +20,39 @@ import InfoBox from 'components/InfoBox';
 const mapDispatchToProps = dispatch => ({
     onExitGame: () =>
         dispatch({ type: GAME_EXIT }),
+
     onJoinGameAttempt: (gameId) =>
         dispatch({ type: GAME_JOIN_ATTEMPT_BEGIN, gameId: gameId }),
+
     onJoinGamePickPlayer: (gameId, player) =>
         dispatch({ type: GAME_JOIN_PICK_PLAYER_BEGIN, playerChoice: player, gameId: gameId }),
+
     onCreateGame: () =>
         dispatch({ type: GAME_CREATE_BEGIN }),
+
     onDismissError: () =>
         dispatch({ type: DISMISS_ERROR }),
+
+    onCellMove: (selectedCell, targetCell) => {
+        let move = {
+            selectedCell: {
+                rowIndex: selectedCell.rowIndex,
+                columnIndex: selectedCell.columnIndex
+            },
+            targetCell: {
+                rowIndex: targetCell.rowIndex,
+                columnIndex: targetCell.columnIndex
+            },
+            hoppedCell: targetCell.hoppedCell
+                ? {
+                    rowIndex: targetCell.hoppedCell.rowIndex,
+                    columnIndex: targetCell.hoppedCell.columnIndex
+                }
+                : null
+        };
+
+        dispatch({ type: GAME_MOVE_BEGIN, move: move });
+    }
 });
 
 const mapStateToProps = state => ({
@@ -34,7 +60,8 @@ const mapStateToProps = state => ({
     gameState: state.common.gameState,
     loading: state.common.joinLoading || state.common.createLoading,
     chosenPlayer: state.common.chosenPlayer,
-    errorMessage: state.common.errorMessage
+    errorMessage: state.common.errorMessage,
+    isOurTurn: state.common.isOurTurn
 });
 
 const renderPage = (props) => {
@@ -42,9 +69,11 @@ const renderPage = (props) => {
         case PAGE_GAME:
             return (
                 <GamePage
+                    onCellMove={props.onCellMove}
                     onExitGame={props.onExitGame}
                     gameState={props.gameState}
                     chosenPlayer={props.chosenPlayer}
+                    isOurTurn={props.isOurTurn}
                 />
             );
         case PAGE_PLAYER_PICKER:

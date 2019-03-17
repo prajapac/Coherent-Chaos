@@ -5,6 +5,7 @@ const gameStateSchema = require('../schemas/game-state-schema');
 const bodyParser = require('body-parser');
 const idGenerator = require('../utility/id-generator');
 const generateInitBoard = require('../utility/game-board-generator');
+const makeMove = require('../utility/game-board-manipulator').makeMove;
 
 const constants = require('../constants');
 const config = require('../constants/config');
@@ -193,7 +194,7 @@ router.post('/game/:id/', async (req, res) => {
     });
 });
 
-// Ping backend to keep connection alive
+// Ping to keep connection alive
 router.patch('/game/:id/', async (req, res) => {
     const DBConnection = getDB();
     const db = DBConnection.db(config.DB_NAME);
@@ -257,6 +258,7 @@ router.patch('/game/:id/', async (req, res) => {
                     delete value.player2_token;
                     delete value.player1_last_ping;
                     delete value.player2_last_ping;
+                    delete value._id;
                     res.send(value);
                 }
             });
@@ -264,34 +266,22 @@ router.patch('/game/:id/', async (req, res) => {
     });
 });
 
-// TODO: Make a move on game board
-router.post('/game/:id/board/', (req, res) => {
-    res.json({success: true});
-});
-
-// Send chat message
-router.post('/game/:id/chat/', async (req, res) => {
+// Make a move on game board
+router.post('/game/:id/board/', async (req, res) => {
     const DBConnection = getDB();
     const db = DBConnection.db(config.DB_NAME);
     const collection = db.collection(config.DB_GAME_TABLE);
 
-    let player1_token;
-    let player2_token;
-    let player1_last_message;
-    let player2_last_message;
+    let playerToken;
     let gameID = req.params.id;
+    let selectedPlayer;
+    let time = Date.now();
 
-    if (req.body.player1_token && req.body.message) {
-        player1_token = req.body.player1_token;
-        player1_last_message = req.body.message;
-    }
-    else if (req.body.player2_token && req.body.message) {
-        player2_token = req.body.player2_token;
-        player2_last_message = req.body.message;
-    }
-    else {
-        log('Missing player token/message/Improper POST body format');
-        res.send({ 'failure': true, 'message': 'Missing player token/message/Improper POST body format' });
+    if (req.body.token) {
+        playerToken = req.body.token;
+    } else {
+        log('Missing playerToken or Improper POST body format');
+        res.send({ 'failure': true, 'message': 'Missing playerToken or improper POST body format' });
         return;
     }
 
@@ -299,27 +289,53 @@ router.post('/game/:id/chat/', async (req, res) => {
     let err, gameState = await collection.findOne({game_id: gameID});
 
     if (err) {
-        log(('Error querying by gameID generated:', err));
+        log(('Error querying by gameID:', err));
         res.send({ 'failure': true, 'message': 'Error querying by gameID generated', 'error': err });
         return;
-    }
-    else if (gameState) {
-        if (player1_token) {
-            // Update player 1 chat message and ping time
-            gameState.player1_last_message = player1_last_message;
-            gameState.player1_last_ping = Date.now();
+    } else if (gameState) {
+        if (playerToken === gameState.player1_token && time - gameState.player1_last_ping < config.TOKEN_EXPIRY_MILLISECONDS) { // Token not expired
+            // Update player 1 last pinged time
+            gameState.player1_last_ping = time;
+            selectedPlayer = constants.PLAYER_1;
+        } else if (playerToken === gameState.player2_token && time - gameState.player2_last_ping < config.TOKEN_EXPIRY_MILLISECONDS) { // Token not expired
+            // Update player 2 last pinged time
+            gameState.player2_last_ping = time;
+            selectedPlayer = constants.PLAYER_2;
+        } else {
+            log(('playerToken is invalid', gameID));
+            res.send({ 'failure': true, 'message': 'playerToken is invalid', 'playerToken': playerToken });
+            return;
         }
-        else if (player2_token) {
-            // Update player 2 chat message and ping time
-            gameState.player2_last_message = player2_last_message;
-            gameState.player2_last_ping = Date.now();
-        }
-    }
-    else {
+    } else {
         log(('gameID does not exist', gameID));
         res.send({ 'failure': true, 'message': 'gameID does not exist', 'gameID': gameID });
         return;
     }
+
+    // Is it our turn?
+    if (!(selectedPlayer === gameState.whose_turn)) {
+        log(('It is not your turn', gameID));
+        res.send({ 'failure': true, 'message': 'It is not your turn', 'gameID': gameID });
+        return;
+    }
+
+    // Do the move
+    if (req.body.move) {
+        gameState.board_state = makeMove(req.body.move, gameState.board_state, selectedPlayer);
+
+        if (gameState.board_state == null) {
+            log(('Invalid move instructions', gameID));
+            res.send({ 'failure': true, 'message': 'Invalid move instructions' });
+            return;
+        }
+    } else {
+        log(('Missing move instructions', gameID));
+        res.send({ 'failure': true, 'message': 'Missing move instructions' });
+        return;
+    }
+
+    // Update whose turn
+    gameState.whose_turn = selectedPlayer === constants.PLAYER_1 ? constants.PLAYER_2 : constants.PLAYER_1;
 
     // Validate gamestate using Joi
     joi.validate(gameState, gameStateSchema, (err, value)=> {
@@ -334,13 +350,15 @@ router.post('/game/:id/chat/', async (req, res) => {
                     res.send({ 'failure': true, 'message': 'Database insert failure', 'error': err });
                 } else {
                     log((`Successfully updated item with _id: ${value._id}`));
-
+                    // Add player activity data
+                    gameState.player_1_active = time - gameState.player1_last_ping < config.TOKEN_EXPIRY_MILLISECONDS;
+                    gameState.player_2_active = time - gameState.player2_last_ping < config.TOKEN_EXPIRY_MILLISECONDS;
                     // Remove unnecessary fields from game state to send to player
                     delete value.player1_token;
                     delete value.player2_token;
                     delete value.player1_last_ping;
                     delete value.player2_last_ping;
-
+                    delete value._id;
                     res.send(value);
                 }
             });

@@ -11,7 +11,13 @@ import {
     GAME_JOIN_PICK_PLAYER_COMPLETE,
     GAME_JOIN_PICK_PLAYER_FAILURE,
 
+    GAME_MOVE_STARTED,
+    GAME_MOVE_COMPLETE,
+    GAME_MOVE_FAILURE,
+
+    GAME_PING_SUCCESS,
     GAME_PING_FAILURE,
+
     GAME_EXIT,
 
     DISMISS_ERROR
@@ -27,7 +33,7 @@ import {
 
 import {
     mapAPIStateToAppState
-} from 'utility';
+} from 'utility/reducer-helpers';
 
 const defaultState = {
     page: PAGE_MENU,
@@ -35,9 +41,11 @@ const defaultState = {
     gameState: {},
     chosenPlayer: null,
     playerToken: null,
+    isOurTurn: false,
 
     joinLoading: false,
     createLoading: false,
+    moveLoading: false,
 
     errorMessage: null
 };
@@ -58,6 +66,7 @@ export default (state = defaultState, action) => {
                 gameState: mapAPIStateToAppState(action.gameState),
                 chosenPlayer: PLAYER_1,
                 playerToken: action.gameState.token,
+                isOurTurn: true,
                 page: PAGE_GAME
             };
         case GAME_CREATE_FAILURE:
@@ -103,6 +112,7 @@ export default (state = defaultState, action) => {
                 joinLoading: false,
                 chosenPlayer: action.playerChoice,
                 playerToken: action.token,
+                isOurTurn: state.gameState.whoseTurn === action.playerChoice,
                 page: PAGE_GAME
             };
         case GAME_JOIN_PICK_PLAYER_FAILURE:
@@ -113,7 +123,27 @@ export default (state = defaultState, action) => {
                 page: PAGE_MENU
             };
 
-        // PING FAIL
+        // MAKE MOVE
+        case GAME_MOVE_STARTED:
+            return {
+                ...state,
+                moveLoading: true,
+                errorMessage: null
+            };
+        case GAME_MOVE_COMPLETE:
+            return {
+                ...state,
+                gameState: mapAPIStateToAppState(action.gameState),
+                isOurTurn: action.gameState.whose_turn === state.chosenPlayer,
+                moveLoading: false,
+            };
+        case GAME_MOVE_FAILURE:
+            return {
+                ...state,
+                errorMessage: action.message
+            };
+
+        // PING
         case GAME_PING_FAILURE:
             return {
                 ...state,
@@ -125,6 +155,13 @@ export default (state = defaultState, action) => {
                 errorMessage: action.message,
                 page: PAGE_MENU
             };
+        case GAME_PING_SUCCESS:
+            return {
+                ...state,
+                gameState: mapAPIStateToAppState(action.gameState),
+                isOurTurn: action.gameState.whose_turn === state.chosenPlayer
+            };
+
         // EXIT GAME
         case GAME_EXIT:
             return {

@@ -9,7 +9,7 @@ import Logo from 'components/Logo';
 
 import './index.scss';
 
-const GamePage = ({chosenPlayer, gameState, onExitGame}) => {
+const GamePage = ({isOurTurn, chosenPlayer, gameState, onExitGame, onCellMove}) => {
     return (
         <Page className='game'>
             <Header
@@ -19,7 +19,7 @@ const GamePage = ({chosenPlayer, gameState, onExitGame}) => {
                 right={<div className='header-gid'>#{gameState.id}</div>}
             />
             <div className='body'>
-                <Board boardState={gameState.board} selectedPlayer={chosenPlayer} className='gameBoard'/>
+                <Board isOurTurn={isOurTurn} moveCell={onCellMove} boardState={gameState.board} selectedPlayer={chosenPlayer} className='gameBoard'/>
             </div>
 
         </Page>
@@ -27,9 +27,11 @@ const GamePage = ({chosenPlayer, gameState, onExitGame}) => {
 };
 
 GamePage.propTypes = {
+    isOurTurn: PropTypes.bool,
     chosenPlayer: PropTypes.number,
     gameState: PropTypes.object,
-    onExitGame: PropTypes.func
+    onExitGame: PropTypes.func,
+    onCellMove: PropTypes.func
 };
 
 export default GamePage;
