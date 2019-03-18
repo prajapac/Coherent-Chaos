@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomColors{
+class CustomColors {
   final barColor = const Color(0xFF282828);
   final bodyColor = const Color(0xFF333333);
   final primaryColor = const Color(0xFF0080ff);
@@ -12,4 +12,5 @@ class CustomColors{
   final c2BorderColor = const Color(0xFF2bae00);
   final ceColor = const Color(0xFF484848);
   final ceBorderColor = const Color(0xFF333333);
+  final textFieldBgColor = const Color(0xFFb5b5b5);
 }

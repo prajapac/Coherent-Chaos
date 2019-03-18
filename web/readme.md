@@ -1,7 +1,9 @@
 # Prerequisite
-Install `Node.js` and `npm` from https://nodejs.org/en/ 
+
+Install `Node.js` and `npm` from https://nodejs.org/en/
 
 # Initial Setup
+
 1. Navigate to `/web/client` in terminal
    * run `npm install`
    * run `npm run build`
@@ -72,7 +74,7 @@ Game state schema:
 }
 
 Note: All MongoDB documents have an '_id' field generated
-and used by MongoDB. This is different from the gameID field 
+and used by MongoDB. This is different from the gameID field
 that we use to refer to a particular game instance, i.e.
 it's still unique but more manageable/readable
 

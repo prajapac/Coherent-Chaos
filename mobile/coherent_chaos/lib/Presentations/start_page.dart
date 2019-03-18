@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'custom_colors.dart';
 import 'game_board.dart';
+import '../Assets/dialogue.dart';
+
+final dialouges = new CustomDialogues();
 
 class StartPage extends StatefulWidget {
   static String tag = 'start-page';
@@ -12,65 +15,81 @@ class _StartPage extends State<StartPage> {
   CustomColors colors = new CustomColors();
   @override
   Widget build(BuildContext context) {
-    final createGame = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: MaterialButton(
-        minWidth: 200.0,
-        height: 60.0,
-        onPressed: () {
-          Navigator.of(context).pushNamed(Gameboard.tag);
-        },
-        color: colors.primaryColor,
-        child: Text('CREATE GAME', style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold)),
+    final gameDescription = Padding(
+      padding: EdgeInsets.all(0),
+      child: Container(
+          child: Text(dialouges.startGameInstruction,
+              style: TextStyle(fontSize: 16))),
+    );
+    final gameIdBox = TextFormField(
+      decoration: InputDecoration(
+        hintText: 'A4B6',
+        filled: true,
+        fillColor: colors.textFieldBgColor,
+        contentPadding: EdgeInsets.only(left: 0, right: 0, top: 1, bottom: 1),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black, width: 1),
+        ),
       ),
     );
-    final joinGame = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: MaterialButton(
-        minWidth: 200.0,
-        height: 60.0,
-        onPressed: () {
-          Navigator.of(context).pushNamed(Gameboard.tag);
-        },
-        color: colors.secondaryColor,
-        child: Text('JOIN GAME', style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold)),
-      ),
+    final createGame = MaterialButton(
+      onPressed: () {
+        Navigator.of(context).pushNamed(Gameboard.tag);
+      },
+      color: colors.secondaryColor,
+      child: Text(dialouges.createGame,
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold)),
     );
-    final tstBtn = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: MaterialButton(
-        elevation: 5.0,
-        minWidth: 200.0,
-        height: 60.0,
-        onPressed: () {
-          Navigator.of(context).pushNamed(Gameboard.tag);
-        },
-        color: colors.tertiaryColor,
-        child: Text('Test Btn1', style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold)),
-      ),
+    final joinGame = MaterialButton(
+      onPressed: () {
+        Navigator.of(context).pushNamed(Gameboard.tag);
+      },
+      color: colors.primaryColor,
+      child: Text(dialouges.joinGame,
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold)),
     );
 
     return Scaffold(
       backgroundColor: colors.bodyColor,
       appBar: AppBar(
-        title: Text("Coherent Chaos"),
+        title: Text(dialouges.title),
         backgroundColor: colors.barColor,
       ),
       body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
-          children: <Widget>[
-            createGame,
-            SizedBox(
-              height: 24.0,
-            ),
-            joinGame,
-            SizedBox(
-              height: 24.0,
-            ),
-            tstBtn,
-          ],
+        child: Container(
+          width: 300,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              color: Colors.grey),
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.only(left: 24.0, right: 24.0),
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Container(
+                  child:
+                      Text(dialouges.startGame, style: TextStyle(fontSize: 24)),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              gameDescription,
+              SizedBox(
+                height: 10.0,
+              ),
+              gameIdBox,
+              joinGame,
+              createGame,
+            ],
+          ),
         ),
       ),
     );
