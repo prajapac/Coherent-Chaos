@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'custom_colors.dart';
 import 'game_board.dart';
-import '../Assets/dialouge.dart';
+import '../Assets/dialogue.dart';
 
-final dialouges = new CustomDialouges();
+final dialouges = new CustomDialogues();
 
 class StartPage extends StatefulWidget {
   static String tag = 'start-page';
@@ -15,30 +15,26 @@ class _StartPage extends State<StartPage> {
   CustomColors colors = new CustomColors();
   @override
   Widget build(BuildContext context) {
-    final gameDescription =Padding(
+    final gameDescription = Padding(
       padding: EdgeInsets.all(0),
       child: Container(
-        child: Text(dialouges.startGameInstruction, style: TextStyle(fontSize: 16))
-      ),
+          child: Text(dialouges.startGameInstruction,
+              style: TextStyle(fontSize: 16))),
     );
-    final gameIdBox =TextFormField(   
+    final gameIdBox = TextFormField(
       decoration: InputDecoration(
         hintText: 'A4B6',
         filled: true,
         fillColor: colors.textFieldBgColor,
         contentPadding: EdgeInsets.only(left: 0, right: 0, top: 1, bottom: 1),
         border: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.black,
-            width: 1
-          ),
+          borderSide: BorderSide(color: Colors.black, width: 1),
         ),
       ),
     );
     final createGame = MaterialButton(
       onPressed: () {
-          Navigator.of(context).pushNamed(Gameboard.tag);
-        //Navigator.of(context).pushNamed(Gameboard.tag);
+        Navigator.of(context).pushNamed(Gameboard.tag);
       },
       color: colors.secondaryColor,
       child: Text(dialouges.createGame,
@@ -49,7 +45,6 @@ class _StartPage extends State<StartPage> {
     );
     final joinGame = MaterialButton(
       onPressed: () {
-        
         Navigator.of(context).pushNamed(Gameboard.tag);
       },
       color: colors.primaryColor,
@@ -68,7 +63,6 @@ class _StartPage extends State<StartPage> {
       ),
       body: Center(
         child: Container(
-          //color: Colors.white,
           width: 300,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -80,7 +74,8 @@ class _StartPage extends State<StartPage> {
               Padding(
                 padding: EdgeInsets.only(top: 10),
                 child: Container(
-                  child: Text(dialouges.startGame, style: TextStyle(fontSize: 24)),
+                  child:
+                      Text(dialouges.startGame, style: TextStyle(fontSize: 24)),
                 ),
               ),
               SizedBox(

@@ -24,7 +24,7 @@ class Gameboard extends StatefulWidget {
 
 class _Gameboard extends State<Gameboard> {
   @override
-  void initState(){
+  void initState() {
     super.initState();
     waitForGame();
   }
@@ -53,8 +53,7 @@ class _Gameboard extends State<Gameboard> {
 
     return Scaffold(
       backgroundColor: colors.bodyColor,
-      body: 
-      Center(
+      body: Center(
         child: Stack(
           alignment: Alignment.center,
           children: getBoardRows(),
@@ -83,7 +82,6 @@ class _Gameboard extends State<Gameboard> {
     }
   }
 }
-
 
 /*gameCells = [
       [c1, c1, c1, c1, c1, c1],
