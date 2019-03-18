@@ -1,7 +1,9 @@
+import 'package:coherent_chaos/Assets/dialogue.dart';
+import 'package:coherent_chaos/Business/handleApiCalls.dart';
+import 'package:coherent_chaos/Model/game.dart';
+import 'package:coherent_chaos/Presentations/custom_colors.dart';
+import 'package:coherent_chaos/Presentations/game_page.dart';
 import 'package:flutter/material.dart';
-import 'custom_colors.dart';
-import 'game_board.dart';
-import '../Assets/dialogue.dart';
 
 final dialouges = new CustomDialogues();
 
@@ -13,6 +15,8 @@ class StartPage extends StatefulWidget {
 
 class _StartPage extends State<StartPage> {
   CustomColors colors = new CustomColors();
+  HandleAPIs handleAPIs = new HandleAPIs();
+
   @override
   Widget build(BuildContext context) {
     final gameDescription = Padding(
@@ -21,6 +25,7 @@ class _StartPage extends State<StartPage> {
           child: Text(dialouges.startGameInstruction,
               style: TextStyle(fontSize: 16))),
     );
+
     final gameIdBox = TextFormField(
       decoration: InputDecoration(
         hintText: 'A4B6',
@@ -32,9 +37,16 @@ class _StartPage extends State<StartPage> {
         ),
       ),
     );
+
     final createGame = MaterialButton(
-      onPressed: () {
-        Navigator.of(context).pushNamed(Gameboard.tag);
+      onPressed: () async {
+        final Game game = await handleAPIs.intializeGame();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GamePage(game: game),
+          ),
+        );
       },
       color: colors.secondaryColor,
       child: Text(dialouges.createGame,
@@ -43,9 +55,17 @@ class _StartPage extends State<StartPage> {
               fontSize: 16.0,
               fontWeight: FontWeight.bold)),
     );
+
     final joinGame = MaterialButton(
-      onPressed: () {
-        Navigator.of(context).pushNamed(Gameboard.tag);
+      onPressed: () async {
+        final Game game =
+            await handleAPIs.intializeGame(); //TODO: make request to Join game
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GamePage(game: game),
+          ),
+        );
       },
       color: colors.primaryColor,
       child: Text(dialouges.joinGame,
