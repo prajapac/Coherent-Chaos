@@ -12,19 +12,20 @@ test('PlayerPicker renders without crashing', () => {
     expect(component.exists());
 });
 
-/*const onChoose = jest.fn();
+const onChoose = jest.fn();
 test('PlayerPicker click should trigger onChoose', () => {
     var player1Disabled = false;
     var player2Disabled = false;
+    var gameId = '123';
 
     const component = shallow(
-        <PlayerPicker onChoose={onChoose} player1Disabled={false} player2Disabled={false} />
+        <PlayerPicker gameId={gameId} onChoose={onChoose} player1Disabled={false} player2Disabled={false} />
     );
     const array = component.find('Button');
 
     array.first().simulate('click');
-    expect(onChoose).toBeCalledWith();
+    expect(onChoose).toBeCalledWith(gameId, PLAYER_1);
 
     array.at(1).simulate('click');
-    expect(onChoose).toBeCalledWith();
-});*/
+    expect(onChoose).toBeCalledWith(gameId, PLAYER_2);
+});
