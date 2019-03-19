@@ -12,12 +12,11 @@ test('PlayerPicker renders without crashing', () => {
     expect(component.exists());
 });
 
-const onChoose = jest.fn();
 test('PlayerPicker click should trigger onChoose', () => {
-    var player1Disabled = false;
-    var player2Disabled = false;
-    var gameId = '123';
-
+    let player1Disabled = false;
+    let player2Disabled = false;
+    let gameId = '1234';
+    const onChoose = jest.fn();
     const component = shallow(
         <PlayerPicker gameId={gameId} onChoose={onChoose} player1Disabled={false} player2Disabled={false} />
     );

@@ -17,8 +17,8 @@ test('Button renders with text', () => {
     expect(component.prop('children')).toEqual('text');
 });
 
-const action = jest.fn();
 test('Button click should trigger an action', () => {
+    const action = jest.fn();
     const component = shallow(
         <Button onClick={action} />
     );

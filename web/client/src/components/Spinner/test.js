@@ -9,3 +9,10 @@ test('Spinner renders without crashing', () => {
     );
     expect(component.exists());
 });
+
+test('Spinner should contain four div elements', () => {
+    const component = shallow(
+        <Spinner />
+    );
+    expect(component.find('div').children().length).toEqual(4);
+});

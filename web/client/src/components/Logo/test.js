@@ -10,8 +10,7 @@ test('Logo renders without crashing', () => {
     expect(component.exists());
 });
 
-test('Logo should take children as a parameter', () => {
-
+test('Logo should pass COHERENT CHAOS as children', () => {
     const component = shallow(
         <Logo/>
     );

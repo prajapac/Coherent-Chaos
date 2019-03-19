@@ -18,3 +18,12 @@ test('Header should contain three div elements', () => {
     expect(component.find('.header__mid').length).toEqual(1);
     expect(component.find('.header__right').length).toEqual(1);
 });
+
+test('Header should take left, mid, right as three parameters', () => {
+    const component = shallow(
+        <Header left='left' mid='mid' right='right'/>
+    );
+    expect(component.find('.header__left').prop('children')).toEqual('left');
+    expect(component.find('.header__mid').prop('children')).toEqual('mid');
+    expect(component.find('.header__right').prop('children')).toEqual('right');
+});
