@@ -1,13 +1,11 @@
+import 'package:coherent_chaos/Business/handleApiCalls.dart';
 import 'package:coherent_chaos/Model/game.dart';
+import 'package:coherent_chaos/Presentations/custom_colors.dart';
+import 'package:coherent_chaos/Presentations/game_cell.dart';
 import 'package:flutter/material.dart';
-import 'custom_colors.dart';
-import 'game_cell.dart';
-import '../Business/handleApiCalls.dart';
 
-List<List<GameCell>> gameCells;
 CustomColors colors = new CustomColors();
 HandleAPIs handleAPIs = new HandleAPIs();
-Game game;
 
 GameCell c1 =
     GameCell(cellColor: colors.c1Color, borderColor: colors.c1BorderColor);
@@ -16,55 +14,43 @@ GameCell c2 =
 GameCell ce =
     GameCell(cellColor: colors.ceColor, borderColor: colors.ceBorderColor);
 
-class Gameboard extends StatefulWidget {
-  static String tag = 'game-board';
-  @override
-  _Gameboard createState() => new _Gameboard();
-}
+class GamePage extends StatelessWidget {
+  static String tag = 'game-page';
+  final Game game;
 
-class _Gameboard extends State<Gameboard> {
-  @override
-  void initState() {
-    super.initState();
-    waitForGame();
-  }
+  GamePage({Key key, @required this.game}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-    List<Widget> getBoardRows() {
-      List<Widget> list = new List();
-      double rowDist = 29.5;
-
-      for (int i = 0; i < gameCells.length; i++) {
-        list.add(
-          Positioned(
-            top:
-                (screenHeight - rowDist * gameCells.length) / 2.0 + rowDist * i,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: gameCells[i],
-            ),
-          ),
-        );
-      }
-      return list;
-    }
-
     return Scaffold(
       backgroundColor: colors.bodyColor,
       body: Center(
         child: Stack(
           alignment: Alignment.center,
-          children: getBoardRows(),
+          children: getGamePage(context),
         ),
       ),
     );
   }
 
-  void waitForGame() async {
-    final Game game = await handleAPIs.intializeGame();
-    gameCells = new List();
+  List<Widget> getGamePage(BuildContext context) {
+    List<Widget> gamePage = getBoardRows(context);
+    gamePage.add(Positioned(
+      top: 40,
+      right: 10,
+      child:
+          Text('Game ID: ' + game.id, style: Theme.of(context).textTheme.title),
+    ));
+    
+    return gamePage;
+  }
+
+  List<Widget> getBoardRows(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
+    List<List<GameCell>> gameCells = new List();
+    List<Widget> boardRows = new List();
+    final double rowDist = 29.5;
+
     if (game != null) {
       for (var row in game.board) {
         List<GameCell> newRow = new List<GameCell>();
@@ -80,6 +66,19 @@ class _Gameboard extends State<Gameboard> {
         gameCells.add(newRow);
       }
     }
+
+    for (int i = 0; i < gameCells.length; i++) {
+      boardRows.add(
+        Positioned(
+          top: (screenHeight - rowDist * gameCells.length) / 2.0 + rowDist * i,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: gameCells[i],
+          ),
+        ),
+      );
+    }
+    return boardRows;
   }
 }
 
