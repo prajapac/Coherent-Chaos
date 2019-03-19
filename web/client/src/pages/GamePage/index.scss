@@ -6,4 +6,17 @@
             color: $tertiary-mid;
         }
     }
+
+    .body {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .gutter {
+            width: $space8;
+            padding: $space4;
+            display: flex;
+            align-items: start;
+        }
+    }
 }

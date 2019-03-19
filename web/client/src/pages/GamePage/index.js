@@ -6,10 +6,13 @@ import Button from 'components/Button';
 import Page from 'components/Page';
 import Board from 'components/Board';
 import Logo from 'components/Logo';
+import HexagonLabel from "../../components/HexagonLabel";
+
+import { CELL_PLAYER_1, CELL_PLAYER_2, PLAYER_1 } from 'constants';
 
 import './index.scss';
 
-const GamePage = ({isOurTurn, chosenPlayer, gameState, onExitGame, onCellMove}) => {
+const GamePage = ({isOurTurn, chosenPlayer, whoseTurn, gameState, onExitGame, onCellMove}) => {
     return (
         <Page className='game'>
             <Header
@@ -19,7 +22,30 @@ const GamePage = ({isOurTurn, chosenPlayer, gameState, onExitGame, onCellMove}) 
                 right={<div className='header-gid'>#{gameState.id}</div>}
             />
             <div className='body'>
-                <Board isOurTurn={isOurTurn} moveCell={onCellMove} boardState={gameState.board} selectedPlayer={chosenPlayer} className='gameBoard'/>
+                <div className='gutter'>
+                    <HexagonLabel
+                        cellState={chosenPlayer}
+                        children={
+                            <div>
+                                <div>YOU</div>
+                            </div>
+                        }
+                    />
+                    <HexagonLabel
+                        cellState={whoseTurn === PLAYER_1 ? CELL_PLAYER_1 : CELL_PLAYER_2}
+                        children={
+                            <div>
+                                <div>TURN</div>
+                                <div>{gameState.turnNumber}</div>
+                            </div>
+                        }
+                    />
+                </div>
+                <div className='gutter board-gutter'>
+                    <Board isOurTurn={isOurTurn} moveCell={onCellMove} boardState={gameState.board} selectedPlayer={chosenPlayer} className='game-board'/>
+                </div>
+                <div className='gutter'>
+                </div>
             </div>
 
         </Page>
@@ -29,6 +55,7 @@ const GamePage = ({isOurTurn, chosenPlayer, gameState, onExitGame, onCellMove}) 
 GamePage.propTypes = {
     isOurTurn: PropTypes.bool,
     chosenPlayer: PropTypes.number,
+    whoseTurn: PropTypes.number,
     gameState: PropTypes.object,
     onExitGame: PropTypes.func,
     onCellMove: PropTypes.func
