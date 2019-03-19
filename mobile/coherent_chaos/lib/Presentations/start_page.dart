@@ -19,11 +19,20 @@ class _StartPage extends State<StartPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
+
     final gameDescription = Padding(
-      padding: EdgeInsets.all(0),
+      padding: EdgeInsets.only(top: 10.0, bottom: 30.0),
       child: Container(
-          child: Text(dialouges.startGameInstruction,
-              style: TextStyle(fontSize: 16))),
+        child: Text(
+          dialouges.startGameInstruction,
+          style: TextStyle(
+              color: Colors.grey[700],
+              fontSize: 23.0,
+              fontFamily: 'Montserrat'),
+        ),
+      ),
     );
 
     final gameIdBox = TextFormField(
@@ -31,9 +40,9 @@ class _StartPage extends State<StartPage> {
         hintText: 'A4B6',
         filled: true,
         fillColor: colors.textFieldBgColor,
-        contentPadding: EdgeInsets.only(left: 0, right: 0, top: 1, bottom: 1),
+        contentPadding: EdgeInsets.only(left: 8, right: 8, top: 10, bottom: 10),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black, width: 1),
+          borderSide: BorderSide(color: colors.textFieldBgColor, width: 1),
         ),
       ),
     );
@@ -49,11 +58,14 @@ class _StartPage extends State<StartPage> {
         );
       },
       color: colors.secondaryColor,
-      child: Text(dialouges.createGame,
-          style: TextStyle(
-              color: Colors.black,
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold)),
+      height: 60.0,
+      child: Text(
+        dialouges.createGame,
+        style: TextStyle(
+            color: Colors.grey[200].withOpacity(0.9),
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold),
+      ),
     );
 
     final joinGame = MaterialButton(
@@ -68,11 +80,14 @@ class _StartPage extends State<StartPage> {
         );
       },
       color: colors.primaryColor,
-      child: Text(dialouges.joinGame,
-          style: TextStyle(
-              color: Colors.black,
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold)),
+      height: 60.0,
+      child: Text(
+        dialouges.joinGame,
+        style: TextStyle(
+            color: Colors.grey[200].withOpacity(0.9),
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold),
+      ),
     );
 
     return Scaffold(
@@ -83,30 +98,37 @@ class _StartPage extends State<StartPage> {
       ),
       body: Center(
         child: Container(
-          width: 300,
+          width: screenWidth * 0.8,
+          height: screenHeight * 0.6,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-              color: Colors.grey),
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+              color: colors.createJoinGameBgColor),
           child: ListView(
             shrinkWrap: true,
             padding: EdgeInsets.only(left: 24.0, right: 24.0),
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.only(top: 40.0, bottom: 20.0),
                 child: Container(
-                  child:
-                      Text(dialouges.startGame, style: TextStyle(fontSize: 24)),
+                  child: Text(
+                    dialouges.startGame,
+                    style: TextStyle(
+                        color: Colors.grey[700],
+                        fontSize: 26,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
+              gameDescription,
+              gameIdBox,
               SizedBox(
                 height: 20.0,
               ),
-              gameDescription,
-              SizedBox(
-                height: 10.0,
-              ),
-              gameIdBox,
               joinGame,
+              SizedBox(
+                height: 20.0,
+              ),
               createGame,
             ],
           ),
