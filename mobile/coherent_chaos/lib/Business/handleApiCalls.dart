@@ -5,8 +5,6 @@ import 'dart:async';
 import 'dart:convert';
 import '../Model/game.dart';
 
-//import 'package:http/http.dart';
-
 final baseURI = "http://18.191.224.215:5000/api/game";
 
 class HandleAPIs {
@@ -27,7 +25,7 @@ class HandleAPIs {
     if (response.statusCode == 200) {
       return Game.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to create Game');
+      throw Exception('Failed to create Game with response code: ' + response.statusCode.toString());
     }
   }
 }

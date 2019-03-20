@@ -4,6 +4,8 @@ import 'package:coherent_chaos/Model/game.dart';
 import 'package:coherent_chaos/Presentations/custom_colors.dart';
 import 'package:coherent_chaos/Presentations/game_page.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:async';
 
 final dialouges = new CustomDialogues();
 
@@ -105,15 +107,19 @@ class _StartPage extends State<StartPage> {
   Widget getCreateGameButton() {
     return MaterialButton(
       onPressed: () async {
-        final Game game = await handleAPIs.intializeGame();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => GamePage(game: game),
-          ),
-        );
+        try {
+          final Game game = await handleAPIs.intializeGame();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GamePage(game: game),
+            ),
+          );
+        } catch (e) {
+          showErrorMessage(e.toString());
+        }
       },
-      color: colors.tertiaryColor,
+      color: colors.secondaryColor,
       height: 60.0,
       child: Text(
         dialouges.createGame,
@@ -147,5 +153,16 @@ class _StartPage extends State<StartPage> {
             fontWeight: FontWeight.bold),
       ),
     );
+  }
+
+  Future<bool> showErrorMessage(String msg) {
+    return Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 8,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 }
