@@ -8,6 +8,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:async';
 
 final dialouges = new CustomDialogues();
+double screenHeight;
+double screenWidth;
 
 class ChoosePlayerPage extends StatelessWidget {
   static String tag = 'game-page';
@@ -19,8 +21,8 @@ class ChoosePlayerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-    final double screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: colors.bodyColor,
@@ -50,13 +52,13 @@ class ChoosePlayerPage extends StatelessWidget {
 
   Widget getChoosePlayerDialouge() {
     return Padding(
-      padding: EdgeInsets.only(top: 30.0, bottom: 30.0),
+      padding: EdgeInsets.symmetric(vertical: screenHeight * 0.05),
       child: Container(
         child: Text(
           dialouges.chooseSide,
           style: TextStyle(
-              color: Colors.grey[700],
-              fontSize: 23.0,
+              color: colors.textColor,
+              fontSize: screenHeight * 0.03,
               fontFamily: 'Montserrat'),
         ),
       ),
@@ -82,13 +84,13 @@ class ChoosePlayerPage extends StatelessWidget {
         }
       },
       color: game.player1Active ? colors.disabledColor : colors.primaryColor,
-      height: 60.0,
-      minWidth: MediaQuery.of(context).size.width * 0.5,
+      height: screenHeight * 0.08,
+      minWidth: screenWidth * 0.5,
       child: Text(
         dialouges.player1,
         style: TextStyle(
-            color: Colors.grey[200].withOpacity(0.9),
-            fontSize: 20.0,
+            color: colors.buttonTextColor,
+            fontSize: screenHeight * 0.03,
             fontWeight: FontWeight.bold),
       ),
     );
@@ -113,13 +115,13 @@ class ChoosePlayerPage extends StatelessWidget {
         }
       },
       color: game.player2Active ? colors.disabledColor : colors.secondaryColor,
-      height: 60.0,
-      minWidth: MediaQuery.of(context).size.width * 0.5,
+      height: screenHeight * 0.08,
+      minWidth: screenWidth * 0.5,
       child: Text(
         dialouges.player2,
         style: TextStyle(
-            color: Colors.grey[200].withOpacity(0.9),
-            fontSize: 20.0,
+            color: colors.buttonTextColor,
+            fontSize: screenHeight * 0.03,
             fontWeight: FontWeight.bold),
       ),
     );

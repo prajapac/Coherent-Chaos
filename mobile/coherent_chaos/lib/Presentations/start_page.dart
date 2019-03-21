@@ -20,11 +20,15 @@ class _StartPage extends State<StartPage> {
   CustomColors colors = new CustomColors();
   HandleAPIs handleAPIs = new HandleAPIs();
   TextEditingController gameIdController = TextEditingController();
+  double screenHeight;
+  double screenWidth;
+  bool portraitView;
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-    final double screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+    portraitView = MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Scaffold(
       backgroundColor: colors.bodyColor,
@@ -35,23 +39,24 @@ class _StartPage extends State<StartPage> {
       body: Center(
         child: Container(
           width: screenWidth * 0.8,
-          height: screenHeight * 0.6,
+          height: portraitView ? screenHeight * 0.6 :screenHeight * 0.65,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(4)),
               color: colors.createJoinGameBgColor),
           child: ListView(
             shrinkWrap: true,
-            padding: EdgeInsets.only(left: 24.0, right: 24.0),
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.04),
             children: <Widget>[
               getGameTitle(),
               getGameDescription(),
               getGameIdBox(),
               SizedBox(
-                height: 20.0,
+                height: screenHeight * 0.03,
               ),
               getJoinGameButton(),
               SizedBox(
-                height: 20.0,
+                height: screenHeight * 0.02,
               ),
               getCreateGameButton(),
             ],
@@ -63,13 +68,13 @@ class _StartPage extends State<StartPage> {
 
   Widget getGameTitle() {
     return Padding(
-      padding: EdgeInsets.only(top: 40.0, bottom: 20.0),
+      padding: EdgeInsets.only(bottom: screenHeight * 0.03),
       child: Container(
         child: Text(
           dialouges.startGame,
           style: TextStyle(
-              color: Colors.grey[700],
-              fontSize: 26,
+              color: colors.textColor,
+              fontSize: screenHeight * 0.04,
               fontFamily: 'Montserrat',
               fontWeight: FontWeight.bold),
         ),
@@ -79,13 +84,13 @@ class _StartPage extends State<StartPage> {
 
   Widget getGameDescription() {
     return Padding(
-      padding: EdgeInsets.only(top: 10.0, bottom: 30.0),
+      padding: EdgeInsets.only(bottom: screenHeight * 0.04),
       child: Container(
         child: Text(
           dialouges.startGameInstruction,
           style: TextStyle(
-              color: Colors.grey[700],
-              fontSize: 23.0,
+              color: colors.textColor,
+              fontSize: screenHeight * 0.025,
               fontFamily: 'Montserrat'),
         ),
       ),
@@ -101,8 +106,9 @@ class _StartPage extends State<StartPage> {
       decoration: InputDecoration(
         hintText: 'A4B6',
         filled: true,
+        hintStyle: TextStyle(color: Colors.grey),
         fillColor: colors.textFieldBgColor,
-        contentPadding: EdgeInsets.only(left: 8, right: 8, top: 10, bottom: 10),
+        contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02, vertical: screenHeight * 0.02),
         border: OutlineInputBorder(
           borderSide: BorderSide(color: colors.textFieldBgColor, width: 1),
         ),
@@ -126,12 +132,12 @@ class _StartPage extends State<StartPage> {
         }
       },
       color: colors.secondaryColor,
-      height: 60.0,
+      height: screenHeight * 0.08,
       child: Text(
         dialouges.createGame,
         style: TextStyle(
-            color: Colors.grey[200].withOpacity(0.9),
-            fontSize: 20.0,
+            color: colors.buttonTextColor,
+            fontSize: screenHeight * 0.03,
             fontWeight: FontWeight.bold),
       ),
     );
@@ -153,12 +159,12 @@ class _StartPage extends State<StartPage> {
         }
       },
       color: colors.primaryColor,
-      height: 60.0,
+      height: screenHeight * 0.08,
       child: Text(
         dialouges.joinGame,
         style: TextStyle(
-            color: Colors.grey[200].withOpacity(0.9),
-            fontSize: 20.0,
+            color: colors.buttonTextColor,
+            fontSize: screenHeight * 0.03,
             fontWeight: FontWeight.bold),
       ),
     );

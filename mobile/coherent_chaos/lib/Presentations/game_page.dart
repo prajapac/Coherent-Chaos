@@ -47,8 +47,8 @@ class GamePage extends StatelessWidget {
   List<Widget> getGamePage(BuildContext context) {
     List<Widget> gamePage = getBoardRows(context);
     gamePage.add(Positioned(
-      top: 40,
-      right: 10,
+      top: MediaQuery.of(context).size.height * 0.06,
+      right: MediaQuery.of(context).size.width * 0.05,
       child: Text('Game ID: ' + game.gameId,
           style: Theme.of(context).textTheme.title),
     ));
@@ -92,17 +92,3 @@ class GamePage extends StatelessWidget {
     return boardRows;
   }
 }
-
-/*gameCells = [
-      [c1, c1, c1, c1, c1, c1],
-      [ce, c1, c1, c1, c1, c1, ce],
-      [ce, ce, ce, ce, ce, ce, ce, ce],
-      [ce, ce, ce, ce, ce, ce, ce, ce, ce],
-      [ce, ce, ce, ce, ce, ce, ce, ce, ce, ce],
-      [ce, ce, ce, ce, ce, ce, ce, ce, ce, ce, ce],
-      [ce, ce, ce, ce, ce, ce, ce, ce, ce, ce],
-      [ce, ce, ce, ce, ce, ce, ce, ce, ce],
-      [ce, ce, ce, ce, ce, ce, ce, ce],
-      [ce, c2, c2, c2, c2, c2, ce],
-      [c2, c2, c2, c2, c2, c2]
-    ];*/
