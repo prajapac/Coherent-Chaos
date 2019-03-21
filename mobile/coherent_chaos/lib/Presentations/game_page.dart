@@ -1,7 +1,8 @@
+import 'package:coherent_chaos/Assets/custom_colors.dart';
 import 'package:coherent_chaos/Business/handleApiCalls.dart';
+import 'package:coherent_chaos/Controllers/game_cell.dart';
 import 'package:coherent_chaos/Model/game.dart';
-import 'package:coherent_chaos/Presentations/custom_colors.dart';
-import 'package:coherent_chaos/Presentations/game_cell.dart';
+import 'package:coherent_chaos/Presentations/start_page.dart';
 import 'package:flutter/material.dart';
 
 CustomColors colors = new CustomColors();
@@ -22,12 +23,22 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: colors.bodyColor,
-      body: Center(
-        child: Stack(
-          alignment: Alignment.center,
-          children: getGamePage(context),
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => StartPage(),
+          ),
+        );
+      },
+      child: Scaffold(
+        backgroundColor: colors.bodyColor,
+        body: Center(
+          child: Stack(
+            alignment: Alignment.center,
+            children: getGamePage(context),
+          ),
         ),
       ),
     );
@@ -36,12 +47,12 @@ class GamePage extends StatelessWidget {
   List<Widget> getGamePage(BuildContext context) {
     List<Widget> gamePage = getBoardRows(context);
     gamePage.add(Positioned(
-      top: 40,
-      right: 10,
-      child:
-          Text('Game ID: ' + game.id, style: Theme.of(context).textTheme.title),
+      top: MediaQuery.of(context).size.height * 0.06,
+      right: MediaQuery.of(context).size.width * 0.05,
+      child: Text('Game ID: ' + game.gameId,
+          style: Theme.of(context).textTheme.title),
     ));
-    
+
     return gamePage;
   }
 
@@ -81,17 +92,3 @@ class GamePage extends StatelessWidget {
     return boardRows;
   }
 }
-
-/*gameCells = [
-      [c1, c1, c1, c1, c1, c1],
-      [ce, c1, c1, c1, c1, c1, ce],
-      [ce, ce, ce, ce, ce, ce, ce, ce],
-      [ce, ce, ce, ce, ce, ce, ce, ce, ce],
-      [ce, ce, ce, ce, ce, ce, ce, ce, ce, ce],
-      [ce, ce, ce, ce, ce, ce, ce, ce, ce, ce, ce],
-      [ce, ce, ce, ce, ce, ce, ce, ce, ce, ce],
-      [ce, ce, ce, ce, ce, ce, ce, ce, ce],
-      [ce, ce, ce, ce, ce, ce, ce, ce],
-      [ce, c2, c2, c2, c2, c2, ce],
-      [c2, c2, c2, c2, c2, c2]
-    ];*/

@@ -1,6 +1,6 @@
+import 'package:coherent_chaos/Assets/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:polygon_clipper/polygon_clipper.dart';
-import 'custom_colors.dart';
 
 class GameCell extends StatefulWidget {
   static String tag = 'game-cell';

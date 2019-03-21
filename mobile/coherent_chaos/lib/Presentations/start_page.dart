@@ -1,9 +1,12 @@
+import 'package:coherent_chaos/Assets/custom_colors.dart';
 import 'package:coherent_chaos/Assets/dialogue.dart';
 import 'package:coherent_chaos/Business/handleApiCalls.dart';
 import 'package:coherent_chaos/Model/game.dart';
-import 'package:coherent_chaos/Presentations/custom_colors.dart';
+import 'package:coherent_chaos/Presentations/choose_player_page.dart';
 import 'package:coherent_chaos/Presentations/game_page.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:async';
 
 final dialouges = new CustomDialogues();
 
@@ -16,79 +19,16 @@ class StartPage extends StatefulWidget {
 class _StartPage extends State<StartPage> {
   CustomColors colors = new CustomColors();
   HandleAPIs handleAPIs = new HandleAPIs();
+  TextEditingController gameIdController = TextEditingController();
+  double screenHeight;
+  double screenWidth;
+  bool portraitView;
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-    final double screenWidth = MediaQuery.of(context).size.width;
-
-    final gameDescription = Padding(
-      padding: EdgeInsets.only(top: 10.0, bottom: 30.0),
-      child: Container(
-        child: Text(
-          dialouges.startGameInstruction,
-          style: TextStyle(
-              color: Colors.grey[700],
-              fontSize: 23.0,
-              fontFamily: 'Montserrat'),
-        ),
-      ),
-    );
-
-    final gameIdBox = TextFormField(
-      decoration: InputDecoration(
-        hintText: 'A4B6',
-        filled: true,
-        fillColor: colors.textFieldBgColor,
-        contentPadding: EdgeInsets.only(left: 8, right: 8, top: 10, bottom: 10),
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: colors.textFieldBgColor, width: 1),
-        ),
-      ),
-    );
-
-    final createGame = MaterialButton(
-      onPressed: () async {
-        final Game game = await handleAPIs.intializeGame();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => GamePage(game: game),
-          ),
-        );
-      },
-      color: colors.secondaryColor,
-      height: 60.0,
-      child: Text(
-        dialouges.createGame,
-        style: TextStyle(
-            color: Colors.grey[200].withOpacity(0.9),
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold),
-      ),
-    );
-
-    final joinGame = MaterialButton(
-      onPressed: () async {
-        final Game game =
-            await handleAPIs.intializeGame(); //TODO: make request to Join game
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => GamePage(game: game),
-          ),
-        );
-      },
-      color: colors.primaryColor,
-      height: 60.0,
-      child: Text(
-        dialouges.joinGame,
-        style: TextStyle(
-            color: Colors.grey[200].withOpacity(0.9),
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold),
-      ),
-    );
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+    portraitView = MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Scaffold(
       backgroundColor: colors.bodyColor,
@@ -99,41 +39,145 @@ class _StartPage extends State<StartPage> {
       body: Center(
         child: Container(
           width: screenWidth * 0.8,
-          height: screenHeight * 0.6,
+          height: portraitView ? screenHeight * 0.6 :screenHeight * 0.65,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(4)),
               color: colors.createJoinGameBgColor),
           child: ListView(
             shrinkWrap: true,
-            padding: EdgeInsets.only(left: 24.0, right: 24.0),
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.04),
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 40.0, bottom: 20.0),
-                child: Container(
-                  child: Text(
-                    dialouges.startGame,
-                    style: TextStyle(
-                        color: Colors.grey[700],
-                        fontSize: 26,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              gameDescription,
-              gameIdBox,
+              getGameTitle(),
+              getGameDescription(),
+              getGameIdBox(),
               SizedBox(
-                height: 20.0,
+                height: screenHeight * 0.03,
               ),
-              joinGame,
+              getJoinGameButton(),
               SizedBox(
-                height: 20.0,
+                height: screenHeight * 0.02,
               ),
-              createGame,
+              getCreateGameButton(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget getGameTitle() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenHeight * 0.03),
+      child: Container(
+        child: Text(
+          dialouges.startGame,
+          style: TextStyle(
+              color: colors.textColor,
+              fontSize: screenHeight * 0.04,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
+  Widget getGameDescription() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenHeight * 0.04),
+      child: Container(
+        child: Text(
+          dialouges.startGameInstruction,
+          style: TextStyle(
+              color: colors.textColor,
+              fontSize: screenHeight * 0.025,
+              fontFamily: 'Montserrat'),
+        ),
+      ),
+    );
+  }
+
+  Widget getGameIdBox() {
+    return TextFormField(
+      controller: gameIdController,
+      maxLength: 4,
+      autocorrect: false,
+      textCapitalization: TextCapitalization.characters,
+      decoration: InputDecoration(
+        hintText: 'A4B6',
+        filled: true,
+        hintStyle: TextStyle(color: Colors.grey),
+        fillColor: colors.textFieldBgColor,
+        contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02, vertical: screenHeight * 0.02),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: colors.textFieldBgColor, width: 1),
+        ),
+      ),
+    );
+  }
+
+  Widget getCreateGameButton() {
+    return MaterialButton(
+      onPressed: () async {
+        try {
+          final Game game = await handleAPIs.intializeGame();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GamePage(game: game),
+            ),
+          );
+        } catch (e) {
+          showErrorMessage(e.toString());
+        }
+      },
+      color: colors.secondaryColor,
+      height: screenHeight * 0.08,
+      child: Text(
+        dialouges.createGame,
+        style: TextStyle(
+            color: colors.buttonTextColor,
+            fontSize: screenHeight * 0.03,
+            fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget getJoinGameButton() {
+    return MaterialButton(
+      onPressed: () async {
+        try {
+          final game = await handleAPIs.getGame(gameIdController.text);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChoosePlayerPage(game: game),
+            ),
+          );
+        } catch (e) {
+          showErrorMessage(e.toString());
+        }
+      },
+      color: colors.primaryColor,
+      height: screenHeight * 0.08,
+      child: Text(
+        dialouges.joinGame,
+        style: TextStyle(
+            color: colors.buttonTextColor,
+            fontSize: screenHeight * 0.03,
+            fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Future<bool> showErrorMessage(String msg) {
+    return Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 8,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 }
