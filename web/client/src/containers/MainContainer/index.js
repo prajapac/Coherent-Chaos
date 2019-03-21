@@ -61,7 +61,7 @@ const mapStateToProps = state => ({
     loading: state.common.joinLoading || state.common.createLoading,
     chosenPlayer: state.common.chosenPlayer,
     errorMessage: state.common.errorMessage,
-    isOurTurn: state.common.isOurTurn
+    isOurTurn: state.common.isOurTurn,
 });
 
 const renderPage = (props) => {
@@ -74,6 +74,7 @@ const renderPage = (props) => {
                     gameState={props.gameState}
                     chosenPlayer={props.chosenPlayer}
                     isOurTurn={props.isOurTurn}
+                    whoseTurn={props.gameState.whoseTurn}
                 />
             );
         case PAGE_PLAYER_PICKER:
@@ -117,6 +118,7 @@ MainContainer.propTypes = {
     gameState: PropTypes.object,
     loading: PropTypes.bool,
     chosenPlayer: PropTypes.number,
+    whoseTurn: PropTypes.number,
 
     // Dispatch functions
     onExitGame: PropTypes.func,
@@ -130,6 +132,7 @@ MainContainer.defaultProps = {
     gameState: {},
     loading: false,
     chosenPlayer: null,
+    whoseTurn: null,
 
     onExitGame: () => {},
     onCreateGame: () => {},
