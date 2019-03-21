@@ -14,4 +14,5 @@ class CustomColors {
   final ceBorderColor = const Color(0xFF333333);
   final textFieldBgColor = const Color(0xFFb5b5b5);
   final createJoinGameBgColor = const Color(0xFFd3d3d3);
+  final disabledColor = const Color(0xFF9e9e9e);
 }

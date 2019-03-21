@@ -1,7 +1,8 @@
+import 'package:coherent_chaos/Assets/custom_colors.dart';
 import 'package:coherent_chaos/Business/handleApiCalls.dart';
+import 'package:coherent_chaos/Controllers/game_cell.dart';
 import 'package:coherent_chaos/Model/game.dart';
-import 'package:coherent_chaos/Presentations/custom_colors.dart';
-import 'package:coherent_chaos/Presentations/game_cell.dart';
+import 'package:coherent_chaos/Presentations/start_page.dart';
 import 'package:flutter/material.dart';
 
 CustomColors colors = new CustomColors();
@@ -22,12 +23,22 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: colors.bodyColor,
-      body: Center(
-        child: Stack(
-          alignment: Alignment.center,
-          children: getGamePage(context),
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => StartPage(),
+          ),
+        );
+      },
+      child: Scaffold(
+        backgroundColor: colors.bodyColor,
+        body: Center(
+          child: Stack(
+            alignment: Alignment.center,
+            children: getGamePage(context),
+          ),
         ),
       ),
     );
@@ -38,10 +49,10 @@ class GamePage extends StatelessWidget {
     gamePage.add(Positioned(
       top: 40,
       right: 10,
-      child:
-          Text('Game ID: ' + game.id, style: Theme.of(context).textTheme.title),
+      child: Text('Game ID: ' + game.gameId,
+          style: Theme.of(context).textTheme.title),
     ));
-    
+
     return gamePage;
   }
 
