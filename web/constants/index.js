@@ -5,6 +5,8 @@ module.exports = {
     CELL_OUT_OF_PLAY: 3,
 
     PLAYER_1: 1,
-    PLAYER_2: 2
+    PLAYER_2: 2,
+
+    DECAY_TURN_NUMBER: 5
 };
 

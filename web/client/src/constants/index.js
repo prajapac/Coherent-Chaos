@@ -17,3 +17,5 @@ export const COLOR_OPTION_LIGHT = 'light';
 export const COLOR_OPTION_DARK = 'dark';
 
 export const GAME_ID_LENGTH = 4;
+
+export const DECAY_TURN_NUMBER = 5;

@@ -8,6 +8,7 @@ import {
     CELL_PLAYER_1 as C1,
     CELL_PLAYER_2 as C2,
     CELL_EMPTY as CE,
+    CELL_OUT_OF_PLAY as COOP,
     PLAYER_1,
     PLAYER_2
 } from 'constants';
@@ -191,7 +192,8 @@ class Board extends React.Component {
                                         'selectable': cell.selectable && this.props.isOurTurn,
                                         'selected': cell.selected,
                                         'unoccupied': cell.state === CE,
-                                        'player': cell.state === C1 || cell.state === C2
+                                        'player': cell.state === C1 || cell.state === C2,
+                                        'out-of-play': cell.state === COOP
                                     });
 
                                     return (

@@ -5,6 +5,7 @@ const gameStateSchema = require('../schemas/game-state-schema');
 const bodyParser = require('body-parser');
 const idGenerator = require('../utility/id-generator');
 const generateInitBoard = require('../utility/game-board-generator');
+const generateDecay = require('../utility/game-board-decay');
 const makeMove = require('../utility/game-board-manipulator').makeMove;
 
 const constants = require('../constants');
@@ -336,6 +337,11 @@ router.post('/game/:id/board/', async (req, res) => {
 
     // Update whose turn
     gameState.whose_turn = selectedPlayer === constants.PLAYER_1 ? constants.PLAYER_2 : constants.PLAYER_1;
+
+    // Check if circle closure should occur
+    if (gameState.num_turns !== 0 && gameState.num_turns % constants.DECAY_TURN_NUMBER === 0 && gameState.whose_turn === constants.PLAYER_1) {
+        gameState.board_state = generateDecay(gameState.board_state, gameState.num_turns);
+    }
 
     // Validate gamestate using Joi
     joi.validate(gameState, gameStateSchema, (err, value)=> {
