@@ -22,6 +22,9 @@ dependencies:
 
   # A Flutter plugin to create views using regular polygon shapes (e.g. Pentagons and Hexagons).
   polygon_clipper: ^1.0.1
+  
+  http: ^0.11.3+16
+  fluttertoast: ^3.0.3
 
 dev_dependencies:
   flutter_test:
@@ -38,6 +41,11 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  fonts:
+      - family: Montserrat
+        fonts:
+          - asset: fonts/Montserrat-Regular.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

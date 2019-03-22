@@ -4,7 +4,13 @@ import classNames from 'classnames';
 
 import Cell from 'components/Cell';
 
-import { CELL_PLAYER_1 as C1, CELL_PLAYER_2 as C2, CELL_EMPTY as CE } from 'constants';
+import {
+    CELL_PLAYER_1 as C1,
+    CELL_PLAYER_2 as C2,
+    CELL_EMPTY as CE,
+    PLAYER_1,
+    PLAYER_2
+} from 'constants';
 
 import './index.scss';
 
@@ -29,8 +35,9 @@ export const getOppositeCell = (boardState, sourceCell, pivotCell) => {
     } else {
         targetCell.rowIndex = pivotCell.rowIndex + rowDistance;
 
+        // Special case, crossing center row of hexagon
         if ((typeof boardState[pivotCell.rowIndex + 1] !== 'undefined' && boardState[pivotCell.rowIndex].length > boardState[pivotCell.rowIndex + 1].length) &&
-            (typeof boardState[pivotCell.rowIndex - 1] !== 'undefined' && boardState[pivotCell.rowIndex].length > boardState[pivotCell.rowIndex - 1].length)) { // Special case, crossing center row of hexagon
+            (typeof boardState[pivotCell.rowIndex - 1] !== 'undefined' && boardState[pivotCell.rowIndex].length > boardState[pivotCell.rowIndex - 1].length)) {
             targetCell.columnIndex = columnDistance !== 0
                 ? pivotCell.columnIndex
                 : pivotCell.columnIndex - Math.abs(rowDistance);
@@ -85,7 +92,7 @@ export const isCellVisitable = (boardState, sourceCell, destCell) => {
 };
 
 // Convert simple board state array to object array for easier manipulation
-export const expandBoardStateToCellObjects = (boardState, selectedCell) => {
+export const expandBoardStateToCellObjects = (boardState, selectedCell, selectedPlayer) => {
     let hoppables = [];
     let board = boardState.map((row, rowIndex) => {
         return row.map((cellState, columnIndex) => {
@@ -95,7 +102,7 @@ export const expandBoardStateToCellObjects = (boardState, selectedCell) => {
                 state: cellState
             };
 
-            if ((cellState === C2 || cellState === C1) && isCellAdjacent(boardState, currentCell, selectedCell)) { // TODO: cellState === oppositePlayer instead
+            if (isCellEnemy(cellState, selectedPlayer) && isCellAdjacent(boardState, currentCell, selectedCell)) {
                 hoppables.push(currentCell);
             }
 
@@ -108,7 +115,7 @@ export const expandBoardStateToCellObjects = (boardState, selectedCell) => {
                     selectedCell,
                     currentCell
                 ),
-                selectable: cellState === C1 || cellState === C2,
+                selectable: isCellOurs(cellState, selectedPlayer),
                 selected: selectedCell && selectedCell.rowIndex === rowIndex && selectedCell.columnIndex === columnIndex,
             }
         });
@@ -119,10 +126,19 @@ export const expandBoardStateToCellObjects = (boardState, selectedCell) => {
 
         if (hopToCell) {
             board[hopToCell.rowIndex][hopToCell.columnIndex].visitable = hopToCell.state === CE;
+            board[hopToCell.rowIndex][hopToCell.columnIndex].hoppedCell = cell;
         }
     });
 
     return board;
+};
+
+export const isCellOurs = (cellState, player) => {
+    return (cellState === C1 && player === PLAYER_1) || (cellState === C2 && player === PLAYER_2);
+};
+
+export const isCellEnemy = (cellState, player) => {
+    return (cellState === C1 && player === PLAYER_2) || (cellState === C2 && player === PLAYER_1);
 };
 
 class Board extends React.Component {
@@ -135,18 +151,23 @@ class Board extends React.Component {
     }
 
     cellOnClick(cell) {
+        if (!this.props.isOurTurn) { return; }
+
         if (this.state.selectedCell && this.state.selectedCell.rowIndex === cell.rowIndex && this.state.selectedCell.columnIndex === cell.columnIndex) { // If clicking on selected, deselect current cell
             this.setState({
                 selectedCell: null
             });
 
-        } else if (this.state.selectedCell && cell.state === CE) { // If a cell is already selected, we're planning to move it
+        } else if (this.state.selectedCell && cell.state === CE && cell.visitable) { // If a cell is already selected, we're planning to move it
             this.props.moveCell(
                 this.state.selectedCell,
                 cell
             );
+            this.setState({
+                selectedCell: null
+            });
 
-        } else if (cell.state === C1 || cell.state === C2) { // Otherwise, we need to select a cell
+        } else if (isCellOurs(cell.state, this.props.selectedPlayer)) { // Otherwise, we need to select a cell
             this.setState({
                 selectedCell: cell
             });
@@ -154,7 +175,7 @@ class Board extends React.Component {
     }
 
     render() {
-        let board = expandBoardStateToCellObjects(this.props.boardState, this.state.selectedCell);
+        let board = expandBoardStateToCellObjects(this.props.boardState, this.state.selectedCell, this.props.selectedPlayer);
         const classes = classNames(this.props.className, 'board');
 
         return (
@@ -167,8 +188,10 @@ class Board extends React.Component {
                                     const cellClasses = classNames({
                                         'cell-bg': true,
                                         'visitable': cell.visitable,
-                                        'selectable': cell.selectable,
-                                        'selected': cell.selected
+                                        'selectable': cell.selectable && this.props.isOurTurn,
+                                        'selected': cell.selected,
+                                        'unoccupied': cell.state === CE,
+                                        'player': cell.state === C1 || cell.state === C2
                                     });
 
                                     return (
@@ -192,14 +215,18 @@ class Board extends React.Component {
 
 Board.propTypes = {
     className: PropTypes.string,
+    selectedPlayer: PropTypes.number,
+    isOurTurn: PropTypes.bool,
     boardState: PropTypes.array.isRequired,
     moveCell: PropTypes.func.isRequired
 };
 
 Board.defaultProps = {
+    selectedPlayer: PLAYER_1,
+    isOurTurn: true,
     boardState: [
-        [C1,C1,C1,C1,C1,C1],
-        [CE,C1,C1,C1,C1,C1,CE],
+        [CE,CE,CE,CE,CE,CE],
+        [CE,CE,CE,CE,CE,CE,CE],
         [CE,CE,CE,CE,CE,CE,CE,CE],
         [CE,CE,CE,CE,CE,CE,CE,CE,CE],
         [CE,CE,CE,CE,CE,CE,CE,CE,CE,CE],
@@ -207,8 +234,8 @@ Board.defaultProps = {
         [CE,CE,CE,CE,CE,CE,CE,CE,CE,CE],
         [CE,CE,CE,CE,CE,CE,CE,CE,CE],
         [CE,CE,CE,CE,CE,CE,CE,CE],
-        [CE,C2,C2,C2,C2,C2,CE],
-        [C2,C2,C2,C2,C2,C2]
+        [CE,CE,CE,CE,CE,CE,CE],
+        [CE,CE,CE,CE,CE,CE]
     ],
     // Callback for when a move is attempted.
     // Cell: {

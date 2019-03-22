@@ -9,17 +9,22 @@ import Logo from 'components/Logo';
 
 import './index.scss';
 
-const MenuPage = ({onPlayerChoose, onExitGame, gameId}) => {
+const MenuPage = ({onPlayerChoose, onExitGame, gameState}) => {
     return (
-        <Page className='menu'>
+        <Page className='picker'>
             <Header
                 className='game-header'
                 left={<Button className='header-btn left' text='< Leave' onClick={onExitGame}/>}
                 mid={<Logo/>}
-                right={<div className='header-gid'>#{gameId}</div>}
+                right={<div className='header-gid'>#{gameState.id}</div>}
             />
             <div className='tray'>
-                <PlayerPicker onChoose={onPlayerChoose}/>
+                <PlayerPicker
+                    player1Disabled={gameState.player1Active}
+                    player2Disabled={gameState.player2Active}
+                    gameId={gameState.id}
+                    onChoose={onPlayerChoose}
+                />
             </div>
         </Page>
     );
@@ -28,7 +33,7 @@ const MenuPage = ({onPlayerChoose, onExitGame, gameId}) => {
 MenuPage.propTypes = {
     onPlayerChoose: PropTypes.func,
     onExitGame: PropTypes.func,
-    gameId: PropTypes.number,
+    gameState: PropTypes.object
 };
 
 export default MenuPage;

@@ -1,6 +1,14 @@
+import 'package:coherent_chaos/Assets/custom_colors.dart';
+import 'package:coherent_chaos/Assets/dialogue.dart';
+import 'package:coherent_chaos/Business/handleApiCalls.dart';
+import 'package:coherent_chaos/Model/game.dart';
+import 'package:coherent_chaos/Presentations/choose_player_page.dart';
+import 'package:coherent_chaos/Presentations/game_page.dart';
 import 'package:flutter/material.dart';
-import 'custom_colors.dart';
-import 'game_board.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:async';
+
+final dialouges = new CustomDialogues();
 
 class StartPage extends StatefulWidget {
   static String tag = 'start-page';
@@ -10,69 +18,166 @@ class StartPage extends StatefulWidget {
 
 class _StartPage extends State<StartPage> {
   CustomColors colors = new CustomColors();
+  HandleAPIs handleAPIs = new HandleAPIs();
+  TextEditingController gameIdController = TextEditingController();
+  double screenHeight;
+  double screenWidth;
+  bool portraitView;
+
   @override
   Widget build(BuildContext context) {
-    final createGame = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: MaterialButton(
-        minWidth: 200.0,
-        height: 60.0,
-        onPressed: () {
-          Navigator.of(context).pushNamed(Gameboard.tag);
-        },
-        color: colors.primaryColor,
-        child: Text('CREATE GAME', style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold)),
-      ),
-    );
-    final joinGame = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: MaterialButton(
-        minWidth: 200.0,
-        height: 60.0,
-        onPressed: () {
-          Navigator.of(context).pushNamed(Gameboard.tag);
-        },
-        color: colors.secondaryColor,
-        child: Text('JOIN GAME', style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold)),
-      ),
-    );
-    final tstBtn = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: MaterialButton(
-        elevation: 5.0,
-        minWidth: 200.0,
-        height: 60.0,
-        onPressed: () {
-          Navigator.of(context).pushNamed(Gameboard.tag);
-        },
-        color: colors.tertiaryColor,
-        child: Text('Test Btn1', style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold)),
-      ),
-    );
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+    portraitView = MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Scaffold(
       backgroundColor: colors.bodyColor,
       appBar: AppBar(
-        title: Text("Coherent Chaos"),
+        title: Text(dialouges.title),
         backgroundColor: colors.barColor,
       ),
       body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
-          children: <Widget>[
-            createGame,
-            SizedBox(
-              height: 24.0,
-            ),
-            joinGame,
-            SizedBox(
-              height: 24.0,
-            ),
-            tstBtn,
-          ],
+        child: Container(
+          width: screenWidth * 0.8,
+          height: portraitView ? screenHeight * 0.6 :screenHeight * 0.65,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+              color: colors.createJoinGameBgColor),
+          child: ListView(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.04),
+            children: <Widget>[
+              getGameTitle(),
+              getGameDescription(),
+              getGameIdBox(),
+              SizedBox(
+                height: screenHeight * 0.03,
+              ),
+              getJoinGameButton(),
+              SizedBox(
+                height: screenHeight * 0.02,
+              ),
+              getCreateGameButton(),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Widget getGameTitle() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenHeight * 0.03),
+      child: Container(
+        child: Text(
+          dialouges.startGame,
+          style: TextStyle(
+              color: colors.textColor,
+              fontSize: screenHeight * 0.04,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
+  Widget getGameDescription() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: screenHeight * 0.04),
+      child: Container(
+        child: Text(
+          dialouges.startGameInstruction,
+          style: TextStyle(
+              color: colors.textColor,
+              fontSize: screenHeight * 0.025,
+              fontFamily: 'Montserrat'),
+        ),
+      ),
+    );
+  }
+
+  Widget getGameIdBox() {
+    return TextFormField(
+      controller: gameIdController,
+      maxLength: 4,
+      autocorrect: false,
+      textCapitalization: TextCapitalization.characters,
+      decoration: InputDecoration(
+        hintText: 'A4B6',
+        filled: true,
+        hintStyle: TextStyle(color: Colors.grey),
+        fillColor: colors.textFieldBgColor,
+        contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02, vertical: screenHeight * 0.02),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: colors.textFieldBgColor, width: 1),
+        ),
+      ),
+    );
+  }
+
+  Widget getCreateGameButton() {
+    return MaterialButton(
+      onPressed: () async {
+        try {
+          final Game game = await handleAPIs.intializeGame();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GamePage(game: game),
+            ),
+          );
+        } catch (e) {
+          showErrorMessage(e.toString());
+        }
+      },
+      color: colors.secondaryColor,
+      height: screenHeight * 0.08,
+      child: Text(
+        dialouges.createGame,
+        style: TextStyle(
+            color: colors.buttonTextColor,
+            fontSize: screenHeight * 0.03,
+            fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget getJoinGameButton() {
+    return MaterialButton(
+      onPressed: () async {
+        try {
+          final game = await handleAPIs.getGame(gameIdController.text);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChoosePlayerPage(game: game),
+            ),
+          );
+        } catch (e) {
+          showErrorMessage(e.toString());
+        }
+      },
+      color: colors.primaryColor,
+      height: screenHeight * 0.08,
+      child: Text(
+        dialouges.joinGame,
+        style: TextStyle(
+            color: colors.buttonTextColor,
+            fontSize: screenHeight * 0.03,
+            fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Future<bool> showErrorMessage(String msg) {
+    return Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 8,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 }

@@ -1,14 +1,12 @@
+import 'package:coherent_chaos/Presentations/start_page.dart';
 import 'package:flutter/material.dart';
-import 'Presentations/start_page.dart';
-import 'Presentations/game_board.dart';
 
-void main() => runApp(MyApp());
+void main() async => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
 
   final routes = <String, WidgetBuilder> {
     StartPage.tag: (context) =>StartPage(),
-    Gameboard.tag: (context) =>Gameboard(),
   };
 
 

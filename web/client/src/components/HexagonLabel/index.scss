@@ -1,0 +1,24 @@
+@import '../../theme.scss';
+
+.hexlabel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    margin: 0 -4px;
+    color: $bg-mid;
+    font-weight: $bold;
+
+    .hexlabel-bg {
+        z-index: 1;
+    }
+
+    .hexlabel-children {
+        position: absolute;
+        align-self: center;
+        text-align: center;
+        width: 100%;
+        font-size: $font-size2;
+        z-index: 2;
+    }
+}

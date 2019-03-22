@@ -1,17 +1,22 @@
 // Prod specific settings
 const prod = {
-    API_URL: 'http://52.14.173.109:5000/'
+    API_ROOT_URL: 'http://52.14.173.109:5000/api'
 };
 
 // Dev specific settings
 const dev = {
-    API_URL: 'http://18.191.224.215:5000/'
+    // API_ROOT_URL: 'http://localhost:5000/api'
+    API_ROOT_URL: 'http://18.191.224.215:5000/api'
 };
 
 // Settings that are shared between prod and dev
-const config = {
+const selectedConfig = (process.env.NODE_ENV === 'production' ? prod : dev); //eslint-disable-line
 
-    ...(process.env.NODE_ENV === 'production' ? prod : dev) //eslint-disable-line
+const config = {
+    ...selectedConfig,
+
+    GAME_RESOURCE_URL: `${selectedConfig.API_ROOT_URL}/game`,
+    GAME_PING_INTERVAL_MILLISECONDS: 1000 * 2
 };
 
 export default config;

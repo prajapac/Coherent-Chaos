@@ -4,7 +4,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 5%;
 
     .row {
         display: flex;
@@ -12,18 +11,14 @@
         align-items: center;
 
         .cell-container {
-            position: relative;
-            margin: 0 10px;
-            height: 42px;
-            width: 28px;
+            height: fit-content;
+            margin: -6px -4px;
 
             .cell-bg {
-                position: absolute;
-                top: 0;
-                left: 0;
 
                 &.selectable {
                     cursor: pointer;
+                    z-index: 1;
                 }
 
                 &.selected {
@@ -33,9 +28,18 @@
                 }
 
                 &.visitable {
-                    fill: $bg-mid;
-                    stroke: $bg-dark;
+                    fill: $bg-light;
+                    stroke: $bg-mid;
                     cursor: pointer;
+
+                    &:hover {
+                        fill: $bg-mid;
+                        stroke: $bg-dark;
+                    }
+                }
+
+                &.player {
+                    z-index: 2;
                 }
             }
         }
