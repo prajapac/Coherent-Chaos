@@ -335,6 +335,9 @@ router.post('/game/:id/board/', async (req, res) => {
         return;
     }
 
+    // Check if a turn has elapsed based on player turn
+    gameState.num_turns = selectedPlayer === constants.PLAYER_2 ? gameState.num_turns + 1 : gameState.num_turns;
+
     // Update whose turn
     gameState.whose_turn = selectedPlayer === constants.PLAYER_1 ? constants.PLAYER_2 : constants.PLAYER_1;
 
