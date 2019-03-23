@@ -4,6 +4,10 @@ import classNames from 'classnames';
 
 import Cell from 'components/Cell';
 
+import {
+    SIZE_LARGE as SL
+} from 'constants';
+
 import './index.scss';
 
 const HexagonLabel = ({className, children, cellState}) => {
@@ -11,7 +15,7 @@ const HexagonLabel = ({className, children, cellState}) => {
 
     return (
         <div className={classes}>
-            <Cell className='hexlabel-bg' state={cellState}/>
+            <Cell className='hexlabel-bg' state={cellState} size={SL}/>
             <div className='hexlabel-children'>
                 {children}
             </div>

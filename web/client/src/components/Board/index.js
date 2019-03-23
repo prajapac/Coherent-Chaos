@@ -9,6 +9,7 @@ import {
     CELL_PLAYER_2 as C2,
     CELL_EMPTY as CE,
     CELL_OUT_OF_PLAY as COOP,
+    SIZE_SMALL as SS,
     PLAYER_1,
     PLAYER_2
 } from 'constants';
@@ -201,6 +202,7 @@ class Board extends React.Component {
                                             <Cell
                                                 state={cell.state}
                                                 className={cellClasses}
+                                                size={SS}
                                                 onClick={() => this.cellOnClick(cell)}
                                             />
                                         </div>

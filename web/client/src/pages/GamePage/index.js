@@ -8,7 +8,7 @@ import Board from 'components/Board';
 import Logo from 'components/Logo';
 import HexagonLabel from 'components/HexagonLabel';
 
-import { CELL_PLAYER_1, CELL_PLAYER_2, PLAYER_1 } from 'constants';
+import { CELL_PLAYER_1, CELL_PLAYER_2, PLAYER_1, DECAY_TURN_NUMBER} from 'constants';
 
 import './index.scss';
 
@@ -23,23 +23,42 @@ const GamePage = ({isOurTurn, chosenPlayer, whoseTurn, gameState, onExitGame, on
             />
             <div className='body'>
                 <div className='gutter'>
-                    <HexagonLabel
-                        cellState={chosenPlayer}
-                        children={
-                            <div>
-                                <div>YOU</div>
-                            </div>
-                        }
-                    />
-                    <HexagonLabel
-                        cellState={whoseTurn === PLAYER_1 ? CELL_PLAYER_1 : CELL_PLAYER_2}
-                        children={
-                            <div>
-                                <div>TURN</div>
-                                <div>{gameState.turnNumber}</div>
-                            </div>
-                        }
-                    />
+                    <div className='player-hud'>
+                        <div>
+                            <HexagonLabel
+                                cellState={chosenPlayer}
+                                children={
+                                    <div>
+                                        <div>YOU</div>
+                                    </div>
+                                }
+                            />
+                        </div>
+                        <div>
+                            <HexagonLabel
+                                cellState={whoseTurn === PLAYER_1 ? CELL_PLAYER_1 : CELL_PLAYER_2}
+                                children={
+                                    <div>
+                                        <div>TURN</div>
+                                        <div>{gameState.turnNumber}</div>
+                                    </div>
+                                }
+                            />
+                        </div>
+                    </div>
+                    <div className='player-hud'>
+                        <div>
+                            <HexagonLabel
+                                cellState={chosenPlayer}
+                                children={
+                                    <div>
+                                        <div>DECAY IN:</div>
+                                        <div>{DECAY_TURN_NUMBER - gameState.turnNumber} TURNS</div>
+                                    </div>
+                                }
+                            />
+                        </div>
+                    </div>
                 </div>
                 <div className='gutter board-gutter'>
                     <Board isOurTurn={isOurTurn} moveCell={onCellMove} boardState={gameState.board} selectedPlayer={chosenPlayer} className='game-board'/>
