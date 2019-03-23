@@ -24,40 +24,34 @@ const GamePage = ({isOurTurn, chosenPlayer, whoseTurn, gameState, onExitGame, on
             <div className='body'>
                 <div className='gutter'>
                     <div className='player-hud'>
-                        <div>
-                            <HexagonLabel
-                                cellState={chosenPlayer}
-                                children={
-                                    <div>
-                                        <div>YOU</div>
-                                    </div>
-                                }
-                            />
-                        </div>
-                        <div>
-                            <HexagonLabel
-                                cellState={whoseTurn === PLAYER_1 ? CELL_PLAYER_1 : CELL_PLAYER_2}
-                                children={
-                                    <div>
-                                        <div>TURN</div>
-                                        <div>{gameState.turnNumber}</div>
-                                    </div>
-                                }
-                            />
-                        </div>
+                        <HexagonLabel
+                            cellState={chosenPlayer}
+                            children={
+                                <div>
+                                    <div>YOU</div>
+                                </div>
+                            }
+                        />
+                        <HexagonLabel
+                            cellState={whoseTurn === PLAYER_1 ? CELL_PLAYER_1 : CELL_PLAYER_2}
+                            children={
+                                <div>
+                                    <div>TURN</div>
+                                    <div>{gameState.turnNumber}</div>
+                                </div>
+                            }
+                        />
                     </div>
                     <div className='player-hud'>
-                        <div>
-                            <HexagonLabel
-                                cellState={chosenPlayer}
-                                children={
-                                    <div>
-                                        <div>DECAY IN:</div>
-                                        <div>{DECAY_TURN_NUMBER - gameState.turnNumber} TURNS</div>
-                                    </div>
-                                }
-                            />
-                        </div>
+                        <HexagonLabel
+                            cellState={chosenPlayer}
+                            children={
+                                <div>
+                                    <div>DECAY IN:</div>
+                                    <div>{DECAY_TURN_NUMBER - (gameState.turnNumber % DECAY_TURN_NUMBER)} TURNS</div>
+                                </div>
+                            }
+                        />
                     </div>
                 </div>
                 <div className='gutter board-gutter'>
