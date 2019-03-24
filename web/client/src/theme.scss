@@ -38,7 +38,7 @@ $space8: 512px;
 
 $font-white: #FFF;
 $font-light: #888;
-$font-mid: #666;
+$font-mid: #777;
 $font-dark: #555;
 
 $font-size1: 12px;
@@ -54,6 +54,7 @@ body {
     margin: 0;
     background: $bg-mid;
     font-family: 'Montserrat', sans-serif;
-    font-size: $font-size3;
+    font-size: $font-size4;
     color: $font-mid;
+    height: 100%;
 }

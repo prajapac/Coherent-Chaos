@@ -6,9 +6,11 @@ require('./utility/db').initDB((err) => {
     const apiRoutes = require('./routes/api.js');
     const notFoundRoutes = require('./routes/404.js');
 
-
     const log = require('./utility/logger')('index');
     const app = express();
+
+    // Serve static files
+    app.use(express.static('public'));
 
     // Serve the React app
     app.use('/', express.static(path.join(__dirname, '/client/build'))); // eslint-disable-line no-undef

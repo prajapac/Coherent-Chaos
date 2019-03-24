@@ -5,7 +5,6 @@ import Header from 'components/Header';
 import Button from 'components/Button';
 import Page from 'components/Page';
 import Board from 'components/Board';
-import Logo from 'components/Logo';
 import HexagonLabel from 'components/HexagonLabel';
 
 import { CELL_PLAYER_1, CELL_PLAYER_2, PLAYER_1 } from 'constants';
@@ -18,7 +17,6 @@ const GamePage = ({isOurTurn, chosenPlayer, whoseTurn, gameState, onExitGame, on
             <Header
                 className='game-header'
                 left={<Button className='header-btn left' text='< Leave' onClick={onExitGame}/>}
-                mid={<Logo/>}
                 right={<div className='header-gid'>#{gameState.id}</div>}
             />
             <div className='body'>
