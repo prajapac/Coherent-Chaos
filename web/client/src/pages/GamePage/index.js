@@ -43,6 +43,13 @@ const GamePage = ({isOurTurn, chosenPlayer, whoseTurn, gameState, onExitGame, on
                 </div>
                 <div className='gutter board-gutter'>
                     <Board isOurTurn={isOurTurn} moveCell={onCellMove} boardState={gameState.board} selectedPlayer={chosenPlayer} className='game-board'/>
+                    <div className='winner-text'>
+                        {
+                            gameState.winner
+                                ? gameState.winner === chosenPlayer ? 'You win!' : ' You lose!'
+                                : null
+                        }
+                    </div>
                 </div>
                 <div className='gutter'>
                 </div>

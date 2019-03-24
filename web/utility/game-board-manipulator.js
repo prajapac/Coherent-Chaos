@@ -106,6 +106,36 @@ const collapseBoardStateToEnum = (boardState) => {
     ));
 };
 
+// Determine if the board has only one player left
+// Returns null if no winner, PLAYER_1, or PLAYER_2
+const checkForWinner = (boardState) => {
+    let havePlayer1Cell = false;
+    let havePlayer2Cell = false;
+
+    boardState.forEach(row => {
+        row.forEach((cellState) => {
+            switch (cellState) {
+                case constants.CELL_PLAYER_1:
+                    havePlayer1Cell = true;
+                    break;
+                case constants.CELL_PLAYER_2:
+                    havePlayer2Cell = true;
+                    break;
+            }
+        });
+    });
+
+    if (!(havePlayer1Cell && havePlayer2Cell)) {
+        if (havePlayer1Cell) {
+            return constants.PLAYER_1;
+        } else if (havePlayer2Cell) {
+            return constants.PLAYER_2;
+        }
+    }
+
+    return null;
+};
+
 /*
 Return an adjusted board state by a move
 Return null if move is not valid
@@ -186,5 +216,6 @@ const makeMove = function(move, boardState, selectedPlayer) {
 };
 
 module.exports = {
-    makeMove
+    makeMove,
+    checkForWinner
 };
