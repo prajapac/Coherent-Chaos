@@ -6,8 +6,7 @@ require('./utility/db').initDB((err) => {
     const apiRoutes = require('./routes/api.js');
     const notFoundRoutes = require('./routes/404.js');
 
-    const log = require('./utility/logger')('index');
-    const app = express();
+    const log = require('./utility/logger')('index', 'white', 'green');
 
     // Serve static files
     app.use(express.static('public'));
