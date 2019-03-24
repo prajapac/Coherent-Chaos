@@ -19,3 +19,11 @@ Styleguidist should hot-reload your components as you work on them, but if this 
 - Run `npm run build-prod` to build the app into the `build` directory, in **production** mode.
 
 The primary distinction between development and production mode is reflected in the config values exposed to the app.
+
+## Running the Unit Tests
+
+- Run `npm test`.
+
+## Running the Acceptance Tests
+
+- Run `npx codeceptjs run --steps`.
