@@ -1,6 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const config = require('../constants/config');
-const log = require('../utility/logger')('utility/db');
+const log = require('../utility/logger')('utility/db', 'white', 'navy');
 
 let connection = null;
 

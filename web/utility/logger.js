@@ -1,4 +1,6 @@
-const log = (fileName = '', message = '') => {
+const chalk = require('chalk');
+
+const log = (fileName = '', message = '', color='white', bgColor='gray') => {
     fileName = fileName.toString();
     message = message.toString();
 
@@ -13,15 +15,14 @@ const log = (fileName = '', message = '') => {
     let seconds = currDate.getUTCSeconds();
 
     console.log(
-        `[${date}-${month}-${year} ${hours}:${minutes}:${seconds}]`,
-        `${fileName}:`,
+        chalk.keyword(color).bgKeyword(bgColor)(`[${fileName}][${date}-${month}-${year} ${hours}:${minutes}:${seconds}]:`),
         message
     );
 };
 
-const registerLogger = (fileName) => {
+const registerLogger = (fileName, color, bgColor) => {
     return (message) => {
-        log(fileName, message);
+        log(fileName, message, color, bgColor);
     };
 };
 
