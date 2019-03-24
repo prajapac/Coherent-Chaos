@@ -5,7 +5,6 @@ import Header from 'components/Header';
 import Page from 'components/Page';
 import Spinner from 'components/Spinner';
 import GameCreateJoinPrompt from 'components/GameCreateJoinPrompt';
-import Logo from 'components/Logo';
 
 import './index.scss';
 
@@ -14,7 +13,6 @@ const MenuPage = ({onCreateGame, onJoinGame, loading}) => {
         <Page className='menu'>
             <Header
                 className='menu-header'
-                mid={<Logo/>}
             />
             {
                 loading
