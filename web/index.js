@@ -8,6 +8,8 @@ require('./utility/db').initDB((err) => {
 
     const log = require('./utility/logger')('index', 'white', 'green');
 
+    const app = express();
+
     // Serve static files
     app.use(express.static('public'));
 
