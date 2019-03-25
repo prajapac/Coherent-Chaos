@@ -6,6 +6,9 @@
     align-items: center;
     flex-wrap: nowrap;
     margin: 5% 20% 0 25%;
+    background: $bg-dark;
+    padding: $space4;
+    border-radius: 3px;
 
     .game-start-info {
 
@@ -56,6 +59,7 @@
         display: flex;
         flex-direction: column;
         align-content: space-between;
+        color: $font-dark;
 
         .item {
             margin: $space2 0;

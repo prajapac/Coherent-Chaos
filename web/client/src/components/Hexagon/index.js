@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { COLOR_OPTION_DARK, COLOR_OPTION_LIGHT, COLOR_OPTION_PRIMARY, COLOR_OPTION_SECONDARY, COLOR_OPTION_TERTIARY } from 'constants';
+import { COLOR_OPTION_DARK, COLOR_OPTION_LIGHT, COLOR_OPTION_PRIMARY, COLOR_OPTION_SECONDARY, COLOR_OPTION_TERTIARY,
+         SIZE_SMALL, SIZE_LARGE} from 'constants';
 
 import './index.scss';
 
-const Hexagon = ({className, color, ...props}) => {
-    const classes = classNames(className, color, 'hex');
+const Hexagon = ({className, color, size, ...props}) => {
+    const classes = classNames(className, color, size === SIZE_SMALL? 'hex-small':'hex-large');
 
     return (
         <svg
@@ -24,7 +25,8 @@ const Hexagon = ({className, color, ...props}) => {
 
 Hexagon.propTypes = {
     className: PropTypes.string,
-    color: PropTypes.oneOf([COLOR_OPTION_DARK, COLOR_OPTION_LIGHT, COLOR_OPTION_PRIMARY, COLOR_OPTION_SECONDARY, COLOR_OPTION_TERTIARY])
+    color: PropTypes.oneOf([COLOR_OPTION_DARK, COLOR_OPTION_LIGHT, COLOR_OPTION_PRIMARY, COLOR_OPTION_SECONDARY, COLOR_OPTION_TERTIARY]),
+    size: PropTypes.oneOf([SIZE_SMALL, SIZE_LARGE])
 };
 
 Hexagon.defaultProps = {
