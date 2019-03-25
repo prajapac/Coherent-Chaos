@@ -1,4 +1,3 @@
-
 const { CELL_EMPTY, CELL_PLAYER_1, CELL_PLAYER_2, CELL_OUT_OF_PLAY, PLAYER_1, PLAYER_2 } = require('../constants');
 
 const joi = require('joi');
@@ -28,6 +27,7 @@ const schema = joi.object().keys({
     player2_last_ping: joi.date().timestamp(),
     whose_turn: joi.number().valid(PLAYER_1, PLAYER_2),
     num_turns: joi.number().integer().min(0),
+    winner: joi.number().valid(PLAYER_1, PLAYER_2).allow(null),
 });
 
 module.exports = schema;

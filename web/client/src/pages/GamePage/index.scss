@@ -13,7 +13,7 @@
         justify-content: space-between;
 
         .gutter {
-            width: $space8;
+            width: $space8-9;
             padding: $space4;
             display: flex;
             align-items: center;
@@ -24,6 +24,17 @@
                     flex-direction: row;
                     align-items: center;
                 }
+        }
+
+        .board-gutter {
+            align-items: center;
+            flex-direction: column;
+
+            .winner-text {
+                align-self: center;
+                padding: $space4;
+                font-size: $font-size8;
+            }
         }
     }
 }
