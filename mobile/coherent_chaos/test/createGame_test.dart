@@ -9,6 +9,6 @@ void main() {
     CustomDialogues dialogues = new CustomDialogues();
     await tester.tap(find.text(dialogues.createGame));
     await tester.pump();
-    expect(find.byType(Positioned), findsNothing);
+    expect(find.byType(Container), findsWidgets);
   });
 }
