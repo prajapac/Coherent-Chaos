@@ -11,8 +11,12 @@ class CustomColors {
   final c1BorderColor = const Color(0xFF0056df);
   final c2Color = const Color(0xFF66cc00);
   final c2BorderColor = const Color(0xFF2bae00);
-  final ceColor = const Color(0xFF484848);
-  final ceBorderColor = const Color(0xFF333333);
+  final ceColor = const Color(0xFF616161);
+  final ceBorderColor = const Color(0xFF484848);
+  final csColor = const Color(0xFFf54141);
+  final csBorderColor = const Color(0xFFd12e40);
+  final ctColor = const Color(0xFF484848);
+  final ctBorderColor = const Color(0xFF333333);
 
   final textFieldBgColor = const Color(0xFFb5b5b5);
   final createJoinGameBgColor = const Color(0xFFd3d3d3);
