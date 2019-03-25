@@ -56,7 +56,8 @@
     "styleguide": "styleguidist server",
     "lint": "npx eslint ./src",
     "lint-fix": "npx eslint --fix ./src",
-    "test": "jest"
+    "test-unit": "jest",
+    "test-acceptance": "codeceptjs run --steps"
   },
   "jest": {
     "setupFilesAfterEnv": [
