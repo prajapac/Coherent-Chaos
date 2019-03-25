@@ -296,7 +296,6 @@ router.post('/game/:id/board/', async (req, res) => {
     // Do the move
     if (req.body.move) {
         gameState.board_state = makeMove(req.body.move, gameState.board_state, selectedPlayer);
-        gameState.winner = checkForWinner(gameState.board_state);
 
         if (gameState.board_state == null) {
             log(`Invalid move instructions ${gameID}`);
@@ -319,6 +318,9 @@ router.post('/game/:id/board/', async (req, res) => {
     if (gameState.num_turns !== 0 && gameState.num_turns % constants.DECAY_TURN_NUMBER === 0 && gameState.whose_turn === constants.PLAYER_1) {
         gameState.board_state = generateDecay(gameState.board_state, gameState.num_turns);
     }
+
+    // Did anybody win?
+    gameState.winner = checkForWinner(gameState.board_state);
 
     const result = updateOnValid(gameState, {game_id: gameID}, collection);
     result.then((state) => {
