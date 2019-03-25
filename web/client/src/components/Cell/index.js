@@ -6,7 +6,7 @@ import Hexagon from 'components/Hexagon';
 
 import {
     COLOR_OPTION_DARK, COLOR_OPTION_LIGHT, COLOR_OPTION_PRIMARY, COLOR_OPTION_SECONDARY,
-    CELL_PLAYER_1, CELL_PLAYER_2, CELL_OUT_OF_PLAY, CELL_EMPTY
+    CELL_PLAYER_1, CELL_PLAYER_2, CELL_OUT_OF_PLAY, CELL_EMPTY, SIZE_SMALL, SIZE_LARGE
 } from 'constants';
 
 import './index.scss';
@@ -24,18 +24,19 @@ export const getCellColor = (state) => {
     }
 };
 
-const Cell = ({className, state, ...props}) => {
+const Cell = ({className, state, size, ...props}) => {
     const classes = classNames(className, 'cell');
     let cellColor = getCellColor(state);
 
     return (
-        <Hexagon className={classes} color={cellColor} {...props}/>
+        <Hexagon className={classes} color={cellColor} size={size} {...props}/>
     );
 };
 
 Cell.propTypes = {
     className: PropTypes.string,
-    state: PropTypes.oneOf([CELL_PLAYER_1, CELL_PLAYER_2, CELL_EMPTY, CELL_OUT_OF_PLAY])
+    state: PropTypes.oneOf([CELL_PLAYER_1, CELL_PLAYER_2, CELL_EMPTY, CELL_OUT_OF_PLAY]),
+    size: PropTypes.oneOf([SIZE_SMALL, SIZE_LARGE])
 };
 
 Cell.defaultProps = {

@@ -6,5 +6,6 @@ export const mapAPIStateToAppState = (state) => {
         whoseTurn: state.whose_turn,
         player1Active: state.player_1_active,
         player2Active: state.player_2_active,
+        winner: state.winner,
     }
 };

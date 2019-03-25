@@ -35,10 +35,11 @@ $space5-6: 84px;
 $space6: 128px;
 $space7: 256px;
 $space8: 512px;
+$space8-9: 650px;
 
 $font-white: #FFF;
 $font-light: #888;
-$font-mid: #666;
+$font-mid: #777;
 $font-dark: #555;
 
 $font-size1: 12px;
@@ -47,6 +48,8 @@ $font-size3: 16px;
 $font-size4: 18px;
 $font-size5: 20px;
 $font-size6: 24px;
+$font-size7: 32px;
+$font-size8: 42px;
 
 $bold: 600;
 
@@ -54,6 +57,7 @@ body {
     margin: 0;
     background: $bg-mid;
     font-family: 'Montserrat', sans-serif;
-    font-size: $font-size3;
-    color: $font-mid;
+    font-size: $font-size4;
+    color: $font-light;
+    height: 100%;
 }

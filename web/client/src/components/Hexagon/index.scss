@@ -1,32 +1,38 @@
 @import '../../theme.scss';
 
-.hex {
+.hex-small {
     stroke-width: 4px;
     height: 50px;
     width: auto;
+}
 
-    &.primary {
-        fill: $primary-mid;
-        stroke: $primary-dark;
-    }
+.hex-large {
+    stroke-width: 4px;
+    height: 100px;
+    width: auto;
+}
 
-    &.secondary {
-        fill: $secondary-mid;
-        stroke: $secondary-dark;
-    }
+.primary {
+    fill: $primary-mid;
+    stroke: $primary-dark;
+}
 
-    &.tertiary {
-        fill: $tertiary-mid;
-        stroke: $tertiary-dark;
-    }
+.secondary {
+    fill: $secondary-mid;
+    stroke: $secondary-dark;
+}
 
-    &.light {
-        fill: $bg-lightest;
-        stroke: $bg-light;
-    }
+.tertiary {
+    fill: $tertiary-mid;
+    stroke: $tertiary-dark;
+}
 
-    &.dark {
-        fill: $bg-mid;
-        stroke: $bg-dark;
-    }
+.light {
+    fill: $bg-lightest;
+    stroke: $bg-light;
+}
+
+.dark {
+    fill: $bg-mid;
+    stroke: $bg-dark;
 }

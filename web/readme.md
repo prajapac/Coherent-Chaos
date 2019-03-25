@@ -91,7 +91,8 @@ it's still unique but more manageable/readable
     "board_state": [...],
     "num_turns": 0,
     "whose_turn": 1,
-    "token": "6H6XTC9M"
+    "token": "6H6XTC9M",
+    "winner": null
 }
 ```
 
@@ -104,6 +105,7 @@ it's still unique but more manageable/readable
     "board_state": [...],
     "num_turns": 0,
     "whose_turn": 1,
+    "winner": null,
     "player_1_active": false,
     "player_2_active": false
 }
@@ -152,6 +154,7 @@ it's still unique but more manageable/readable
     "board_state": [...],
     "num_turns": 0,
     "whose_turn": 1,
+    "winner": null,
     "player_1_active": false,
     "player_2_active": false
 }
@@ -192,6 +195,7 @@ it's still unique but more manageable/readable
     "board_state": [...],
     "num_turns": 0,
     "whose_turn": 1,
+    "winner": null,
     "player_1_active": false,
     "player_2_active": false
 }

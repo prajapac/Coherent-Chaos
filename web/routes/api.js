@@ -1,17 +1,29 @@
 const express = require('express');
-const router = express.Router();
-const joi = require('joi');
-const gameStateSchema = require('../schemas/game-state-schema');
 const bodyParser = require('body-parser');
+
 const idGenerator = require('../utility/id-generator');
 const generateInitBoard = require('../utility/game-board-generator');
-const makeMove = require('../utility/game-board-manipulator').makeMove;
+
+const gameSchemaValidator = require('../utility/game-schema-validator');
+const insertOnValid = gameSchemaValidator.insertOnValid;
+const updateOnValid = gameSchemaValidator.updateOnValid;
+
+const gameBoardManipulator = require('../utility/game-board-manipulator');
+const checkForWinner = gameBoardManipulator.checkForWinner;
+const makeMove = gameBoardManipulator.makeMove;
+
+const gameStateResponseHelpers = require('../utility/game-state-response-helpers');
+const prepareGameStateForResponse = gameStateResponseHelpers.prepareGameStateForResponse;
+
+const generateDecay = require('../utility/game-board-decay');
 
 const constants = require('../constants');
 const config = require('../constants/config');
 
 const getDB = require('../utility/db').getDB;
-const log = require('../utility/logger')('routes/api');
+const log = require('../utility/logger')('routes/api', 'white', 'maroon');
+
+const router = express.Router();
 
 // Middleware to parse the POST data of req bodies
 router.use(bodyParser.json()); // for parsing application/json
@@ -59,46 +71,31 @@ router.post('/game', async (req, res) => {
         attempts++;
     } while (alreadyExists);
 
-    // Generate initial game state/board
-    let initGameBoard = generateInitBoard();
-
     // Assemble game state document for storage in database
     const newState = {
         game_id: gameID,
-        board_state: initGameBoard,
+        board_state: generateInitBoard(),
         num_turns: 0,
         whose_turn: constants.PLAYER_1,
         player1_token: idGenerator.generatePlayerToken(),
         player1_last_ping: Date.now(),
         player2_token: '',
-        player2_last_ping: 0
+        player2_last_ping: 0,
+        winner: null
     };
 
-    // Validate game state
-    joi.validate(newState, gameStateSchema, (err, value) => {
-        if (err) {
-            log(('Game state validation failure:', err));
-            res.status(500).send({ 'failure': true, 'message': 'Failed to validate game:', 'error': err.details.message });
-
-        } else {
-            // Insert game state to the database and send relevant fields
-            collection.insertOne(newState, (err, result) => {
-                if (err) {
-                    log(('Failed to create game:', err));
-                    res.status(500).send({ 'failure': true, 'message': 'Failed to create game', 'error': err.details.message });
-
-                } else {
-                    log(`Created game with _id: ${result.insertedId}`);
-                    res.send({
-                        game_id: value.game_id,
-                        board_state: value.board_state,
-                        num_turns: value.num_turns,
-                        whose_turn: value.whose_turn,
-                        token: value.player1_token
-                    });
-                }
-            });
-        }
+    const result = insertOnValid(newState, collection);
+    result.then((state) => {
+        log(`Created game ${state.data.game_id}`);
+        res.send(prepareGameStateForResponse(
+            state.data,
+            {
+                token: state.data.player1_token
+            }
+        ));
+    }).catch((err) => {
+        log(`Failed to create game ${err.toString()}`);
+        res.status(500).send({ 'failure': true, 'message': 'Failed to create game', 'error': err });
     });
 });
 
@@ -115,20 +112,19 @@ router.get('/game/:id/', async (req, res) => {
     let err, gameState = await collection.findOne({game_id: gameID});
 
     if (err) {
-        log(('Error querying by gameID generated:', err));
+        log(`Error querying by gameID generated ${err.toString()}`);
         res.send({ 'failure': true, 'message': 'Error querying by gameID generated', 'error': err });
     } else if (gameState) {
-        // Add player activity data
-        gameState.player_1_active = time - gameState.player1_last_ping < config.TOKEN_EXPIRY_MILLISECONDS;
-        gameState.player_2_active = time - gameState.player2_last_ping < config.TOKEN_EXPIRY_MILLISECONDS;
-        // Remove private fields from game state to send to player
-        delete gameState.player1_token;
-        delete gameState.player2_token;
-        delete gameState.player1_last_ping;
-        delete gameState.player2_last_ping;
-        res.send(gameState);
+        log(`Fetch on game ${gameID}`);
+        res.send(prepareGameStateForResponse(
+            gameState,
+            {
+                player_1_active: time - gameState.player1_last_ping < config.TOKEN_EXPIRY_MILLISECONDS,
+                player_2_active: time - gameState.player2_last_ping < config.TOKEN_EXPIRY_MILLISECONDS
+            }
+        ));
     } else {
-        log(('gameID does not exist', gameID));
+        log(`gameID does not exist ${gameID}`);
         res.send({ 'failure': true, 'message': 'gameID does not exist', 'gameID': gameID });
     }
 });
@@ -147,7 +143,7 @@ router.post('/game/:id/', async (req, res) => {
     let err, gameState = await collection.findOne({game_id: gameID});
 
     if (err) {
-        log(('Error querying by gameID generated:', err));
+        log(`Error querying by gameID generated ${err.toString()}`);
         res.send({ 'failure': true, 'message': 'Error querying by gameID', 'error': err });
         return;
     } else if (gameState) {
@@ -174,23 +170,14 @@ router.post('/game/:id/', async (req, res) => {
         return;
     }
 
-    // Validate gamestate
-    joi.validate(gameState, gameStateSchema, (err, value)=> {
-        if (err) {
-            log(('Game state validation failure:', err));
-            res.send({ 'failure': true, 'message': 'Game state validation failure', 'error': err });
-        } else {
-            // update game state in the database
-            collection.updateOne({game_id: gameID}, {$set: gameState}, (err, result) => { // eslint-disable-line no-unused-vars
-                if (err) {
-                    log(('Database insert failure:', err));
-                    res.send({ 'failure': true, 'message': 'Database insert failure', 'error': err });
-                } else {
-                    log((`Successfully updated item with _id: ${value._id}`));
-                    res.send({token: newToken});
-                }
-            });
-        }
+
+    const result = updateOnValid(gameState, {game_id: gameID}, collection);
+    result.then((state) => {
+        log(`Connect on ${state.data.game_id} with token ${newToken}`);
+        res.send({token: newToken});
+    }).catch((err) => {
+        log(`Player failed to connect ${err.toString()}`);
+        res.status(500).send({ 'failure': true, 'message': 'Failed to connect', 'error': err });
     });
 });
 
@@ -216,7 +203,7 @@ router.patch('/game/:id/', async (req, res) => {
     let err, gameState = await collection.findOne({game_id: gameID});
 
     if (err) {
-        log(('Error querying by gameID:', err));
+        log(`Error querying by gameID ${err.toString()}`);
         res.send({ 'failure': true, 'message': 'Error querying by gameID generated', 'error': err });
         return;
     } else if (gameState) {
@@ -227,42 +214,29 @@ router.patch('/game/:id/', async (req, res) => {
             // Update player 2 last pinged time
             gameState.player2_last_ping = time;
         } else {
-            log(('playerToken is invalid', gameID));
+            log(`playerToken is invalid ${gameID}`);
             res.send({ 'failure': true, 'message': 'playerToken is invalid', 'playerToken': playerToken });
             return;
         }
     } else {
-        log(('gameID does not exist', gameID));
+        log(`gameID does not exist ${gameID}`);
         res.send({ 'failure': true, 'message': 'gameID does not exist', 'gameID': gameID });
         return;
     }
 
-    // Validate gamestate using Joi
-    joi.validate(gameState, gameStateSchema, (err, value)=> {
-        if (err) {
-            log(('Game state validation failure:', err));
-            res.send({ 'failure': true, 'message': 'Game state validation failure', 'error': err });
-        } else {
-            // update game state in the database
-            collection.updateOne({game_id: gameID}, {$set: gameState}, (err, result) => { // eslint-disable-line no-unused-vars
-                if (err) {
-                    log(('Database insert failure:', err));
-                    res.send({ 'failure': true, 'message': 'Database insert failure', 'error': err });
-                } else {
-                    log((`Successfully updated item with _id: ${value._id}`));
-                    // Add player activity data
-                    gameState.player_1_active = time - gameState.player1_last_ping < config.TOKEN_EXPIRY_MILLISECONDS;
-                    gameState.player_2_active = time - gameState.player2_last_ping < config.TOKEN_EXPIRY_MILLISECONDS;
-                    // Remove unnecessary fields from game state to send to player
-                    delete value.player1_token;
-                    delete value.player2_token;
-                    delete value.player1_last_ping;
-                    delete value.player2_last_ping;
-                    delete value._id;
-                    res.send(value);
-                }
-            });
-        }
+    const result = updateOnValid(gameState, {game_id: gameID}, collection);
+    result.then((state) => {
+        log(`Ping on game ${state.data.game_id} from ${playerToken}`);
+        res.send(prepareGameStateForResponse(
+            gameState,
+            {
+                player_1_active: time - gameState.player1_last_ping < config.TOKEN_EXPIRY_MILLISECONDS,
+                player_2_active: time - gameState.player2_last_ping < config.TOKEN_EXPIRY_MILLISECONDS
+            }
+        ));
+    }).catch((err) => {
+        log(`Failed to refresh player token on game ${gameState.game_id} from ${playerToken} ${err.toString()}`);
+        res.status(500).send({ 'failure': true, 'message': 'Ping failed', 'error': err });
     });
 });
 
@@ -289,7 +263,7 @@ router.post('/game/:id/board/', async (req, res) => {
     let err, gameState = await collection.findOne({game_id: gameID});
 
     if (err) {
-        log(('Error querying by gameID:', err));
+        log(`Error querying by gameID ${err.toString()}`);
         res.send({ 'failure': true, 'message': 'Error querying by gameID generated', 'error': err });
         return;
     } else if (gameState) {
@@ -302,19 +276,19 @@ router.post('/game/:id/board/', async (req, res) => {
             gameState.player2_last_ping = time;
             selectedPlayer = constants.PLAYER_2;
         } else {
-            log(('playerToken is invalid', gameID));
+            log(`playerToken is invalid ${gameID}`);
             res.send({ 'failure': true, 'message': 'playerToken is invalid', 'playerToken': playerToken });
             return;
         }
     } else {
-        log(('gameID does not exist', gameID));
+        log(`gameID does not exist ${gameID}`);
         res.send({ 'failure': true, 'message': 'gameID does not exist', 'gameID': gameID });
         return;
     }
 
     // Is it our turn?
     if (!(selectedPlayer === gameState.whose_turn)) {
-        log(('It is not your turn', gameID));
+        log(`It is not your turn ${gameID}`);
         res.send({ 'failure': true, 'message': 'It is not your turn', 'gameID': gameID });
         return;
     }
@@ -324,45 +298,43 @@ router.post('/game/:id/board/', async (req, res) => {
         gameState.board_state = makeMove(req.body.move, gameState.board_state, selectedPlayer);
 
         if (gameState.board_state == null) {
-            log(('Invalid move instructions', gameID));
+            log(`Invalid move instructions ${gameID}`);
             res.send({ 'failure': true, 'message': 'Invalid move instructions' });
             return;
         }
     } else {
-        log(('Missing move instructions', gameID));
+        log(`Missing move instructions ${gameID}`);
         res.send({ 'failure': true, 'message': 'Missing move instructions' });
         return;
     }
 
+    // Check if a turn has elapsed based on player turn
+    gameState.num_turns = selectedPlayer === constants.PLAYER_2 ? gameState.num_turns + 1 : gameState.num_turns;
+
     // Update whose turn
     gameState.whose_turn = selectedPlayer === constants.PLAYER_1 ? constants.PLAYER_2 : constants.PLAYER_1;
 
-    // Validate gamestate using Joi
-    joi.validate(gameState, gameStateSchema, (err, value)=> {
-        if (err) {
-            log(('Game state validation failure:', err));
-            res.send({ 'failure': true, 'message': 'Game state validation failure', 'error': err });
-        } else {
-            // update game state in the database
-            collection.updateOne({game_id: gameID}, {$set: gameState}, (err, result) => { // eslint-disable-line no-unused-vars
-                if (err) {
-                    log(('Database insert failure:', err));
-                    res.send({ 'failure': true, 'message': 'Database insert failure', 'error': err });
-                } else {
-                    log((`Successfully updated item with _id: ${value._id}`));
-                    // Add player activity data
-                    gameState.player_1_active = time - gameState.player1_last_ping < config.TOKEN_EXPIRY_MILLISECONDS;
-                    gameState.player_2_active = time - gameState.player2_last_ping < config.TOKEN_EXPIRY_MILLISECONDS;
-                    // Remove unnecessary fields from game state to send to player
-                    delete value.player1_token;
-                    delete value.player2_token;
-                    delete value.player1_last_ping;
-                    delete value.player2_last_ping;
-                    delete value._id;
-                    res.send(value);
-                }
-            });
-        }
+    // Check if circle closure should occur
+    if (gameState.num_turns !== 0 && gameState.num_turns % constants.DECAY_TURN_NUMBER === 0 && gameState.whose_turn === constants.PLAYER_1) {
+        gameState.board_state = generateDecay(gameState.board_state, gameState.num_turns);
+    }
+
+    // Did anybody win?
+    gameState.winner = checkForWinner(gameState.board_state);
+
+    const result = updateOnValid(gameState, {game_id: gameID}, collection);
+    result.then((state) => {
+        log(`Move on game ${state.data.game_id} from ${playerToken}`);
+        res.send(prepareGameStateForResponse(
+            gameState,
+            {
+                player_1_active: time - gameState.player1_last_ping < config.TOKEN_EXPIRY_MILLISECONDS,
+                player_2_active: time - gameState.player2_last_ping < config.TOKEN_EXPIRY_MILLISECONDS
+            }
+        ));
+    }).catch((err) => {
+        log(`Failed to handle move on game ${gameState.game_id} from ${playerToken} ${err.toString()}`);
+        res.status(500).send({ 'failure': true, 'message': 'Move failed', 'error': err });
     });
 });
 

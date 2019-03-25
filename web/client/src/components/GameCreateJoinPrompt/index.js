@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import Button from 'components/Button';
+import Logo from 'components/Logo';
 
 import { GAME_ID_LENGTH } from 'constants';
 
@@ -54,8 +55,8 @@ class GameCreateJoinPrompt extends React.Component {
         return (
             <div className='create-join-prompt'>
                 <div className='game-start-info'>
-                    <h2>Coherent Chaos</h2>
-                    <p>Enter into a battle royal styled checkers game where only one will make it out alive. Will you defeat your opponent or will the circle decay be the end of you?
+                    <Logo className='logo'/>
+                    <p>Enter into a battle royal where only one will make it out alive. Will you defeat your opponent or will the decay be the end of you?
                     </p>
                 </div>
                 <div className='create-join-box'>
