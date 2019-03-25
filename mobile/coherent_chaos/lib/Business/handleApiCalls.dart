@@ -64,4 +64,22 @@ class HandleAPIs {
       throw Exception('Failed to make a move. Response code: ' + response.statusCode.toString());
     }
   }
+
+  Future<String> pingBoardState(String gameId, Game game) async {
+    var response = await http.patch(baseURI + "/" + gameId,
+       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+       body: json.encode(game.token));
+
+    if (response.statusCode == 200) {
+      if (json.decode(response.body)['failure'] == true) {
+        throw Exception(json.decode(response.body)['message']);
+      }
+
+      return json.decode(response.body)['board_state'];
+    } else {
+      throw Exception('Failed to poll server for board state with response code: ' +
+          response.statusCode.toString());
+    }
+ }
+
 }
