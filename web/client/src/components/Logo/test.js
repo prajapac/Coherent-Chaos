@@ -3,6 +3,8 @@ import { shallow } from 'enzyme';
 
 import Logo from './index';
 
+import config from 'constants/config.js';
+
 test('Logo renders without crashing', () => {
     const component = shallow(
         <Logo />
@@ -10,9 +12,16 @@ test('Logo renders without crashing', () => {
     expect(component.exists());
 });
 
-test('Logo should pass COHERENT CHAOS as children', () => {
+test('Logo should render correct short image', () => {
     const component = shallow(
         <Logo/>
     );
-    expect(component.prop('children')).toEqual('COHERENT CHAOS');
+    expect(component.find('.logo').prop('src')).toEqual(config.LOGO_URL);
+});
+
+test('Logo should render correct long image', () => {
+    const component = shallow(
+        <Logo long/>
+    );
+    expect(component.find('.logo').prop('src')).toEqual(config.LOGO_LONG_URL);
 });
