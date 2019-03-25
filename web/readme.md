@@ -13,6 +13,10 @@ Install `Node.js` and `npm` from https://nodejs.org/en/
 
 *for client details, refer to `/web/client`*
 
+# Running Backend Tests
+1. Navigate to `/web` in terminal
+   * run `npm test`
+
 # MongoDB Database
 
 ## Setup
