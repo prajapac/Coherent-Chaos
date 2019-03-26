@@ -280,7 +280,6 @@ class _GamePage extends State<GamePage> {
 
     Timer.periodic(INTERVAL, (Timer t) async {
       try {
-        Toastr().showErrorMessage('Time Passed: ' + t.toString());
         newGameState = await handleAPIs.pingBoardState(
             widget.game.gameId, widget.game.token);
 
