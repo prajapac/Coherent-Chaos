@@ -61,12 +61,11 @@ class _GamePage extends State<GamePage> {
   @override
   void initState() {
     super.initState();
-
-    startPolling();
   }
 
   @override
   Widget build(BuildContext context) {
+    startPolling();
     if (newGameState != null) {
       updateGameState(newGameState);
       newGameState = null;
@@ -274,7 +273,7 @@ class _GamePage extends State<GamePage> {
     return boardRows;
   }
 
-  void startPolling() async {
+  void startPolling() {
     const INTERVAL = const Duration(seconds: 2);
     gameOver = false;
     Game newGameState;
@@ -283,7 +282,7 @@ class _GamePage extends State<GamePage> {
         INTERVAL,
         (Timer t) => () async {
               try {
-                Toastr().showErrorMessage(t.toString());
+                Toastr().showErrorMessage('Time Passed: ' + t.toString());
                 newGameState = await handleAPIs.pingBoardState(
                     widget.game.gameId, widget.game.token);
 
