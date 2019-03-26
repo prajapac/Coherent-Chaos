@@ -33,7 +33,7 @@ class _StartPage extends State<StartPage> {
     return Scaffold(
       backgroundColor: colors.bodyColor,
       appBar: AppBar(
-        title: Text(dialouges.title),
+        title: new Image.asset('images/logo_long.png'),
         backgroundColor: colors.barColor,
       ),
       body: Center(
