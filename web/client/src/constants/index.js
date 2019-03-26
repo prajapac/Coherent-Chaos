@@ -18,7 +18,7 @@ export const COLOR_OPTION_DARK = 'dark';
 
 export const GAME_ID_LENGTH = 4;
 
-export const DECAY_TURN_NUMBER = 5;
+export const DECAY_TURN_NUMBER = 8;
 
-export const SIZE_SMALL='small';
-export const SIZE_LARGE='large';
+export const SIZE_SMALL = 'small';
+export const SIZE_LARGE = 'large';
