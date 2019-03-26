@@ -1,13 +1,13 @@
 
 Feature('navigate through the menu page');
 
-Scenario('create a new game', (I) => {
+Scenario('Create a new game', (I) => {
     I.amOnPage('http://18.191.224.215:5000/');
     I.click('Create Game');
     I.see('YOU', '.hexlabel-children');
 });
 
-Scenario('create a new game and go back to menu page', (I) => {
+Scenario('Create a new game and go back to menu page', (I) => {
     I.amOnPage('http://18.191.224.215:5000/');
     I.click('Create Game');
     I.see('YOU', '.hexlabel-children');
@@ -15,7 +15,7 @@ Scenario('create a new game and go back to menu page', (I) => {
     I.see('Start Playing!', 'h2');
 });
 
-Scenario('join in a game successfully with an existing game id', async (I) => {
+Scenario('Join a game successfully with an existing game id', async (I) => {
     I.amOnPage('http://18.191.224.215:5000/');
     I.click('Create Game');
     let gameId = await I.grabTextFrom('div.header-gid');
@@ -26,7 +26,7 @@ Scenario('join in a game successfully with an existing game id', async (I) => {
     I.see('YOU', '.hexlabel-children');
 });
 
-Scenario('join in a game unsuccessfully with a non-existing game id', (I) => {
+Scenario('Join in a game unsuccessfully with a non-existing game id', (I) => {
     I.amOnPage('http://18.191.224.215:5000/');
     I.fillField('input.game-id-input', 'A4B6');
     I.click('Join Game');

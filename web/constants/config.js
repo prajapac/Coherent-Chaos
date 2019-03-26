@@ -3,5 +3,6 @@ module.exports = {
     DB_NAME: 'coherentchaos',
     DB_GAME_TABLE: 'games',
     MAX_GAME_ID_RETRIES: 50,
-    TOKEN_EXPIRY_MILLISECONDS: 1000 * 10
+    TOKEN_EXPIRY_MILLISECONDS: 1000 * 10,
+    DECAY_TURN_NUMBER: 8
 };

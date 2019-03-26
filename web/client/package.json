@@ -56,16 +56,17 @@
     "styleguide": "styleguidist server",
     "lint": "npx eslint ./src",
     "lint-fix": "npx eslint --fix ./src",
-    "test-unit": "jest",
+    "test-all": "npm run test-unit && npm run test-acceptance",
+    "test-unit": "jest ./src",
     "test-acceptance": "codeceptjs run --steps"
   },
   "jest": {
     "setupFilesAfterEnv": [
-      "<rootDir>/src/jest/setupTests.js"
+      "<rootDir>/jest/setupTests.js"
     ],
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/jest/mocks/fileMock.js",
-      "\\.(css|less|scss)$": "<rootDir>/src/jest/mocks/styleMock.js"
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/jest/mocks/fileMock.js",
+      "\\.(css|less|scss)$": "<rootDir>/jest/mocks/styleMock.js"
     }
   }
 }
