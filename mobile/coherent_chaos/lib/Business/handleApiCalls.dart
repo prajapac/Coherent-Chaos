@@ -49,4 +49,19 @@ class HandleAPIs {
           response.statusCode.toString());
     }
   }
+
+  Future<Game> makeMove(String gameId, Map data) async {
+    final response = await http.post(baseURI + "/" + gameId + "/board",
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        body: json.encode(data));
+
+    if (response.statusCode == 200) {
+      if (json.decode(response.body)['failure'] == true) {
+        throw Exception(json.decode(response.body)['message']);
+      }
+      return Game.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to make a move. Response code: ' + response.statusCode.toString());
+    }
+  }
 }

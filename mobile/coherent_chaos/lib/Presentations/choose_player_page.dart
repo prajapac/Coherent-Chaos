@@ -2,10 +2,9 @@ import 'package:coherent_chaos/Assets/dialogue.dart';
 import 'package:coherent_chaos/Business/handleApiCalls.dart';
 import 'package:coherent_chaos/Model/game.dart';
 import 'package:coherent_chaos/Assets/custom_colors.dart';
+import 'package:coherent_chaos/Model/toastr.dart';
 import 'package:coherent_chaos/Presentations/game_page.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'dart:async';
 
 final dialouges = new CustomDialogues();
 double screenHeight;
@@ -76,11 +75,11 @@ class ChoosePlayerPage extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => GamePage(game: game),
+              builder: (context) => GamePage(game: game, playerSide: 1),
             ),
           );
         } catch (e) {
-          showErrorMessage(e.toString());
+          Toastr().showErrorMessage(e.toString());
         }
       },
       color: game.player1Active ? colors.disabledColor : colors.primaryColor,
@@ -107,11 +106,11 @@ class ChoosePlayerPage extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => GamePage(game: game),
+              builder: (context) => GamePage(game: game, playerSide: 2),
             ),
           );
         } catch (e) {
-          showErrorMessage(e.toString());
+          Toastr().showErrorMessage(e.toString());
         }
       },
       color: game.player2Active ? colors.disabledColor : colors.secondaryColor,
@@ -125,16 +124,5 @@ class ChoosePlayerPage extends StatelessWidget {
             fontWeight: FontWeight.bold),
       ),
     );
-  }
-
-  Future<bool> showErrorMessage(String msg) {
-    return Fluttertoast.showToast(
-        msg: msg,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 8,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
   }
 }
