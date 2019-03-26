@@ -65,21 +65,21 @@ class HandleAPIs {
     }
   }
 
-  Future<String> pingBoardState(String gameId, Game game) async {
+  Future<Game> pingBoardState(String gameId, String token) async {
+    Map data = {'token': token};
+
     var response = await http.patch(baseURI + "/" + gameId,
        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-       body: json.encode(game.token));
+       body: json.encode(data));
 
     if (response.statusCode == 200) {
       if (json.decode(response.body)['failure'] == true) {
         throw Exception(json.decode(response.body)['message']);
       }
-
-      return json.decode(response.body)['board_state'];
+      return Game.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to poll server for board state with response code: ' +
           response.statusCode.toString());
     }
  }
-
 }
