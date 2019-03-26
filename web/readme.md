@@ -187,7 +187,7 @@ it's still unique but more manageable/readable
             columnIndex: 3
         },
         hoppedCell: {
-            rowIndex: 1
+            rowIndex: 1,
             columnIndex: 2
         }
     }
