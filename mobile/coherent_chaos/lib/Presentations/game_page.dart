@@ -278,27 +278,24 @@ class _GamePage extends State<GamePage> {
     gameOver = false;
     Game newGameState;
 
-    Timer.periodic(
-        INTERVAL,
-        (Timer t) => () async {
-              try {
-                Toastr().showErrorMessage('Time Passed: ' + t.toString());
-                newGameState = await handleAPIs.pingBoardState(
-                    widget.game.gameId, widget.game.token);
+    Timer.periodic(INTERVAL, (Timer t) async {
+      try {
+        Toastr().showErrorMessage('Time Passed: ' + t.toString());
+        newGameState = await handleAPIs.pingBoardState(
+            widget.game.gameId, widget.game.token);
 
-                bool hasUpdates =
-                    newGameState.whoseTurn != widget.game.whoseTurn;
+        bool hasUpdates = newGameState.whoseTurn != widget.game.whoseTurn;
 
-                if (newGameState.winner != null) {
-                  t.cancel();
-                  gameOver = true;
-                  gameState = newGameState;
-                } else if (hasUpdates) {
-                  gameState = newGameState;
-                }
-              } catch (e) {
-                Toastr().showErrorMessage(e.toString());
-              }
-            });
+        if (newGameState.winner != null) {
+          t.cancel();
+          gameOver = true;
+          gameState = newGameState;
+        } else if (hasUpdates) {
+          gameState = newGameState;
+        }
+      } catch (e) {
+        Toastr().showErrorMessage(e.toString());
+      }
+    });
   }
 }
