@@ -3,6 +3,7 @@ import 'package:coherent_chaos/Assets/custom_colors.dart';
 import 'package:coherent_chaos/Business/handleApiCalls.dart';
 import 'package:coherent_chaos/Controllers/game_cell.dart';
 import 'package:coherent_chaos/Model/game.dart';
+import 'package:coherent_chaos/Model/toastr.dart';
 import 'package:coherent_chaos/Presentations/start_page.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,10 @@ HandleAPIs handleAPIs = new HandleAPIs();
 class GamePage extends StatefulWidget {
   static String tag = 'game-page';
   final Game game;
+  final int playerSide;
 
-  GamePage({Key key, @required this.game}) : super(key: key);
+  GamePage({Key key, @required this.game, @required this.playerSide})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => new _GamePage();
@@ -37,20 +40,32 @@ class GamePage extends StatefulWidget {
 
 class _GamePage extends State<GamePage> {
   List<dynamic> gameBoard;
-  int selectedCellRow;
-  int selectedCellCol;
+  bool isPlayerTurn;
 
-  set row(int row) => setState(() => selectedCellRow = row);
-  set col(int col) => setState(() => selectedCellCol = col);
+  int selectedCellRow,
+      selectedCellCol,
+      targetCellRow,
+      targetCellCol,
+      hoppedCellRow,
+      hoppedCellCol;
+
+  set selectedRow(int row) => setState(() => selectedCellRow = row);
+  set selectedCol(int col) => setState(() => selectedCellCol = col);
+  set targetRow(int row) => setState(() => targetCellRow = row);
+  set targetCol(int col) => setState(() => targetCellCol = col);
 
   @override
   Widget build(BuildContext context) {
     gameBoard = widget.game.board;
 
-    if (selectedCellRow != null && selectedCellCol != null) {
+    isPlayerTurn = widget.game.whoseTurn == widget.playerSide;
+
+    if (targetCellRow != null && targetCellCol != null) {
+      makeMove();
+    } else if (selectedCellRow != null && selectedCellCol != null) {
       gameBoard = updateGameBoard(gameBoard);
     }
-    
+
     return WillPopScope(
       onWillPop: () {
         Navigator.push(
@@ -72,6 +87,58 @@ class _GamePage extends State<GamePage> {
     );
   }
 
+  void makeMove() async {
+    Game newGameState;
+    Map data = {
+      'move': {
+        'selectedCell': {
+          'rowIndex': selectedCellRow,
+          'columnIndex': selectedCellCol
+        },
+        'targetCell': {'rowIndex': targetCellRow, 'columnIndex': targetCellCol},
+        'hoppedCell': hoppedCellRow == null
+            ? null
+            : {'rowIndex': hoppedCellRow, 'columnIndex': hoppedCellCol}
+      },
+      'token': widget.game.token
+    };
+
+    isPlayerTurn = false;
+    gameBoard[selectedCellRow][selectedCellCol] = 0;
+    gameBoard[targetCellRow][targetCellCol] = widget.playerSide;
+    if (hoppedCellRow != null) {
+      gameBoard[hoppedCellRow][hoppedCellCol] = 0;
+    }
+
+    clearState();
+
+    try {
+      newGameState = await handleAPIs.makeMove(widget.game.gameId, data);
+    } catch (e) {
+      Toastr().showErrorMessage(e.toString());
+    }
+
+    updateGameState(newGameState);
+  }
+
+  void updateGameState(Game game) {
+    if (game != null) {
+      widget.game.board = game.board;
+      widget.game.numTurns = game.numTurns;
+      widget.game.whoseTurn = game.whoseTurn;
+      widget.game.winner = game.winner;
+    }
+  }
+
+  void clearState() {
+    setState(() {
+      selectedCellRow = null;
+      selectedCellCol = null;
+      targetCellRow = null;
+      targetCellCol = null;
+    });
+  }
+
   List<dynamic> updateGameBoard(List<dynamic> old) {
     List<dynamic> gameBoard = new List<dynamic>();
     int x = 0;
@@ -81,7 +148,8 @@ class _GamePage extends State<GamePage> {
       for (var col in row) {
         if (x == selectedCellRow && y == selectedCellCol) {
           newRow.add(3);
-        } else if (isCellAdjacent(old, x, y) && CellType.values[col] == CellType.emptyCell) {
+        } else if (isCellAdjacent(old, x, y) &&
+            CellType.values[col] == CellType.emptyCell) {
           newRow.add(4);
         } else {
           newRow.add(col);
@@ -136,24 +204,39 @@ class _GamePage extends State<GamePage> {
         List<GameCell> newRow = new List<GameCell>();
         for (var col in row) {
           if (CellType.values[col] == CellType.p1Cell) {
-            GameCell gameCell =
-                GameCell(row: x, col: y, cellType: CellType.p1Cell);
+            GameCell gameCell = GameCell(
+                row: x,
+                col: y,
+                cellType: CellType.p1Cell,
+                playerSide: widget.playerSide);
             newRow.add(gameCell);
           } else if (CellType.values[col] == CellType.p2Cell) {
-            GameCell gameCell =
-                GameCell(row: x, col: y, cellType: CellType.p2Cell);
+            GameCell gameCell = GameCell(
+                row: x,
+                col: y,
+                cellType: CellType.p2Cell,
+                playerSide: widget.playerSide);
             newRow.add(gameCell);
           } else if (CellType.values[col] == CellType.selectedCell) {
-            GameCell gameCell =
-                GameCell(row: x, col: y, cellType: CellType.selectedCell);
+            GameCell gameCell = GameCell(
+                row: x,
+                col: y,
+                cellType: CellType.selectedCell,
+                playerSide: widget.playerSide);
             newRow.add(gameCell);
-          } else if (CellType.values[col] == CellType.targetCell) {
-            GameCell gameCell =
-                GameCell(row: x, col: y, cellType: CellType.targetCell);
+          } else if (CellType.values[col] == CellType.suggestedCell) {
+            GameCell gameCell = GameCell(
+                row: x,
+                col: y,
+                cellType: CellType.suggestedCell,
+                playerSide: widget.playerSide);
             newRow.add(gameCell);
           } else {
-            GameCell gameCell =
-                GameCell(row: x, col: y, cellType: CellType.emptyCell);
+            GameCell gameCell = GameCell(
+                row: x,
+                col: y,
+                cellType: CellType.emptyCell,
+                playerSide: widget.playerSide);
             newRow.add(gameCell);
           }
           y++;

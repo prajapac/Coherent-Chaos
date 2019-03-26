@@ -10,8 +10,9 @@ class GameCell extends StatefulWidget {
   final double cellSize = 34.0;
   final int row, col;
   final CellType cellType;
+  final int playerSide;
 
-  GameCell({this.row, this.col, this.cellType});
+  GameCell({this.row, this.col, this.cellType, this.playerSide});
 
   @override
   _GameCellState createState() => _GameCellState();
@@ -40,7 +41,7 @@ class _GameCellState extends State<GameCell> {
         cellColor = colors.csColor;
         borderColor = colors.csBorderColor;
         break;
-      case CellType.targetCell:
+      case CellType.suggestedCell:
         cellColor = colors.ctColor;
         borderColor = colors.ctBorderColor;
         break;
@@ -55,19 +56,18 @@ class _GameCellState extends State<GameCell> {
         sides: 6,
         boxShadows: [PolygonBoxShadow(color: borderColor, elevation: 2.0)],
         child: MaterialButton(
-          onPressed: () {
+          onPressed: !GamePage.of(context).isPlayerTurn ? null : () {
             setState(() {
-              if (widget.cellType != CellType.emptyCell &&
-                  widget.cellType != CellType.targetCell) {
-                //TODO: check if selected cell is current player cell
-                if (GamePage.of(context).selectedCellRow == widget.row &&
-                    GamePage.of(context).selectedCellCol == widget.col) {
-                  GamePage.of(context).row = null;
-                  GamePage.of(context).col = null;
-                } else {
-                  GamePage.of(context).row = widget.row;
-                  GamePage.of(context).col = widget.col;
-                }
+              if (widget.cellType == CellType.suggestedCell) {
+                GamePage.of(context).targetRow = widget.row;
+                GamePage.of(context).targetCol = widget.col;
+              } else if ((widget.playerSide == 1 &&widget.cellType == CellType.p1Cell) ||
+                  (widget.playerSide == 2 && widget.cellType == CellType.p2Cell)) {
+                GamePage.of(context).selectedRow = widget.row;
+                GamePage.of(context).selectedCol = widget.col;
+              } else if (widget.cellType == CellType.selectedCell) {
+                GamePage.of(context).selectedRow = null;
+                GamePage.of(context).selectedCol = null;
               }
             });
           },
