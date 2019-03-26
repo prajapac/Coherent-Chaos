@@ -224,11 +224,11 @@ class _GamePage extends State<GamePage> {
                 cellType: CellType.selectedCell,
                 playerSide: widget.playerSide);
             newRow.add(gameCell);
-          } else if (CellType.values[col] == CellType.targetCell) {
+          } else if (CellType.values[col] == CellType.suggestedCell) {
             GameCell gameCell = GameCell(
                 row: x,
                 col: y,
-                cellType: CellType.targetCell,
+                cellType: CellType.suggestedCell,
                 playerSide: widget.playerSide);
             newRow.add(gameCell);
           } else {

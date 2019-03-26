@@ -3,5 +3,5 @@ enum CellType {
   p1Cell,
   p2Cell,
   selectedCell,
-  targetCell
+  suggestedCell
 }

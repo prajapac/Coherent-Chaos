@@ -41,7 +41,7 @@ class _GameCellState extends State<GameCell> {
         cellColor = colors.csColor;
         borderColor = colors.csBorderColor;
         break;
-      case CellType.targetCell:
+      case CellType.suggestedCell:
         cellColor = colors.ctColor;
         borderColor = colors.ctBorderColor;
         break;
@@ -58,7 +58,7 @@ class _GameCellState extends State<GameCell> {
         child: MaterialButton(
           onPressed: !GamePage.of(context).isPlayerTurn ? null : () {
             setState(() {
-              if (widget.cellType == CellType.targetCell) {
+              if (widget.cellType == CellType.suggestedCell) {
                 GamePage.of(context).targetRow = widget.row;
                 GamePage.of(context).targetCol = widget.col;
               } else if ((widget.playerSide == 1 &&widget.cellType == CellType.p1Cell) ||
