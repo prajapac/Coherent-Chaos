@@ -17,13 +17,18 @@ class Polling {
   Polling(this.game);
 
   void startPolling() {
-    int count = 1000;
     bool gameOver = false;
     var boardState;
-    while(count > 0 || gameOver) { //this will need to be changed to when the game is over
-
+    while(gameOver) {
       boardState = handleAPIs.pingBoardState(game.gameId, game);
 
+      if(boardState == 'gameOver') {
+        gameOver = true;
+      }
+      else {
+        
+
+      }
 
       sleep(const Duration(seconds: 2));
     }
