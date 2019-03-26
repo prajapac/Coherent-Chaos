@@ -15,6 +15,7 @@ Install `Node.js` and `npm` from https://nodejs.org/en/
 
 # Running Backend Tests
 1. Navigate to `/web` in terminal
+   * run `npm install`
    * run `npm test`
 
 # MongoDB Database
