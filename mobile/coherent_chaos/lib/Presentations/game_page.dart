@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:coherent_chaos/Assets/cell_type.dart';
 import 'package:coherent_chaos/Assets/custom_colors.dart';
 import 'package:coherent_chaos/Business/handleApiCalls.dart';
@@ -41,7 +43,9 @@ class GamePage extends StatefulWidget {
 class _GamePage extends State<GamePage> {
   List<dynamic> gameBoard;
   bool isPlayerTurn;
+  bool serviceRunning;
 
+  Game newGameState;
   int selectedCellRow,
       selectedCellCol,
       targetCellRow,
@@ -49,6 +53,7 @@ class _GamePage extends State<GamePage> {
       hoppedCellRow,
       hoppedCellCol;
 
+  set gameState(Game gameState) => setState(() => newGameState = gameState);
   set selectedRow(int row) => setState(() => selectedCellRow = row);
   set selectedCol(int col) => setState(() => selectedCellCol = col);
   set targetRow(int row) => setState(() => targetCellRow = row);
@@ -56,8 +61,14 @@ class _GamePage extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
-    gameBoard = widget.game.board;
+    startPolling();
 
+    if (newGameState != null) {
+      updateGameState(newGameState);
+      newGameState = null;
+    }
+
+    gameBoard = widget.game.board;
     isPlayerTurn = widget.game.whoseTurn == widget.playerSide;
 
     if (targetCellRow != null && targetCellCol != null) {
@@ -68,6 +79,7 @@ class _GamePage extends State<GamePage> {
 
     return WillPopScope(
       onWillPop: () {
+        serviceRunning = false;
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -258,5 +270,28 @@ class _GamePage extends State<GamePage> {
       );
     }
     return boardRows;
+  }
+
+  void startPolling() async {
+    serviceRunning = true;
+    Game newGameState;
+
+    while (serviceRunning) {
+      try {
+        newGameState = await handleAPIs.pingBoardState(widget.game.gameId, widget.game.token);
+
+        bool hasUpdates = newGameState.whoseTurn != widget.game.whoseTurn;
+
+        if (newGameState.winner != null) {
+          serviceRunning = false;
+          gameState = newGameState;
+        } else if (hasUpdates) {
+          gameState = newGameState;
+        }
+      } catch (e) {
+        Toastr().showErrorMessage(e.toString());
+      }
+      sleep(const Duration(seconds: 5));
+    }
   }
 }
