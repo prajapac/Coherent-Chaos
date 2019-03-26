@@ -13,6 +13,11 @@ Install `Node.js` and `npm` from https://nodejs.org/en/
 
 *for client details, refer to `/web/client`*
 
+# Running Backend Tests
+1. Navigate to `/web` in terminal
+   * run `npm install`
+   * run `npm test`
+
 # MongoDB Database
 
 ## Setup
@@ -182,7 +187,7 @@ it's still unique but more manageable/readable
             columnIndex: 3
         },
         hoppedCell: {
-            rowIndex: 1
+            rowIndex: 1,
             columnIndex: 2
         }
     }
