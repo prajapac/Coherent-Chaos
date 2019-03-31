@@ -57,6 +57,8 @@ class _GamePage extends State<GamePage> {
   set selectedCol(int col) => setState(() => selectedCellCol = col);
   set targetRow(int row) => setState(() => targetCellRow = row);
   set targetCol(int col) => setState(() => targetCellCol = col);
+  set hoppedRow(int row) => setState(() => hoppedCellRow = row);
+  set hoppedCol(int col) => setState(() => hoppedCellCol = col);
 
   @override
   void initState() {
@@ -66,6 +68,7 @@ class _GamePage extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
     startPolling();
+
     if (newGameState != null) {
       updateGameState(newGameState);
       newGameState = null;
@@ -75,6 +78,7 @@ class _GamePage extends State<GamePage> {
     isPlayerTurn = widget.game.whoseTurn == widget.playerSide;
 
     if (targetCellRow != null && targetCellCol != null) {
+      getHoppedCell();
       makeMove();
     } else if (selectedCellRow != null && selectedCellCol != null) {
       gameBoard = updateGameBoard(gameBoard);
@@ -100,7 +104,7 @@ class _GamePage extends State<GamePage> {
     );
   }
 
-  void makeMove() async {
+  void makeMove() async {   
     Game newGameState;
     Map data = {
       'move': {
@@ -149,6 +153,8 @@ class _GamePage extends State<GamePage> {
       selectedCellCol = null;
       targetCellRow = null;
       targetCellCol = null;
+      hoppedCellRow = null;
+      hoppedCellCol = null;
     });
   }
 
@@ -161,8 +167,8 @@ class _GamePage extends State<GamePage> {
       for (var col in row) {
         if (x == selectedCellRow && y == selectedCellCol) {
           newRow.add(3);
-        } else if (isCellAdjacent(old, x, y) &&
-            CellType.values[col] == CellType.emptyCell) {
+        } else if (CellType.values[col] == CellType.emptyCell &&
+            (isCellAdjacent(old, x, y) || isHoppable(old, x, y))) {
           newRow.add(4);
         } else {
           newRow.add(col);
@@ -174,6 +180,89 @@ class _GamePage extends State<GamePage> {
     }
 
     return gameBoard;
+  }
+
+  bool isHoppable(List<dynamic> boardState, int x, int y) {
+    bool hoppable = false;
+    int rowDifference = x - selectedCellRow;
+    int colDifference = y - selectedCellCol;
+    //same row
+    if (rowDifference == 0) {
+      if (colDifference == -2) {
+        hoppable = isCellEnemy(boardState, x, y + 1);
+      } else if (colDifference == 2) {
+        hoppable = isCellEnemy(boardState, x, y - 1);
+      }
+    }
+
+    //two row down
+    else if (rowDifference == 2) {
+      //rows around the middle row
+      if (boardState[x].length == boardState[selectedCellRow].length) {
+        if (colDifference == 1) {
+          hoppable = isCellEnemy(boardState, x - 1, y);
+        } else if (colDifference == -1) {
+          hoppable = isCellEnemy(boardState, x - 1, y + 1);
+        }
+      } else if (boardState[x].length > boardState[selectedCellRow].length) {
+        if (colDifference == 0) {
+          hoppable = isCellEnemy(boardState, x - 1, y);
+        } else if (colDifference == 2) {
+          hoppable = isCellEnemy(boardState, x - 1, y - 1);
+        }
+      } else {
+        if (colDifference == 0) {
+          hoppable = isCellEnemy(boardState, x - 1, y);
+        } else if (colDifference == -2) {
+          hoppable = isCellEnemy(boardState, x - 1, y + 1);
+        }
+      }
+    }
+
+    //two row above
+    else if (rowDifference == -2) {
+      //rows around the middle row
+      if (boardState[x].length == boardState[selectedCellRow].length) {
+        if (colDifference == 1) {
+          hoppable = isCellEnemy(boardState, x + 1, y);
+        } else if (colDifference == -1) {
+          hoppable = isCellEnemy(boardState, x + 1, y + 1);
+        }
+      }
+
+      //rows after middle row
+      else if (boardState[x].length > boardState[selectedCellRow].length) {
+        if (colDifference == 0) {
+          hoppable = isCellEnemy(boardState, x + 1, y);
+        } else if (colDifference == 2) {
+          hoppable = isCellEnemy(boardState, x + 1, y - 1);
+        }
+      }
+
+      //rows before middle row
+      else {
+        if (colDifference == 0) {
+          hoppable = isCellEnemy(boardState, x + 1, y);
+        } else if (colDifference == -2) {
+          hoppable = isCellEnemy(boardState, x + 1, y + 1);
+        }
+      }
+    }
+    return hoppable;
+  }
+
+  bool isCellEnemy(List<dynamic> boardState, int x, int y) {
+    bool cellOpponent = false;
+    CellType currentCell = CellType.values[boardState[x][y]];
+    CellType selectedCellType =
+        CellType.values[boardState[selectedCellRow][selectedCellCol]];
+    if ((currentCell == CellType.p1Cell &&
+            selectedCellType == CellType.p2Cell) ||
+        (currentCell == CellType.p2Cell &&
+            selectedCellType == CellType.p1Cell)) {
+      cellOpponent = true;
+    }
+    return cellOpponent;
   }
 
   bool isCellAdjacent(List<dynamic> boardState, int x, int y) {
@@ -296,5 +385,36 @@ class _GamePage extends State<GamePage> {
         Toastr().showErrorMessage(e.toString());
       }
     });
+  }
+
+  void getHoppedCell() {
+    int rowDifference = targetCellRow - selectedCellRow;
+    int colDifference = targetCellCol - selectedCellCol;
+
+    if (rowDifference == 0) {
+      hoppedCellRow = selectedCellRow;
+    } else if (rowDifference == 2) {
+      hoppedCellRow = selectedCellCol + 1;
+    } else if (rowDifference == -2) {
+      hoppedCellRow = selectedCellCol - 1;
+    }
+    switch (colDifference) {
+      case -2:
+        hoppedCellCol = selectedCellCol - 1;
+        break;
+      case -1:
+        hoppedCellCol = selectedCellCol;
+        break;
+      case 0:
+        hoppedCellCol = selectedCellCol;
+        break;
+      case 1:
+        hoppedCellCol = targetCellCol;
+        break;
+      case 2:
+        hoppedCellCol = selectedCellCol + 1;
+        break;
+      default:
+    }
   }
 }
