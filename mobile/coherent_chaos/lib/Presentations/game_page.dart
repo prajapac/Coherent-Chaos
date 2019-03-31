@@ -63,7 +63,7 @@ class _GamePage extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
-    //startPolling();
+    startPolling();
 
     if (newGameState != null) {
       updateGameState(newGameState);
