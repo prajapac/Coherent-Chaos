@@ -5,7 +5,8 @@ import 'dart:async';
 import 'dart:convert';
 import '../Model/game.dart';
 
-final baseURI = "http://18.191.224.215:5000/api/game";
+//final baseURI = "http://18.191.224.215:5000/api/game"; //Development Server
+final baseURI = "http://52.14.173.109:5000/api/game"; //Production Server
 
 class HandleAPIs {
   Future<Game> intializeGame() async {
@@ -29,8 +30,10 @@ class HandleAPIs {
       }
       return Game.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to get Game: #' + gameId +
-          ' response code: ' + response.statusCode.toString());
+      throw Exception('Failed to get Game: #' +
+          gameId +
+          ' response code: ' +
+          response.statusCode.toString());
     }
   }
 
@@ -61,7 +64,8 @@ class HandleAPIs {
       }
       return Game.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to make a move. Response code: ' + response.statusCode.toString());
+      throw Exception('Failed to make a move. Response code: ' +
+          response.statusCode.toString());
     }
   }
 
@@ -69,8 +73,8 @@ class HandleAPIs {
     Map data = {'token': token};
 
     var response = await http.patch(baseURI + "/" + gameId,
-       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-       body: json.encode(data));
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        body: json.encode(data));
 
     if (response.statusCode == 200) {
       if (json.decode(response.body)['failure'] == true) {
@@ -78,8 +82,9 @@ class HandleAPIs {
       }
       return Game.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to poll server for board state with response code: ' +
-          response.statusCode.toString());
+      throw Exception(
+          'Failed to poll server for board state with response code: ' +
+              response.statusCode.toString());
     }
- }
+  }
 }
