@@ -15,4 +15,15 @@ class Toastr {
         textColor: Colors.white,
         fontSize: 16.0);
   }
+
+  void showGameOverMsg(String msg) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 8,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 24.0);
+  }
 }
