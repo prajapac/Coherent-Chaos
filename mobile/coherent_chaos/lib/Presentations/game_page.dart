@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:async';
 
 import 'package:coherent_chaos/Assets/cell_type.dart';
 import 'package:coherent_chaos/Assets/custom_colors.dart';
@@ -6,7 +6,6 @@ import 'package:coherent_chaos/Business/handleApiCalls.dart';
 import 'package:coherent_chaos/Controllers/game_cell.dart';
 import 'package:coherent_chaos/Model/game.dart';
 import 'package:coherent_chaos/Model/toastr.dart';
-import 'package:coherent_chaos/Presentations/start_page.dart';
 import 'package:flutter/material.dart';
 
 CustomColors colors = new CustomColors();
@@ -43,7 +42,7 @@ class GamePage extends StatefulWidget {
 class _GamePage extends State<GamePage> {
   List<dynamic> gameBoard;
   bool isPlayerTurn;
-  bool serviceRunning;
+  bool gameOver;
 
   Game newGameState;
   int selectedCellRow,
@@ -60,6 +59,11 @@ class _GamePage extends State<GamePage> {
   set targetCol(int col) => setState(() => targetCellCol = col);
   set hoppedRow(int row) => setState(() => hoppedCellRow = row);
   set hoppedCol(int col) => setState(() => hoppedCellCol = col);
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,13 +86,11 @@ class _GamePage extends State<GamePage> {
 
     return WillPopScope(
       onWillPop: () {
-        serviceRunning = false;
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => StartPage(),
-          ),
-        );
+        gameOver = true;
+        Navigator.pop(context);
+        if (Navigator.canPop(context)) {
+          Navigator.pop(context);
+        }
       },
       child: Scaffold(
         backgroundColor: colors.bodyColor,
@@ -360,11 +362,12 @@ class _GamePage extends State<GamePage> {
     return boardRows;
   }
 
-  void startPolling() async {
-    serviceRunning = true;
+  void startPolling() {
+    const INTERVAL = const Duration(seconds: 2);
+    gameOver = false;
     Game newGameState;
 
-    while (serviceRunning) {
+    Timer.periodic(INTERVAL, (Timer t) async {
       try {
         newGameState = await handleAPIs.pingBoardState(
             widget.game.gameId, widget.game.token);
@@ -372,7 +375,8 @@ class _GamePage extends State<GamePage> {
         bool hasUpdates = newGameState.whoseTurn != widget.game.whoseTurn;
 
         if (newGameState.winner != null) {
-          serviceRunning = false;
+          t.cancel();
+          gameOver = true;
           gameState = newGameState;
         } else if (hasUpdates) {
           gameState = newGameState;
@@ -380,8 +384,7 @@ class _GamePage extends State<GamePage> {
       } catch (e) {
         Toastr().showErrorMessage(e.toString());
       }
-      sleep(const Duration(seconds: 5));
-    }
+    });
   }
 
   void getHoppedCell() {
@@ -414,4 +417,6 @@ class _GamePage extends State<GamePage> {
       default:
     }
   }
+
+ 
 }
