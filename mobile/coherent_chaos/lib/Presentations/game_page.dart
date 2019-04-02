@@ -57,18 +57,15 @@ class _GamePage extends State<GamePage> {
   set selectedCol(int col) => setState(() => selectedCellCol = col);
   set targetRow(int row) => setState(() => targetCellRow = row);
   set targetCol(int col) => setState(() => targetCellCol = col);
-  set hoppedRow(int row) => setState(() => hoppedCellRow = row);
-  set hoppedCol(int col) => setState(() => hoppedCellCol = col);
 
   @override
   void initState() {
     super.initState();
+    startPolling();
   }
 
   @override
   Widget build(BuildContext context) {
-    startPolling();
-
     if (newGameState != null) {
       updateGameState(newGameState);
       newGameState = null;
@@ -82,6 +79,13 @@ class _GamePage extends State<GamePage> {
       makeMove();
     } else if (selectedCellRow != null && selectedCellCol != null) {
       gameBoard = updateGameBoard(gameBoard);
+    }
+
+    if (gameOver) {
+      Toastr().showGameOverMsg("Game Over. " +
+          (widget.game.winner == widget.playerSide
+              ? "You won !"
+              : "You lost..."));
     }
 
     return WillPopScope(
@@ -104,7 +108,7 @@ class _GamePage extends State<GamePage> {
     );
   }
 
-  void makeMove() async {   
+  void makeMove() async {
     Game newGameState;
     Map data = {
       'move': {
@@ -391,30 +395,33 @@ class _GamePage extends State<GamePage> {
     int rowDifference = targetCellRow - selectedCellRow;
     int colDifference = targetCellCol - selectedCellCol;
 
-    if (rowDifference == 0) {
+    if (rowDifference == 0 && (colDifference > 1 || colDifference < -1)) {
       hoppedCellRow = selectedCellRow;
     } else if (rowDifference == 2) {
-      hoppedCellRow = selectedCellCol + 1;
+      hoppedCellRow = selectedCellRow + 1;
     } else if (rowDifference == -2) {
-      hoppedCellRow = selectedCellCol - 1;
+      hoppedCellRow = selectedCellRow - 1;
     }
-    switch (colDifference) {
-      case -2:
-        hoppedCellCol = selectedCellCol - 1;
-        break;
-      case -1:
-        hoppedCellCol = selectedCellCol;
-        break;
-      case 0:
-        hoppedCellCol = selectedCellCol;
-        break;
-      case 1:
-        hoppedCellCol = targetCellCol;
-        break;
-      case 2:
-        hoppedCellCol = selectedCellCol + 1;
-        break;
-      default:
+
+    if (hoppedCellRow != null) {
+      switch (colDifference) {
+        case -2:
+          hoppedCellCol = selectedCellCol - 1;
+          break;
+        case -1:
+          hoppedCellCol = selectedCellCol;
+          break;
+        case 0:
+          hoppedCellCol = selectedCellCol;
+          break;
+        case 1:
+          hoppedCellCol = targetCellCol;
+          break;
+        case 2:
+          hoppedCellCol = selectedCellCol + 1;
+          break;
+        default:
+      }
     }
   }
 
