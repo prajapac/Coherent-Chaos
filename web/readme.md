@@ -5,18 +5,19 @@ Install `Node.js` and `npm` from https://nodejs.org/en/
 # Initial Setup
 
 1. Navigate to `/web/client` in terminal
-   * run `npm install`
-   * run `npm run build`
+   * Run `npm install`
+   * Run `npm run build`
+   * For local dev, you must switch ROOT_URL in `./client/src/constants/config.js` to `http://localhost:5000`
 2. Navigate to `/web` in terminal
-   * run `npm install`
-   * run `npm run start`
+   * Run `npm install`
+   * Run `npm run start`
 
 *for client details, refer to `/web/client`*
 
 # Running Backend Tests
 1. Navigate to `/web` in terminal
-   * run `npm install`
-   * run `npm test`
+   * Run `npm install`
+   * Run `npm run test`
 
 # MongoDB Database
 

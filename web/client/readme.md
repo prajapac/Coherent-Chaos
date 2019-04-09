@@ -17,10 +17,14 @@ Styleguidist should hot-reload your components as you work on them, but if this 
 
 - Run `npm run build` to build the app into the `build` directory, in **development** mode.  
 - Run `npm run build-prod` to build the app into the `build` directory, in **production** mode.
+- For local dev, you must switch ROOT_URL in `./src/constants/config.js` to `http://localhost:5000`
 
 The primary distinction between development and production mode is reflected in the config values exposed to the app.
 
 ## Running the Tests
 
-- Run `npm test-unit`.
-- Run `npm test-acceptance`.
+- Run `npm run test-all`.  
+
+Or:  
+- Run `npm run test-unit`.
+- Run `npm run test-acceptance`.

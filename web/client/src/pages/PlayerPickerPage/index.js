@@ -34,4 +34,8 @@ MenuPage.propTypes = {
     gameState: PropTypes.object
 };
 
+MenuPage.defaultProps = {
+    gameState: {}
+};
+
 export default MenuPage;

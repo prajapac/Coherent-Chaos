@@ -1,10 +1,15 @@
-const { CELL_EMPTY,
-        CELL_OUT_OF_PLAY,
-        DECAY_TURN_NUMBER,
-        PLAYER_1,
-        PLAYER_2,
-        CELL_PLAYER_1,
-        CELL_PLAYER_2} = require('../../constants');
+const {
+    CELL_EMPTY,
+    CELL_OUT_OF_PLAY,
+    PLAYER_1,
+    PLAYER_2,
+    CELL_PLAYER_1,
+    CELL_PLAYER_2
+} = require('../../constants');
+
+const {
+    DECAY_TURN_NUMBER
+} = require('../../constants/config.js');
 
 const assert = require('chai').assert;
 const generateDecay = require('../../utility/game-board-decay');
@@ -43,7 +48,7 @@ beforeEach(() => {
         player2_token: '',
         player2_last_ping: 0,
         winner: null
-    }
+    };
 });
 
 describe('Common Utilities', () => {
@@ -73,7 +78,7 @@ describe('Common Utilities', () => {
                 player2_token: '',
                 player2_last_ping: 0,
                 winner: null
-            }
+            };
 
             gameState.board_state = generateDecay(gameState.board_state, gameState.num_turns);
 
