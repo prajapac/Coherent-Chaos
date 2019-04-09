@@ -79,4 +79,8 @@ GamePage.propTypes = {
     onCellMove: PropTypes.func
 };
 
+GamePage.defaultProps = {
+    gameState: {}
+};
+
 export default GamePage;
